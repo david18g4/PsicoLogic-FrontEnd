@@ -1,14 +1,18 @@
-// 1. CONFIGURACIÓN Y SELECTORES
+/**
+ * Controlador de la página de Login y Registro Inicial.
+ */
 const contenedor = document.getElementById('contenedor');
 const botonIrARegistro = document.getElementById('ir-a-registro');
 const botonVolverInicioSesion = document.getElementById('volver-inicio-sesion');
 const botonLogin = document.getElementById("iniciar-sesion");
 const botonRegistrar = document.getElementById("btn-registrar");
-const regCorreoInput = document.getElementById('reg-correo'); // Selector para el input de correo de registro
+const regCorreoInput = document.getElementById('reg-correo');
 const loginEmailInput = document.getElementById('login-email');
 const loginPasswordInput = document.getElementById('login-password');
 
-// Sincronización del nombre de la app desde el back
+/**
+ * Obtiene el nombre de la aplicación desde la configuración pública del servidor.
+ */
 (async function sincronizarApp() {
     try {
         const res = await fetch(`${API_BASE}/config/public`);
@@ -18,10 +22,9 @@ const loginPasswordInput = document.getElementById('login-password');
                 document.querySelectorAll('.nombre-app-texto').forEach(el => el.textContent = config.appName);
             }
         }
-    } catch (e) { /* Fallback silencioso */ }
+    } catch (e) { }
 })();
 
-// 2. ANIMACIONES DE INTERFAZ
 if (botonIrARegistro) {
     botonIrARegistro.addEventListener('click', () => {
         contenedor.classList.add('active');
@@ -34,9 +37,10 @@ if (botonVolverInicioSesion) {
     });
 }
 
-// 3. LÓGICA DE LOGIN CENTRALIZADA
+/**
+ * Procesa el inicio de sesión del usuario.
+ */
 async function ejecutarLogin() {
-    // Obtenemos los valores de los inputs en el momento del envío
     const correoInput = loginEmailInput ? loginEmailInput.value : "";
     const passwordInput = loginPasswordInput ? loginPasswordInput.value : "";
 
@@ -45,7 +49,6 @@ async function ejecutarLogin() {
         return;
     }
 
-    // LIMPIEZA ANTES DE NUEVO LOGIN: Asegura que no enviamos basura previa
     localStorage.clear();
 
     try {
@@ -63,7 +66,6 @@ async function ejecutarLogin() {
         if (response.ok) {
             const data = await response.json();
 
-            // Almacenamos Token y datos de usuario
             localStorage.setItem('psicologo_token', data.token);
 
             const sesionPsicologo = {
@@ -74,7 +76,6 @@ async function ejecutarLogin() {
             };
             localStorage.setItem('psicologo', JSON.stringify(sesionPsicologo));
 
-            // Animación de salida
             contenedor.style.transition = "opacity 0.4s ease, transform 0.4s ease";
             contenedor.style.opacity = "0";
             contenedor.style.transform = "scale(0.95)";
@@ -93,6 +94,9 @@ async function ejecutarLogin() {
     }
 }
 
+/**
+ * Valida el correo y redirige al formulario de registro completo si está disponible.
+ */
 async function ejecutarRegistro() {
     const correo = document.getElementById('reg-correo').value;
 
@@ -122,8 +126,9 @@ async function ejecutarRegistro() {
     }
 }
 
-// 4. LÓGICA DE EXTENSIÓN (REFRESH) OPCIONAL
-// Esta función puedes llamarla desde home.html para renovar el token
+/**
+ * Renueva el token JWT para mantener la sesión activa.
+ */
 async function extenderSesion() {
     const token = localStorage.getItem('psicologo_token');
     if (!token) return;
@@ -144,32 +149,26 @@ async function extenderSesion() {
     }
 }
 
-// --- EVENTOS DE DISPARO (Trigger) ---
-
-// Escuchar clic en el botón
 if (botonLogin) {
     botonLogin.addEventListener("click", ejecutarLogin);
 }
 
-// Escuchar clic en el botón de registro
 if (botonRegistrar) {
     botonRegistrar.addEventListener("click", ejecutarRegistro);
 }
 
-// Escuchar tecla "Enter" de forma global en la página de login
 document.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
         const enfocado = document.activeElement;
 
-        // 1. Si el input de correo de registro está enfocado, ejecutar registro
         if (enfocado === regCorreoInput) {
             ejecutarRegistro();
         }
-        // 2. Si están enfocados los inputs de login, ejecutar login
+
         else if (enfocado === loginEmailInput || enfocado === loginPasswordInput) {
             ejecutarLogin();
         }
-        // 3. Fallback: Si el contenedor tiene la clase 'active' (formulario de registro visible)
+
         else if (contenedor && contenedor.classList.contains('active')) {
             ejecutarRegistro();
         } else { 

@@ -1,3 +1,7 @@
+/**
+ * Panel de Sesión Clínica.
+ * Gestión detallada de la consulta, toma de notas en tiempo real y autoguardado.
+ */
 document.addEventListener('DOMContentLoaded', async () => {
 
     const params = new URLSearchParams(window.location.search);
@@ -13,7 +17,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     let currentVideoUrl = null;
     const btnVideo = document.getElementById('btn-link-video');
 
-    // --- LÓGICA DE ESTADO DE CITA (Manual) ---
+    /**
+     * Gestión de estados de la cita desde el panel de sesión.
+     */
     const citaStatusTag = document.getElementById('cita-status-tag');
     const statusOptions = document.getElementById('status-options');
 
@@ -28,11 +34,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             e.stopPropagation();
             const estadoActual = citaStatusTag.getAttribute('data-estado');
             const filtrados = estadosPosibles.filter(est => est.id !== estadoActual);
-            
+
             statusOptions.innerHTML = filtrados.map(est =>
                 `<div onclick="window.cambiarEstadoCita('${est.id}')">${est.text}</div>`
             ).join('');
-            
+
             statusOptions.classList.toggle('show');
         });
 
@@ -45,7 +51,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         guardarSesion(false);
     };
 
-    // --- LÓGICA DE TIPO DE SESIÓN (Tag Selector) ---
+    /**
+     * Gestión de tipos de sesión (Individual, Sexología, Pareja).
+     */
     const tipoSesionTag = document.getElementById('tipo-sesion-tag');
     const tipoSesionOptions = document.getElementById('tipo-sesion-options');
     const hiddenTipoSesion = document.getElementById('tipoSesion');
@@ -53,20 +61,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (tipoSesionTag && tipoSesionOptions) {
         tipoSesionTag.addEventListener('click', (e) => {
             const tipoActual = hiddenTipoSesion.value;
-            
-            // Si la sesión es de pareja, no mostramos el dropdown
+
             if (tipoActual === 'Pareja') return;
 
             e.stopPropagation();
-            
+
             const tipos = [
                 { val: 'Individual', text: 'Individual' },
                 { val: 'Sexologia', text: 'Sexología' }
             ];
-            
+
             const tipoActualLimpio = (tipoActual || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-            
-            // Filtramos la opción ya seleccionada y nunca mostramos 'Pareja' como opción de cambio
+
             const filtrados = tipos.filter(t => {
                 const valLimpio = t.val.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
                 return valLimpio !== tipoActualLimpio;
@@ -82,45 +88,45 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     window.cambiarTipoSesion = (nuevoTipo) => {
-        // Guardamos el valor exacto (Sentence Case)
         if (hiddenTipoSesion) hiddenTipoSesion.value = nuevoTipo;
         actualizarUITipoSesion(nuevoTipo);
-        
-        // Aplicar tarifa automáticamente
+
         aplicarTarifaPorTipo(nuevoTipo);
-        
+
         formularioModificado = true;
-        guardarSesion(false); // Guardar automáticamente para persistir el cambio y el nuevo precio
+        guardarSesion(false);
     };
 
+    /**
+     * Busca y aplica la tarifa configurada según el tipo de sesión y duración.
+     */
     function aplicarTarifaPorTipo(tipo) {
         if (!tarifasPsicologo.length) return;
 
-        // Normalizamos para comparar con el Enum del backend
         const tarifa = tarifasPsicologo.find(t => t.tipoSesion.toUpperCase() === tipo.toUpperCase());
 
         if (tarifa) {
             const elDuracion = document.getElementById('duracionMinutos');
             const elPrecio = document.getElementById('precio');
-            
+
             if (elDuracion) elDuracion.value = tarifa.minutos;
             if (elPrecio) elPrecio.value = tarifa.precio;
-            
+
             console.log(`Tarifa aplicada para ${tipo}: ${tarifa.minutos}min - ${tarifa.precio}€`);
         }
     }
 
+    /**
+     * Actualiza la visualización del tag de tipo de sesión.
+     */
     function actualizarUITipoSesion(tipo) {
         if (!tipoSesionTag) return;
 
-        // Normalizamos el tipo para generar la clase CSS (ej: "Sexologia" o "Sexología" -> "sexologia")
         const tipoLimpio = (tipo || 'Individual').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-        // Reiniciamos clases base y añadimos la específica (tag-individual, tag-sexologia, etc.)
         tipoSesionTag.className = 'tag';
         tipoSesionTag.classList.add(`tag-${tipoLimpio}`);
 
-        // Control de interacción: si es pareja no se puede clicar
         if (tipoLimpio === 'pareja') {
             tipoSesionTag.classList.remove('clickable-tag');
         } else {
@@ -128,11 +134,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         tipoSesionTag.setAttribute('data-tipo', tipo);
-        // Ajuste de texto visual
         tipoSesionTag.innerText = (tipoLimpio === 'sexologia') ? 'Sexología' : (tipo || 'Individual');
     }
 
-    // --- 0. ADVERTENCIA DE SALIDA SIN GUARDAR (MODAL PERSONALIZADO) ---
+    /**
+     * Detector de cambios sin guardar para evitar pérdida de datos al navegar fuera.
+     */
     document.body.addEventListener('click', (e) => {
         const link = e.target.closest('a');
         const isInternalLink = link && link.href && !link.href.includes('#') && !link.target;
@@ -146,7 +153,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    // --- 1. FUNCIÓN DE CARGA LATERAL PACIENTE ---
+    /**
+     * Obtiene la información básica del paciente para la barra lateral.
+     */
     async function cargarInfoPaciente(id) {
         try {
             const res = await fetch(`${API_BASE}/pacientes/${id}`, {
@@ -166,7 +175,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const iconContainer = icon.parentElement;
 
                 if (iconContainer) {
-                    let imgSrc = "https://cdn-icons-png.flaticon.com/512/4140/4140000.png"; // Perfil Neutro
+                    let imgSrc = "https://cdn-icons-png.flaticon.com/512/4140/4140000.png";
                     if (p.genero === 'Hombre') {
                         imgSrc = "https://cdn-icons-png.flaticon.com/512/4140/4140037.png";
                     } else if (p.genero === 'Mujer') {
@@ -182,6 +191,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         } catch (e) { console.error("Error cargando paciente:", e); }
     }
 
+    /**
+     * Obtiene las tarifas preconfiguradas del psicólogo.
+     */
     async function cargarTarifasPsicologo() {
         try {
             const idPsico = user.idPsicologo || user.id;
@@ -227,7 +239,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         citaStatusTag.innerText = texto || "---";
     }
 
-    // --- 2. FUNCIÓN DE PRECARGA SESIÓN ---
+    /**
+     * Recupera el estado actual de la sesión desde el servidor y popula el formulario.
+     */
     async function precargarDatosSesion() {
         if (!idCita) return;
 
@@ -251,7 +265,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 actualizarUIEstado(sesion.estadoCita || "Programada");
 
-                // --- NUEVO: Lógica para múltiples pacientes ---
                 try {
                     const resCita = await fetch(`${API_BASE}/citas/${idCita}`, {
                         headers: { 'Authorization': `Bearer ${token}` }
@@ -262,13 +275,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                         if (listaPacs.length > 1) {
                             const nombreLateral = document.getElementById('p-nombre-lateral');
                             const iconBox = document.querySelector('.patient-avatar-container');
-                            
-                            // Cambiamos el icono de género por la imagen de grupo solicitada
+
                             if (iconBox) {
                                 iconBox.innerHTML = `<img src="https://cdn-icons-png.flaticon.com/512/4212/4212470.png" alt="Grupo" style="width: 100%; height: 100%; object-fit: contain;">`;
                             }
 
-                            // Lista vertical de nombres con comas, cada uno con su enlace
                             if (nombreLateral) {
                                 nombreLateral.style.textDecoration = 'none';
                                 nombreLateral.style.cursor = 'default';
@@ -325,7 +336,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     /**
-     * Controla el progreso visual del borde de la fecha como un reloj.
+     * Actualiza el anillo de progreso visual alrededor de la fecha de la sesión.
      */
     function iniciarRelojProgreso(fechaInicio, duracionMinutos) {
         const wrapper = document.getElementById('sesion-progress-wrapper');
@@ -352,10 +363,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         };
 
         updateProgress();
-        setInterval(updateProgress, 10000); // Actualiza cada 10 segundos
+        setInterval(updateProgress, 10000);
     }
 
-    // Aseguramos que el cargador esté visible y el contenido oculto al inicio
     if (contentLoader) contentLoader.style.display = 'flex';
     if (sessionMainContent) sessionMainContent.style.display = 'none';
 
@@ -364,15 +374,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         await cargarTarifasPsicologo();
         await precargarDatosSesion();
     } finally {
-        // Una vez que todos los datos se han cargado (o ha ocurrido un error), ocultamos el cargador y mostramos el contenido
         if (contentLoader) contentLoader.style.display = 'none';
-        if (sessionMainContent) sessionMainContent.style.display = 'grid'; // Asumiendo que .session-grid usa display: grid
+        if (sessionMainContent) sessionMainContent.style.display = 'grid';
     }
 
-    // --- DETECCIÓN DE CAMBIOS (Listeners + Backup Local) ---
+    /**
+     * Debounce para el guardado local de seguridad.
+     */
     const inputsFormulario = document.querySelectorAll('input, select, textarea');
-
-    // Optimización: Debounce para evitar bloqueos al escribir (Copia de seguridad)
     let backupTimer;
     const guardarBackupSeguro = () => {
         clearTimeout(backupTimer);
@@ -385,7 +394,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             };
             localStorage.setItem(`backup_sesion_${idCita}`, JSON.stringify(backup));
             console.log("Backup local actualizado...");
-        }, 1000); // Espera 1 segundo de inactividad
+        }, 1000);
     };
 
     inputsFormulario.forEach(input => {
@@ -395,7 +404,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     });
 
-    // --- LOGICA GLOBAL BOTÓN VIDEOLLAMADA ---
+    /**
+     * Actualiza la accesibilidad y destino del botón de videollamada.
+     */
     function actualizarEstadoBotonVideo() {
         if (!btnVideo) return;
         if (currentVideoUrl) {
@@ -412,19 +423,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     actualizarEstadoBotonVideo();
 
-    // --- CÁLCULO AUTOMÁTICO DE TARIFAS ---
     const elTipoSesion = document.getElementById('tipoSesion');
     const elDuracion = document.getElementById('duracionMinutos');
     const elPrecio = document.getElementById('precio');
 
-    // Al cambiar la duración, guardamos automáticamente para que el servidor
-    // recalcule el precio basado en la tarifa y nos lo devuelva.
     if (elDuracion) elDuracion.addEventListener('change', () => guardarSesion(false));
 
-    // Mantenemos la previsualización rápida si el usuario escribe en el precio
     if (elPrecio) elPrecio.addEventListener('input', () => { formularioModificado = true; });
 
-    // --- 3. GESTIÓN DE TABS ---
     const tabs = document.querySelectorAll('.tab-btn');
     const panes = document.querySelectorAll('.tab-pane');
     tabs.forEach(tab => {
@@ -437,10 +443,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     });
 
-    // --- 4. FUNCIÓN DE GUARDADO (MANUAL Y AUTOMÁTICO) ---
     const btnGuardar = document.getElementById('btn-finalizar');
     if (btnGuardar) btnGuardar.innerHTML = 'Guardar';
 
+    /**
+     * Persiste los datos de la sesión en el servidor.
+     */
     async function guardarSesion(esAutoGuardado = false) {
         if (!idSesionBackend) return;
 
@@ -479,7 +487,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
 
             if (response.ok) {
-                // Actualizamos el precio en la interfaz con lo que el servidor ha calculado/guardado
                 const sesionActualizada = await response.json();
                 if (sesionActualizada.precio !== undefined) {
                     document.getElementById('precio').value = sesionActualizada.precio;
@@ -490,7 +497,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 idSesionBackend = sesionActualizada.idSesion || sesionActualizada.id;
 
                 formularioModificado = false;
-                localStorage.removeItem(`backup_sesion_${idCita}`); // Limpiamos backup al guardar bien
+                localStorage.removeItem(`backup_sesion_${idCita}`);
 
                 const ahora = new Date();
                 const horaStr = ahora.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -529,12 +536,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         btnGuardar.addEventListener('click', () => guardarSesion(false));
     }
 
-    // Auto-guardado cada 30 segundos
     setInterval(() => {
         if (formularioModificado) guardarSesion(true);
     }, 30000);
 
-    // Aviso si vuelve la conexión
     window.addEventListener('online', () => {
         if (formularioModificado) guardarSesion(true);
     });

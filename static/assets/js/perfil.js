@@ -1,3 +1,7 @@
+/**
+ * Gestión del Perfil del Psicólogo.
+ * Muestra información personal, colegiación y cuentas bancarias registradas.
+ */
 document.addEventListener('DOMContentLoaded', async () => {
     const psicologoId = user?.idPsicologo || user?.id;
 
@@ -6,6 +10,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
+    /**
+     * Carga los datos del psicólogo y sus cuentas bancarias.
+     */
     async function cargarPerfil() {
         try {
             const [resP, resC] = await Promise.all([
@@ -20,10 +27,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (!resP.ok) throw new Error("No se pudo cargar el perfil");
             const data = await resP.json();
 
-            // Actualizamos actividadLegal en la sesión para que layout.js lo use en el resto de páginas
             user.actividadLegal = data.actividadLegal || '';
             localStorage.setItem('psicologo', JSON.stringify(user));
-            // Refrescamos el texto en el desplegable de la página actual
+
             document.querySelectorAll('.dropdown-header span').forEach(el => {
                 el.textContent = user.actividadLegal;
                 el.style.fontSize = '13px';
@@ -32,7 +38,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Poblamos los campos
             document.getElementById('prof-nombre-completo').textContent = `${data.nombre} ${data.apellidos}`;
             document.getElementById('prof-tag-num').textContent = `${data.numColegiado || 'N/A'}`;
-            
+
             document.getElementById('prof-nombre').textContent = data.nombre;
             document.getElementById('prof-apellidos').textContent = data.apellidos;
             document.getElementById('prof-dni').textContent = data.dni || 'No especificado';
@@ -44,7 +50,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             if (resC.ok) {
                 const cuentas = await resC.json();
-                // Filtramos las cuentas que pertenecen a este psicólogo
                 const misCuentas = cuentas.filter(c => c.idPsicologo === parseInt(psicologoId));
                 renderCuentas(misCuentas);
             }
@@ -54,6 +59,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
+    /**
+     * Renderiza la tabla de cuentas bancarias asociadas para facturación.
+     */
     function renderCuentas(cuentas) {
         const tbody = document.getElementById('prof-cuentas-body');
         if (!cuentas || cuentas.length === 0) {
@@ -70,6 +78,5 @@ document.addEventListener('DOMContentLoaded', async () => {
         `).join('');
     }
 
-    // Carga inicial
     cargarPerfil();
 });

@@ -1,10 +1,15 @@
+/**
+ * Gestión de Tarifas del Psicólogo.
+ */
 document.addEventListener('DOMContentLoaded', async () => {
     const tarifasTableBody = document.getElementById('tarifas-table-body');
 
-    let tarifas = []; // Almacenará las tarifas del psicólogo
-    let editingRowId = null; // Para controlar qué fila se está editando
+    let tarifas = [];
+    let editingRowId = null;
 
-    // Función para cargar las tarifas del psicólogo
+    /**
+    * Carga las tarifas configuradas para el psicólogo logueado.
+    */
     async function cargarTarifas() {
         if (!user || !user.id) {
             console.error("Usuario no autenticado o ID de psicólogo no disponible.");
@@ -28,7 +33,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // Función para renderizar las tarifas en la tabla
+    /**
+     * Dibuja la tabla de tarifas agrupando por tipo de sesión.
+     */
     function renderizarTarifas() {
         tarifasTableBody.innerHTML = '';
         if (tarifas.length === 0) {
@@ -36,10 +43,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
 
-        // Ordenamos por tipo para facilitar la agrupación
         const tarifasOrdenadas = [...tarifas].sort((a, b) => a.tipoSesion.localeCompare(b.tipoSesion));
-        
-        // Contamos cuántas filas hay de cada tipo para el rowspan
+
         const conteos = {};
         tarifasOrdenadas.forEach(t => conteos[t.tipoSesion] = (conteos[t.tipoSesion] || 0) + 1);
 
@@ -80,32 +85,31 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // Helper para formatear el tipo de sesión de Enum a texto legible
     function formatTipoSesion(tipoSesionEnum) {
         if (!tipoSesionEnum) return '';
         const lower = tipoSesionEnum.toLowerCase();
         return lower.charAt(0).toUpperCase() + lower.slice(1).replace('_', ' ');
     }
 
-    // --- FUNCIONES GLOBALES DE EDICIÓN ---
+    /**
+     * Activa el modo de edición en línea para el precio de una tarifa.
+     */
     window.activarEdicionPrecio = (btn) => {
         const cell = btn.closest('td');
         cell.querySelector('.price-display').style.display = 'none';
         cell.querySelector('.price-edit-form').style.display = 'flex';
         btn.style.display = 'none';
-        
+
         const input = cell.querySelector('.edit-input-precio');
         input.focus();
         input.select();
     };
 
     window.preventBlur = (e) => {
-        // Evita que el input pierda el foco antes de que el click del botón se procese
         e.preventDefault();
     };
 
     window.handleInputBlur = (input) => {
-        // Si no se está guardando, cancelamos tras un breve timeout para permitir clicks en el botón de guardar
         setTimeout(() => {
             if (input && document.body.contains(input)) {
                 window.cancelarEdicionPrecio(input);
@@ -113,6 +117,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         }, 150);
     };
 
+    /**
+     * Cancela la edición y restaura la visualización estática.
+     */
     window.cancelarEdicionPrecio = (btn) => {
         const cell = btn.closest('td');
         if (!cell.querySelector('.price-edit-form')) return;
@@ -121,6 +128,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         cell.querySelector('.btn-edit-tarifa').style.display = 'flex';
     };
 
+    /**
+     * Envía el nuevo precio al servidor mediante una llamada PATCH.
+     */
     window.guardarCambioPrecio = async (btn, idTarifa) => {
         const cell = btn.closest('td');
         const nuevoPrecio = cell.querySelector('.edit-input-precio').value;
@@ -128,7 +138,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         try {
             const response = await fetch(`${API_BASE}/psicologos/tarifas/actualizar/${idTarifa}`, {
                 method: 'PATCH',
-                headers: { 
+                headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 },
@@ -147,6 +157,5 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     };
 
-    // Cargar tarifas al iniciar la página
     cargarTarifas();
 });

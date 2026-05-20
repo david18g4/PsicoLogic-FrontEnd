@@ -46,7 +46,6 @@
     border: none;
     background: transparent;
     color: rgba(52, 142, 194, 0.4);
-    /* Flecha visible pero tenue por defecto */
     font-size: 1.5rem;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -99,39 +98,32 @@
     overflow: hidden;
 }
 
-/* Estado base: El contenido en su sitio */
 #card-inner-animator {
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     opacity: 1;
-    transform: translateX(0);    
+    transform: translateX(0);
     min-height: 252px;
 }
 
-/* SALIDA: El contenido viejo se va */
 .content-exit-next {
-    /* Hacia la izquierda */
     opacity: 0 !important;
     transform: translateX(-100px) !important;
 }
 
 .content-exit-prev {
-    /* Hacia la derecha */
     opacity: 0 !important;
     transform: translateX(100px) !important;
 }
 
-/* ENTRADA: El contenido nuevo viene desde el lado opuesto */
 .content-prepare-next {
     opacity: 0 !important;
     transform: translateX(100px) !important;
-    /* Viene desde la derecha */
     transition: none !important;
 }
 
 .content-prepare-prev {
     opacity: 0 !important;
     transform: translateX(-100px) !important;
-    /* Viene desde la izquierda */
     transition: none !important;
 }
 
@@ -164,7 +156,6 @@
     font-size: 1rem;
 }
 
-/* Carrusel Estilo Tablet */
 .app-preview {
     width: 100%;
     position: relative;
@@ -183,7 +174,6 @@
     aspect-ratio: 16 / 10;
 }
 
-/* Indicadores personalizados debajo del texto */
 .carousel-indicators-custom {
     display: flex;
     justify-content: center;
@@ -237,7 +227,6 @@
     font-size: 0.95rem;
 }
 
-/* Colores de Iconos */
 .icon-blue {
     background: #e3f2fd;
     color: #2196f3;

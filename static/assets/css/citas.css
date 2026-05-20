@@ -1,6 +1,3 @@
-/* --- Estructura de Cabecera --- */
-
-/* Tags de estado para la agenda y modales de citas */
 .tag-success {
     background: #dcfce7;
     color: #166534;
@@ -79,19 +76,14 @@
     margin: 5px 0 0 0;
 }
 
-/* --- Botón Estilo PsicoLogic --- */
 .btn-primario {
-    /* Ajuste específico de margen para citas */
     margin-top: 0;
 }
 
-/* El margen de 20px solo se aplica si el botón está solo en la cabecera, 
-   pero no dentro de los footers de los modales */
 .content-header .btn-primario {
     margin-top: 20px;
 }
 
-/* --- Contenedor del Calendario --- */
 .calendar-container {
     padding: 25px;
     background: white;
@@ -103,7 +95,6 @@
     width: 100%;
 }
 
-/* Fuerza al div interno de FullCalendar a usar todo el ancho */
 #calendar {
     width: 100% !important;
     max-width: 100%;
@@ -111,13 +102,11 @@
     overflow: hidden;
 }
 
-/* --- Personalización de FullCalendar --- */
 :root {
     --fc-border-color: #f0f2f5;
     --fc-today-bg-color: #f8fbff;
 }
 
-/* Quitar bordes del contenedor y tablas de la vista de Agenda (List View) */
 .fc-theme-standard .fc-list,
 .fc-list-table {
     border: none !important;
@@ -126,10 +115,9 @@
 .fc-view-harness {
     border-radius: 15px;
     overflow: hidden;
-    transition: height 0.3s ease; /* Suaviza el cambio de altura entre vistas */
+    transition: height 0.3s ease;
 }
 
-/* Clase que dispararemos por JS para la animación */
 .fc-view-harness.fc-animate {
     animation: fcViewFadeIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
@@ -145,7 +133,6 @@
     }
 }
 
-/* Quitar el borde exterior de la rejilla para que el redondeado sea limpio */
 .fc-theme-standard .fc-scrollgrid {
     border: none !important;
 }
@@ -165,7 +152,6 @@
 }
 
 .fc .fc-list-day,
-/* Esto apunta al <th> del encabezado del día en vista de agenda */
 .fc .fc-list-event td {
     border: none !important;
     background: transparent !important;
@@ -199,13 +185,11 @@
     color: white !important;
 }
 
-/* --- ENCABEZADOS DE DÍAS (MAYÚSCULAS Y CONTRASTE) --- */
 .fc .fc-col-header-cell {
     text-transform: uppercase;
     border: none !important;
 }
 
-/* --- AJUSTES DE VISTA SEMANAL --- */
 .fc .fc-timegrid-slot:not(.fc-timegrid-slot-minor) {
     border-bottom: 1px solid #edf0f2 !important;
 }
@@ -220,12 +204,10 @@
     font-weight: 700;
 }
 
-/* Color Hoy */
 .fc .fc-day-today {
     background-color: rgba(255, 238, 0, 0.09) !important;
 }
 
-/* Sombreado para fines de semana */
 .fc-day-sat,
 .fc-day-sun {
     background-color: #f8fafc !important;
@@ -237,11 +219,9 @@
     font-weight: 800 !important;
 }
 
-/* --- EVENTOS (Vista Cuadrícula/Mes/Semana) --- */
 .fc-event {
     border: none !important;
     padding: 2px 4px !important;
-    /* Padding reducido para evitar desbordes */
     border-radius: 6px !important;
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease !important;
@@ -253,20 +233,17 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    /* Cambiado a flex-start para que no se corte por abajo */
     min-height: 100%;
     padding-left: 14px !important;
     position: relative;
     white-space: normal !important;
 }
 
-/* El punto visual dentro de las citas */
 .fc-event-main::before {
     content: "";
     position: absolute;
     left: 2px;
     top: 4px;
-    /* Posición fija arriba para que no baile con el texto */
     width: 7px;
     height: 7px;
     border-radius: 50%;
@@ -277,15 +254,12 @@
 .fc-event-title {
     color: inherit !important;
     font-size: 0.72rem !important;
-    /* Letra más pequeña para que quepa el nombre */
     font-weight: 700 !important;
     line-height: 1.1 !important;
-    /* Interlineado más compacto */
     word-break: break-word;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
-    /* Limitado a 2 líneas para proteger el diseño */
     line-clamp: 2;
     overflow: hidden;
     white-space: normal !important;
@@ -294,7 +268,6 @@
 .fc-event-time {
     color: inherit !important;
     font-size: 0.6rem !important;
-    /* Hora más pequeña para dar prioridad al nombre */
     margin-bottom: 1px;
     font-weight: 600;
     opacity: 0.9;
@@ -306,7 +279,6 @@
     z-index: 5;
 }
 
-/* --- ESTADOS VISUALES DEL EVENTO EN CALENDARIO --- */
 .event-realizada {
     background-color: rgba(39, 174, 96, 0.1) !important;
     border-left: 4px solid #27ae60 !important;
@@ -323,20 +295,16 @@
     border: none !important;
 }
 
-/* --- LÓGICA DE COLORES DE FONDO (MODALIDAD) --- */
 .evento-individual {
     background-color: rgba(14, 165, 233, 0.12) !important;
-    /* Azul pastel para Presencial */
     color: #0369a1 !important;
 }
 
 .evento-online {
     background-color: rgba(249, 115, 22, 0.12) !important;
-    /* Naranja pastel para Online */
     color: #9a3412 !important;
 }
 
-/* --- LÓGICA DE COLORES DE PUNTOS (CATEGORÍA) --- */
 .cat-sexologia .fc-event-main::before,
 .cat-sexologia .fc-list-event-dot,
 .cat-sexologia .fc-daygrid-event-dot {
@@ -358,7 +326,6 @@
     border-color: #2563eb !important;
 }
 
-/* --- AJUSTES ESPECÍFICOS VISTA AGENDA (LIST VIEW) --- */
 .fc-list-event {
     background-color: transparent !important;
 }
@@ -422,30 +389,18 @@
     justify-content: center;
 }
 
-/* --- CITA ITEM CARD (MODAL) --- */
 .cita-item-card {
     background: #fff;
-    /* Fondo blanco */
     border: 1px solid #e2e8f0;
-    /* Borde suave */
     padding: 14px;
-    /* Espaciado interno */
     border-radius: 12px;
-    /* Bordes redondeados */
     margin-bottom: 10px;
-    /* Margen inferior */
     display: flex;
-    /* Flexbox para la estructura interna */
     flex-direction: column;
-    /* Elementos en columna */
     gap: 8px;
-    /* Espacio entre elementos */
     transition: all 0.2s;
-    /* Transición suave para hover */
     position: relative;
-    /* Para posicionar elementos internos */
     cursor: pointer;
-    /* Cursor de puntero */
     border-left: 4px solid transparent;
     overflow: visible;
 }
@@ -497,7 +452,6 @@
     transform: scale(1.05);
 }
 
-/* --- SCROLL PARA EL LISTADO DE LOS MODALES --- */
 #modalCitas .modal-content::-webkit-scrollbar,
 #modalNuevaCita .modal-content::-webkit-scrollbar {
     width: 6px;
@@ -522,12 +476,10 @@
 
 .cita-item-card.estado-realizada {
     background-color: #f0fdf4;
-    /* Verde muy claro */
 }
 
 .cita-item-card.estado-no_presentado {
     background-color: #fef2f2;
-    /* Rojo muy claro */
 }
 
 .cita-item-card .btn-icon {
@@ -551,32 +503,26 @@
     border-right: 6px solid #2563eb !important;
 }
 
-/* Ajuste para los botones del footer del modal */
 .modal-footer {
     align-items: center;
     padding-top: 15px;
 }
 
 
-/* Estilos para estados de cita en el modal */
 .cita-item-card.estado-realizada {
     background-color: #f0fdf4;
-    /* Verde muy claro */
 }
 
 .cita-item-card.estado-no_presentado {
     background-color: #fef2f2;
-    /* Rojo muy claro */
 }
 
 .cita-item-card.estado-cancelada {
     background-color: #f8f8f8;
-    /* Gris muy claro */
     text-decoration: line-through;
     filter: grayscale(0.5);
 }
 
-/* Icono de edición en la tarjeta */
 .cita-item-card .btn-icon {
     font-size: 0.9rem;
     padding: 6px;
@@ -607,19 +553,16 @@
     font-size: 0.85rem;
 }
 
-/* Selector de estado en miniatura para el modal */
 .status-selector-wrapper {
     position: relative;
     z-index: 5;
 }
 
-/* Eleva la card completa cuando el menú está abierto para que no la tape la de abajo */
 .cita-item-card:has(.status-options-dropdown.show) {
     z-index: 1000 !important;
     position: relative;
 }
 
-/* Eleva el componente cuando el menú está abierto para que no quede detrás de otras tarjetas */
 .status-selector-wrapper:has(.status-options-dropdown.show) {
     z-index: 1001;
 }
@@ -643,7 +586,6 @@
 
 .status-options-dropdown div {
     color: #4a5568 !important;
-    /* Color gris oscuro consistente */
     font-weight: 500;
 }
 
@@ -657,7 +599,6 @@
     font-size: 0.8rem;
 }
 
-/* Colores para iconos de estado */
 .status-realizada,
 .fa-circle-check {
     color: #27ae60 !important;
@@ -698,7 +639,6 @@
     opacity: 0.9;
 }
 
-/* --- LEYENDA --- */
 .leyenda-calendario {
     display: flex;
     justify-content: center;
@@ -785,7 +725,6 @@
     background: #cbd5e0;
 }
 
-/* Estilos específicos para el Modal de Formulario */
 .modal-formulario {
     max-width: 95%;
 }
@@ -813,7 +752,6 @@
     font-size: 0.9rem;
 }
 
-/* Buscador de pacientes */
 .search-container {
     position: relative;
 }
@@ -855,9 +793,6 @@
     font-size: 0.75rem;
 }
 
-/* --- ESTILOS PARA EL MODAL DE SELECCIÓN DE PACIENTE (TABLA) --- */
-
-/* Ajuste para que el modal sea más ancho y quepa la tabla */
 .modal-large {
     width: 650px !important;
     max-width: 95%;
@@ -883,7 +818,6 @@
     box-shadow: 0 0 0 3px rgba(52, 142, 194, 0.1);
 }
 
-/* Contenedor con scroll para la tabla */
 .table-container {
     max-height: 300px;
     overflow-y: auto;
@@ -923,7 +857,6 @@
     color: #2d3748;
 }
 
-/* Estilo para la fila de búsqueda en el formulario de cita */
 .search-row {
     display: flex;
     gap: 10px;
@@ -959,7 +892,6 @@
     width: 100%;
 }
 
-/* Personalización del scrollbar para la tabla */
 .table-container::-webkit-scrollbar {
     width: 6px;
 }
@@ -978,12 +910,10 @@
     color: white;
 }
 
-/* Efecto visual al pasar el ratón por la fila interactiva */
 .tabla-general tr[onclick]:hover td {
     transition: background 0.2s ease;
 }
 
-/* Opcional: si quieres que la fila "se mueva" un poco al pasar el ratón */
 .tabla-general tr[onclick]:hover {
     transform: scale(1.002);
 }
@@ -1008,7 +938,6 @@
     margin-right: 5px;
 }
 
-/* --- CONTENEDOR DE PACIENTES SELECCIONADOS CON SCROLL --- */
 .pacientes-seleccionados-container {
     margin-top: 10px;
     display: block;
@@ -1172,14 +1101,11 @@
     color: white !important;
 }
 
-/* Asegurar que los botones en grupo estén unidos y sin separaciones */
 .fc .fc-button-group {
     gap: 0 !important;
 }
 
-/* Reglas específicas para el border-radius de los botones de vista */
 .fc .fc-dayGridMonth-button {
-    /* Botón 'Mes' */
     border-top-left-radius: 15px !important;
     border-bottom-left-radius: 15px !important;
     border-top-right-radius: 0 !important;
@@ -1187,25 +1113,22 @@
 }
 
 .fc .fc-timeGridWeek-button {
-    /* Botón 'Semana' */
     border-radius: 0 !important;
 }
 
 .fc .fc-listWeek-button {
-    /* Botón 'Agenda' */
     border-top-right-radius: 15px !important;
     border-bottom-right-radius: 15px !important;
     border-top-left-radius: 0 !important;
     border-bottom-left-radius: 0 !important;
 }
 
-/* Reglas para los botones de navegación (Anterior/Siguiente) */
 .fc .fc-prev-button {
     border-top-left-radius: 15px !important;
     border-bottom-left-radius: 15px !important;
     border-top-right-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
-    border-right: 1px solid rgba(0, 0, 0, 0.05) !important; /* Separación sutil interna */
+    border-right: 1px solid rgba(0, 0, 0, 0.05) !important;
 }
 
 .fc .fc-next-button {
@@ -1215,13 +1138,11 @@
     border-bottom-left-radius: 0 !important;
 }
 
-/* --- ENCABEZADOS DE DÍAS (MAYÚSCULAS Y CONTRASTE) --- */
 .fc .fc-col-header-cell {
     text-transform: uppercase;
     border: none !important;
 }
 
-/* Estilos para el Modal de Aviso Zoom */
 .modal-header-warning {
     background-color: #fffbeb !important;
     border-bottom: 1px solid #fcd34d !important;

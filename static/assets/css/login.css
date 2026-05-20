@@ -38,7 +38,6 @@ body:has(.contenedor.active) .nombre-app-texto {
     animation: fadeInUp 0.6s ease-out;
 }
 
-/* Animación para el encabezado de la página de login */
 .encabezado-nombre-app {
     animation: fadeInUp 0.6s ease-out;
 }
@@ -225,30 +224,27 @@ body:has(.contenedor.active) .nombre-app-texto {
         opacity: 0;
         transform: translate3d(0, 30px, 0);
     }
+
     to {
         opacity: 1;
         transform: translate3d(0, 0, 0);
     }
 }
 
-/* Mantenemos la simetría y separación exacta en el formulario de registro */
 .crear-cuenta h1 {
     margin-bottom: 5px;
 }
 
 .crear-cuenta span {
     margin-top: 15px;
-    /* Compensa visualmente el espacio de los iconos en el login */
     margin-bottom: 15px;
 }
 
-/* Unificamos la estética de los textos de ayuda en los paneles deslizantes */
 .panel-turno span {
     font-size: 14px;
     line-height: 22px;
     letter-spacing: 0.3px;
     margin: 15px 0 25px;
-    /* Margen equilibrado entre el título y el botón */
     display: block;
 }
 
@@ -276,7 +272,7 @@ body:has(.contenedor.active) .nombre-app-texto {
 
 .encabezado-logo-app img {
     height: 60px;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
 .contenedor-completo h1 {
@@ -293,10 +289,10 @@ body:has(.contenedor.active) .nombre-app-texto {
     display: block;
 }
 
-.contenedor-completo input, 
+.contenedor-completo input,
 .contenedor-completo select {
     background-color: aliceblue;
-    border: 1px solid transparent; /* Aseguramos que el espacio del borde siempre esté reservado */
+    border: 1px solid transparent;
     width: 100%;
     margin: 8px 0;
     padding: 12px 15px;
@@ -306,6 +302,7 @@ body:has(.contenedor.active) .nombre-app-texto {
     font-family: 'Montserrat', sans-serif;
     color: #264574;
 }
+
 .modal-header {
     padding: 30px 40px 10px;
     border-bottom: 1px solid #f1f5f9;
@@ -330,7 +327,6 @@ body:has(.contenedor.active) .nombre-app-texto {
     background-color: #348ec2;
 }
 
-/* Botón cancelar rojo específico para el contenedor de registro completo */
 .contenedor-completo .btn-ghost {
     color: #ef4444 !important;
     border: 2px solid #ef4444 !important;
@@ -346,7 +342,7 @@ body:has(.contenedor.active) .nombre-app-texto {
 .modal-body-scroll {
     padding: 20px 40px;
     overflow-y: auto;
-    flex: 1; /* Permite que el cuerpo use el espacio disponible */
+    flex: 1;
 }
 
 .modal-footer {
@@ -354,7 +350,7 @@ body:has(.contenedor.active) .nombre-app-texto {
     border-top: 1px solid #f1f5f9;
 }
 
-.contenedor-completo input:focus, 
+.contenedor-completo input:focus,
 .contenedor-completo select:focus {
     border: 1px solid #348ec2;
     background-color: #fff;
@@ -369,7 +365,7 @@ body:has(.contenedor.active) .nombre-app-texto {
 .form-section-title {
     grid-column: span 2;
     text-align: left;
-    color: #0f172a; /* Azul casi negro, mucho más oscuro para legibilidad */
+    color: #0f172a;
     font-size: 0.95rem;
     font-weight: 800;
     border-bottom: 2px solid #cbd5e1;
@@ -383,12 +379,11 @@ body:has(.contenedor.active) .nombre-app-texto {
     gap: 10px 20px;
 }
 
-/* Adaptación para pantallas pequeñas (móviles y tablets) */
 @media (max-width: 768px) {
     .contenedor-completo .form-grid {
-        grid-template-columns: 1fr; /* Una sola columna en móviles */
+        grid-template-columns: 1fr;
     }
-    
+
     .contenedor-completo .full-width,
     .contenedor-completo .form-section-title {
         grid-column: span 1;

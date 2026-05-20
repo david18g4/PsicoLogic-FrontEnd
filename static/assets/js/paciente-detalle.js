@@ -1,10 +1,12 @@
+/**
+ * Controlador de la Ficha Detallada del Paciente.
+ * Gestiona la visualización de datos personales, historial de sesiones, contactos y gestión de archivos en S3.
+ */
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. OBTENER DATOS DE AUTH-GUARD
-    // Usamos las variables definidas en auth-guard.js: API_BASE, token, user
+
     const params = new URLSearchParams(window.location.search);
     const pacienteId = params.get('id');
 
-    // Validación de seguridad manual extra
     if (!token || !user || !pacienteId) {
         window.location.href = "pacientes.html";
         return;
@@ -13,7 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let pacienteActual = null;
     let listaDocumentosCache = [];
 
-    // Mapa global de Tipos de Documento
     const TIPO_DOCUMENTO_MAP = {
         'Prueba_Evaluación': 'Prueba de Evaluación',
         'Historial_Clínico': 'Historial Clínico',
@@ -24,7 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
         'Otros': 'Otros'
     };
 
-    // Mapas de conversión Enum <-> Display Name
     const GENERO_MAP = {
         'Hombre': 'Hombre',
         'Mujer': 'Mujer',
@@ -40,23 +40,23 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const TIPO_DOCUMENTO_COLORS = {
-        'Prueba_Evaluación': '#a29bfe', // Morado suave
-        'Historial_Clínico': '#348ec2', // Azul principal
-        'Consentimiento': '#27ae60', // Verde
-        'Factura': '#f39c12', // Naranja
-        'Ficha_Registro_Menor': '#e84393', // Rosa
-        'Ficha_Registro_Adulto': '#6c5ce7', // Púrpura
-        'Otros': '#94a3b8' // Gris neutro
+        'Prueba_Evaluación': '#a29bfe',
+        'Historial_Clínico': '#348ec2',
+        'Consentimiento': '#27ae60',
+        'Factura': '#f39c12',
+        'Ficha_Registro_Menor': '#e84393',
+        'Ficha_Registro_Adulto': '#6c5ce7',
+        'Otros': '#94a3b8'
     };
 
-    // --- 1.5 SINCRONIZAR CONFIGURACIÓN (AppName) ---
+    /**
+     * Obtiene y aplica el nombre de la aplicación desde el backend.
+     */
     async function sincronizarInterfaz() {
         try {
-            // Simplificamos la petición a ruta pública
             const res = await fetch(`${API_BASE}/config/public`);
             if (res.ok) {
                 const config = await res.json();
-                // Actualiza todos los elementos que tengan el nombre de la app
                 if (config.appName) {
                     document.querySelectorAll('.nombre-app-texto').forEach(el => {
                         el.textContent = config.appName;
@@ -66,9 +66,10 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (e) { console.warn("Configuración dinámica no disponible"); }
     }
 
-    // --- 2. CARGA DE DATOS DEL PACIENTE ---
+    /**
+     * Carga toda la información del paciente, sus contactos y documentos.
+     */
     async function cargarPaciente() {
-        // Definimos cabeceras separadas: GET no necesita Content-Type
         const authHeader = { 'Authorization': `Bearer ${token}` };
         const jsonHeaders = {
             ...authHeader,
@@ -82,13 +83,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const p = await res.json();
             pacienteActual = p;
 
-            // Datos básicos
             document.getElementById('p-full-name').textContent = `${p.nombre} ${p.apellidos}`;
             document.getElementById('p-dni').textContent = p.dni || 'No consta';
             document.getElementById('p-laboral').textContent = p.situacionLaboral || 'No consta';
             document.getElementById('p-motivo').textContent = p.motivoConsulta || 'Sin descripción';
 
-            // Asignación de los nuevos campos de información personal
             document.getElementById('p-estudia').textContent = p.estudiando !== undefined ? (p.estudiando ? 'Sí' : 'No') : 'No consta';
             document.getElementById('p-nivel-estudios').textContent = p.nivelEstudios || 'No consta';
             document.getElementById('p-genero').textContent = GENERO_MAP[p.genero] || p.genero || 'No consta';
@@ -99,7 +98,6 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('p-direccion').textContent = p.direccion || 'No consta';
             document.getElementById('p-inicio-terapia').textContent = p.fechaInicioTerapia ? new Date(p.fechaInicioTerapia).toLocaleDateString() : 'No consta';
 
-            // --- Lógica de Contactos ---
             const listaContactosCont = document.getElementById('p-lista-contactos');
             listaContactosCont.innerHTML = '';
 
@@ -140,7 +138,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 listaContactosCont.innerHTML = '<p class="text-muted" style="font-size:0.85rem; padding: 10px;">No hay contactos registrados</p>';
             }
 
-            // Estado y Tags
             const estadoTag = document.getElementById('p-tag-estado');
             if (estadoTag) {
                 estadoTag.textContent = p.estadoPaciente;
@@ -149,19 +146,17 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             configurarSelectorEstado(p.estadoPaciente);
 
-            // Imagen de Perfil según Género
             const iconCont = document.getElementById('p-icon-container');
-            let imgSrc = "https://cdn-icons-png.flaticon.com/512/4140/4140000.png";  // Perfil Neutro
+            let imgSrc = "https://cdn-icons-png.flaticon.com/512/4140/4140000.png";
             if (p.genero === 'Hombre') {
-                imgSrc = "https://cdn-icons-png.flaticon.com/512/4140/4140037.png"; // Paciente Masculino
+                imgSrc = "https://cdn-icons-png.flaticon.com/512/4140/4140037.png";
             } else if (p.genero === 'Mujer') {
-                imgSrc = "https://cdn-icons-png.flaticon.com/512/4140/4140047.png"; // Paciente Femenina
+                imgSrc = "https://cdn-icons-png.flaticon.com/512/4140/4140047.png";
             }
             iconCont.style.padding = "0";
             iconCont.style.overflow = "hidden";
             iconCont.innerHTML = `<img src="${imgSrc}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">`;
 
-            // Edad
             if (p.fechaNacimiento) {
                 const edad = Math.floor((new Date() - new Date(p.fechaNacimiento)) / 31557600000);
                 document.getElementById('p-tag-edad').textContent = `${edad} años`;
@@ -171,18 +166,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            // Llamar a las sub-cargas
             await cargarProvincias();
 
-            // Una vez cargadas las provincias, buscamos el nombre
             if (p.idProvincia && window._provinciasData) {
                 const prov = window._provinciasData.find(pr => (pr.id || pr.idProvincia) == p.idProvincia);
                 document.getElementById('p-provincia').textContent = prov ? prov.nombre : 'No consta';
             } else {
                 document.getElementById('p-provincia').textContent = 'No consta';
             }
-            renderizarArchivos(p.documentos, true); // Cargamos y guardamos en caché
-            await cargarCitas(authHeader); // Una sola petición para Próxima Cita e Historial
+            renderizarArchivos(p.documentos, true);
+            await cargarCitas(authHeader);
 
             const btnVerTodas = document.getElementById('btn-ver-todas-sesiones');
             if (btnVerTodas) {
@@ -194,7 +187,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- CONFIGURACIÓN SELECTOR DE ESTADO ---
+    /**
+     * Inicializa el comportamiento del tag de estado del paciente.
+     */
     function configurarSelectorEstado(estadoActual) {
         const tag = document.getElementById('p-tag-estado');
         const dropdown = document.getElementById('status-options');
@@ -223,7 +218,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- LÓGICA DE DROP DOWNS EN HISTORIAL ---
+    /**
+     * Alterna la visibilidad de los selectores rápidos en el historial de sesiones.
+     */
     window.toggleModalidadDropdownPaciente = (event, idSesion) => {
         event.stopPropagation();
         const dropdown = document.getElementById(`dropdown-modality-${idSesion}`);
@@ -252,6 +249,9 @@ document.addEventListener('DOMContentLoaded', () => {
         updateSesionField(idSesion, 'tipoSesion', nuevoTipo);
     };
 
+    /**
+     * Actualiza un campo de la sesión desde la ficha del paciente.
+     */
     async function updateSesionField(idSesion, fieldName, newValue) {
         try {
             const resGet = await fetch(`${API_BASE}/sesiones/${idSesion}`, {
@@ -289,10 +289,12 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (e) { console.error(e); }
     }
 
+    /**
+     * Actualiza el estado clínico del paciente mediante llamada PUT.
+     */
     async function actualizarEstadoPaciente(nuevoEstado) {
         if (!pacienteActual) return;
 
-        // Al incluir idPsicologo en el DTO, este spread ahora enviará el ID al servidor
         const datosActualizados = { ...pacienteActual, estadoPaciente: nuevoEstado };
 
         try {
@@ -308,13 +310,15 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (e) { console.error("Error al actualizar estado:", e); }
     }
 
-    // --- CARGAR PROVINCIAS ---
+    /**
+     * Obtiene y prepara el listado de provincias para el modal de edición.
+     */
     async function cargarProvincias() {
         try {
             const res = await fetch(`${API_BASE}/provincias`, { headers: { 'Authorization': `Bearer ${token}` } });
             if (res.ok) {
                 const provincias = await res.json();
-                window._provinciasData = provincias; // Guardar para búsqueda rápida
+                window._provinciasData = provincias;
 
                 const list = document.getElementById('provincias-list');
                 list.innerHTML = provincias.map(p => `<option data-id="${p.idProvincia || p.id || ''}" value="${p.nombre}">`).join('');
@@ -328,7 +332,9 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (e) { console.error("Error provincias:", e); }
     }
 
-    // --- EDICIÓN DE PERFIL (MODAL) ---
+    /**
+     * Popula el modal de edición con los datos actuales del paciente.
+     */
     const btnEditarPerfil = document.getElementById('btn-editar-perfil');
     if (btnEditarPerfil) {
         btnEditarPerfil.onclick = () => {
@@ -345,7 +351,6 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('edit-cp').value = pacienteActual.codigoPostal || '';
             document.getElementById('edit-motivo-consulta').value = pacienteActual.motivoConsulta || '';
 
-            // Cargar Provincia asociada (Nombre y ID)
             const provinciaId = pacienteActual.idProvincia || (pacienteActual.provincia ? (pacienteActual.provincia.id || pacienteActual.provincia.idProvincia) : null);
 
             document.getElementById('edit-provincia-id').value = provinciaId || '';
@@ -399,7 +404,6 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
-    // --- BOTÓN NUEVA CITA ---
     const btnNuevaCita = document.getElementById('btn-nueva-cita');
     if (btnNuevaCita) {
         btnNuevaCita.onclick = () => {
@@ -408,7 +412,6 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
-    // --- 4. HISTORIAL DE SESIONES ---
     function parsearFecha(fechaRaw) {
         if (!fechaRaw) return null;
         if (Array.isArray(fechaRaw)) {
@@ -417,7 +420,9 @@ document.addEventListener('DOMContentLoaded', () => {
         return new Date(fechaRaw);
     }
 
-    // Centralizamos la obtención de citas (CitaSimpleDto)
+    /**
+     * Recupera el listado simplificado de citas para el historial y la próxima cita.
+     */
     async function cargarCitas(headers) {
         try {
             const res = await fetch(`${API_BASE}/citas/paciente/${pacienteId}/simple`, { headers });
@@ -427,9 +432,11 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (e) { console.error("Error cargando citas:", e); }
     }
 
+    /**
+     * Genera dinámicamente el listado de cards del historial de sesiones.
+     */
     function renderizarSesiones(data) {
         try {
-            // Filtramos para ignorar las citas canceladas
             const sesiones = data.filter(s => s.estadoCita !== 'Cancelada');
             const container = document.getElementById('p-sesiones-list');
 
@@ -443,7 +450,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 .sort((a, b) => parsearFecha(b.fechaHora) - parsearFecha(a.fechaHora))
                 .map(s => {
                     const f = parsearFecha(s.fechaHora);
-                    const idC = s.id; // En CitaSimpleDto, id es el ID de la cita
+                    const idC = s.id;
                     const idS = s.idSesion || s.id;
 
                     const estadoCita = (s.estadoCita || '').toLowerCase().replace(/ /g, '_');
@@ -457,7 +464,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (tipo.toLowerCase().includes('pareja')) tipoClass = 'pareja';
                     if (tipo.toLowerCase().includes('sexolog')) tipoClass = 'sexologia';
 
-                    // Filtrar opciones de modalidad
                     const modalidadesDisponibles = ['Presencial', 'Online'];
                     const modNormalizada = mod.toLowerCase();
                     const opcionesModHtml = modalidadesDisponibles
@@ -465,8 +471,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         .map(m => `<div onclick="window.cambiarModalidadSesionPaciente(event, ${idS}, '${m}')">${m}</div>`)
                         .join('');
 
-                    // Filtrar opciones de tipo (con mapeo para visualización y valor)
-                    // No se permite cambiar a 'Pareja' ni cambiar si ya es 'Pareja'
                     const tiposDisponiblesParaCambio = [
                         { val: 'Individual', text: 'Individual' },
                         { val: 'Sexologia', text: 'Sexología' }
@@ -478,8 +482,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     let tipoTagOnClick = `onclick="window.toggleTipoDropdownPaciente(event, ${idS})"`;
 
                     if (tipoCitaNormalizado === 'pareja') {
-                        tipoTagClickableClass = ''; // No es clickable
-                        tipoTagOnClick = ''; // No tiene acción al clickar
+                        tipoTagClickableClass = '';
+                        tipoTagOnClick = '';
                     } else {
                         opcionesTipoHtml = tiposDisponiblesParaCambio.filter(t => t.val.toLowerCase() !== tipoCitaNormalizado).map(t => `<div onclick="window.cambiarTipoSesionPaciente(event, ${idS}, '${t.val}')">${t.text}</div>`).join('');
                     }
@@ -521,14 +525,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>`;
                 }).join('');
 
-            // Añadimos efecto hover vía CSS inline en el JS o confiamos en el CSS global
         } catch (e) { console.error("Error renderizando sesiones:", e); }
     }
 
-    // --- 4.5 GESTIÓN DE ARCHIVOS (AWS S3) ---
+    /**
+     * Gestiona la galería de documentos adjuntos.
+     * @param {Array} documentos - Lista de objetos documento.
+     */
     function renderizarArchivos(documentos, actualizarCache = false) {
         if (actualizarCache) listaDocumentosCache = documentos || [];
-        
+
         const container = document.getElementById('files-container');
         if (!container) return;
 
@@ -553,7 +559,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const isMissingKey = !doc.s3Key || doc.s3Key === 'null';
             const tipoLabel = TIPO_DOCUMENTO_MAP[doc.tipoDoc] || doc.tipoDoc || 'Otros';
             const fechaStr = doc.fechaSubida ? new Date(doc.fechaSubida).toLocaleDateString() : 'S/F';
-            const iconColor = TIPO_DOCUMENTO_COLORS[doc.tipoDoc] || '#348ec2'; // Color por defecto si no se encuentra
+            const iconColor = TIPO_DOCUMENTO_COLORS[doc.tipoDoc] || '#348ec2';
 
             return `
                     <div class="file-card" onclick="verDocumento('${doc.s3Key || ''}')">
@@ -570,7 +576,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }).join('');
     }
 
-    // Listener para el buscador de archivos
     const searchFilesInput = document.getElementById('search-files');
     if (searchFilesInput) {
         searchFilesInput.oninput = (e) => {
@@ -579,10 +584,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 (d.nombre || '').toLowerCase().includes(term) ||
                 (TIPO_DOCUMENTO_MAP[d.tipoDoc] || '').toLowerCase().includes(term)
             );
-            renderizarArchivos(filtrados, false); // Renderizar sin machacar la caché
+            renderizarArchivos(filtrados, false);
         };
     }
 
+    /**
+     * Solicita una URL firmada al servidor para visualizar un archivo alojado en AWS S3.
+     */
     window.verDocumento = async (s3Key) => {
         if (!s3Key || s3Key === 'undefined' || s3Key === 'null' || s3Key === '') {
             UiModal.info("El archivo no tiene una clave de almacenamiento válida.", "Error");
@@ -596,7 +604,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (res.ok) {
                 const data = await res.json();
-                // Eliminamos la comprobación fetch(HEAD) que causa errores 403/CORS con S3
                 if (data.url) {
                     window.open(data.url, '_blank');
                 } else {
@@ -611,14 +618,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- GESTIÓN DE SUBIDA CON MODAL Y DRAG & DROP ---
     let fileToUpload = null;
 
+    /**
+     * Inicializa y abre el modal de subida de documentos.
+     */
     window.abrirModalSubida = () => {
         fileToUpload = null;
         document.getElementById('upload-doc-name').value = '';
 
-        // Poblamos el select dinámicamente para asegurar coincidencia con el Enum
         const selectTipo = document.getElementById('upload-doc-tipo');
         if (selectTipo) {
             selectTipo.innerHTML = Object.entries(TIPO_DOCUMENTO_MAP)
@@ -660,12 +668,15 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('drop-zone').classList.add('has-file');
         document.getElementById('btn-ejecutar-subida').disabled = false;
 
-        // Autocompletar nombre si está vacío
         const nameInput = document.getElementById('upload-doc-name');
         if (!nameInput.value) {
             nameInput.value = fileToUpload.name.split('.').slice(0, -1).join('.');
         }
     }
+
+    /**
+     * Ejecuta el proceso de subida multipart/form-data del archivo seleccionado.
+     */
 
     document.getElementById('btn-ejecutar-subida').onclick = async () => {
         if (!fileToUpload) return;
@@ -674,7 +685,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const tipoDoc = document.getElementById('upload-doc-tipo').value;
         const nombreFinal = nombre || fileToUpload.name;
 
-        // Comprobar si ya existe un archivo con ese nombre
         const existe = listaDocumentosCache.find(d => d.nombre.toLowerCase() === nombreFinal.toLowerCase());
 
         const procederConSubida = async () => {
@@ -700,7 +710,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (res.ok) {
                     ModalTools.close('modal-upload-document');
                     UiModal.info("El archivo se ha procesado correctamente.", "Éxito");
-                    cargarPaciente(); // Recargamos el paciente para actualizar la lista de documentos
+                    cargarPaciente();
                 } else {
                     UiModal.info("Hubo un error al intentar subir el archivo.", "Error");
                 }
@@ -724,6 +734,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    /**
+     * Solicita la eliminación lógica y física de un documento.
+     */
     window.eliminarArchivo = async (id) => {
         UiModal.confirm("¿Estás seguro de que deseas eliminar este documento?", "Eliminar Documento", async () => {
             try {
@@ -732,13 +745,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 if (res.ok) {
-                    cargarPaciente(); // Recargamos el paciente para actualizar la lista de documentos
+                    cargarPaciente();
                 }
             } catch (e) { console.error("Error eliminando documento:", e); }
         });
     };
 
-    // --- 5. PRÓXIMA CITA ---
+    /**
+     * Identifica y muestra la cita más cercana en el tiempo que aún no ha ocurrido.
+     */
     function renderizarProximaCita(citas) {
         try {
             const container = document.getElementById('next-cita-content');
@@ -770,11 +785,9 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (e) { }
     }
 
-    // --- 6. CONTROL DE MODALES (SISTEMA EXCLUSIVO ONCLICK) ---
     const overlayContacto = document.getElementById('modal-contacto-overlay');
     const btnAbrirContacto = document.getElementById('btn-abrir-contacto');
 
-    // Función callback para limpiar formulario al cerrar
     const limpiarFormularioContacto = () => {
         const form = document.getElementById('form-nuevo-contacto');
         if (form) {
@@ -785,13 +798,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof updateStarUI === 'function') updateStarUI(false);
     };
 
-    // Usar ModalTools para configurar eventos de cierre
     ModalTools.setup('modal-contacto-overlay', limpiarFormularioContacto);
     ModalTools.setup('modal-editar-paciente-overlay');
     ModalTools.setup('modal-tipo-doc-overlay');
     ModalTools.setup('modal-upload-document');
 
-    // --- LÓGICA ESTRELLA (PRINCIPAL) ---
+    /**
+     * Gestiona el estado de contacto principal (estrella).
+     */
     const btnStar = document.getElementById('btn-star-contacto');
     let isPrincipalState = false;
 
@@ -805,11 +819,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (btnStar) btnStar.onclick = () => updateStarUI(!isPrincipalState);
 
-    // Abrir Contacto: Usamos .onclick para sobrescribir cualquier listener previo
     if (btnAbrirContacto) {
         btnAbrirContacto.onclick = (e) => {
             e.preventDefault();
-            e.stopPropagation(); // Evita que el evento suba y se ejecute dos veces
+            e.stopPropagation();
             const titulo = document.getElementById('modal-contacto-titulo');
             if (titulo) titulo.innerHTML = '<i class="fa-solid fa-address-book" style="margin-right: 10px; color: #348ec2;"></i> Añadir Contacto';
             const btnEliminar = document.getElementById('btn-eliminar-contacto-modal');
@@ -821,7 +834,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const formContacto = document.getElementById('form-nuevo-contacto');
 
-    // --- FIX: Asegurar que existe el input oculto para ID ---
     if (formContacto && !document.getElementById('contacto-id')) {
         const hiddenInput = document.createElement('input');
         hiddenInput.type = 'hidden';
@@ -837,7 +849,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const datos = {
             id: contactoId ? parseInt(contactoId) : null,
-            idContacto: contactoId ? parseInt(contactoId) : null, // Asegura compatibilidad con la entidad
+            idContacto: contactoId ? parseInt(contactoId) : null,
             nombre: document.getElementById('contacto-nombre')?.value || '',
             tipoContacto: document.getElementById('tipo-contacto')?.value || '',
             telefono: document.getElementById('contacto-telefono')?.value || '',
@@ -860,7 +872,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (res.ok) {
                 ModalTools.close('modal-contacto-overlay', limpiarFormularioContacto);
-                cargarPaciente(); // Refrescar lista
+                cargarPaciente();
                 formContacto.reset();
                 if (idInput) idInput.value = '';
             } else {
@@ -869,7 +881,9 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) { console.error("Error:", err); }
     };
 
-    // --- FUNCION PARA CARGAR DATOS EN EL MODAL PARA EDITAR ---
+    /**
+     * Prepara el modal de contacto con los datos de un contacto existente.
+     */
     window.prepararEdicionContacto = (id, nombre, tipoContacto, tlf, email, principal) => {
         const idInput = document.getElementById('contacto-id');
         const btnEliminar = document.getElementById('btn-eliminar-contacto-modal');
@@ -893,7 +907,6 @@ document.addEventListener('DOMContentLoaded', () => {
         ModalTools.open('modal-contacto-overlay');
     };
 
-    // --- FUNCION PARA ELIMINAR ---
     window.eliminarContacto = async (id) => {
         UiModal.open("Eliminar Contacto", "¿Estás seguro de que quieres borrar el contacto? No se podrá recuperar.", [
             { text: 'Cancelar', class: 'btn-modal-secondary' },
@@ -918,13 +931,14 @@ document.addEventListener('DOMContentLoaded', () => {
         ]);
     };
 
-    // Ejecutar carga inicial
+    /**
+     * Orquestación de la carga inicial de la página con control de loader visual.
+     */
     async function inicializarPagina() {
         const loader = document.getElementById('content-loader');
         const main = document.getElementById('patient-main-content');
 
         try {
-            // Aseguramos estado inicial: loader visible, contenido oculto
             if (loader) loader.style.display = 'flex';
             if (main) main.style.display = 'none';
 
@@ -935,7 +949,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
             console.error("Fallo al cargar la página de detalle del paciente:", err);
         } finally {
-            // Ocultamos loader y mostramos contenido
             if (loader) loader.style.display = 'none';
             if (main) main.style.display = 'block';
         }

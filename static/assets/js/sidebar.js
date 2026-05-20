@@ -1,3 +1,7 @@
+/**
+ * Lógica de la Barra Lateral (Sidebar).
+ * Controla el estado colapsado/expandido y la persistencia en el almacenamiento local.
+ */
 document.addEventListener('DOMContentLoaded', () => {
     const sidebar = document.getElementById('sidebar');
     const toggleBtn = document.getElementById('toggle-sidebar');

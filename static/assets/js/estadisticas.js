@@ -1,34 +1,38 @@
+/**
+ * Controlador del Dashboard de Estadísticas.
+ * Utiliza Chart.js para representar datos económicos y demográficos de la clínica.
+ */
 document.addEventListener('DOMContentLoaded', async () => {
 
-    // Verificación de sesión y obtención de ID único del psicólogo
     const psicologoId = user?.idPsicologo || user?.id;
-    // Configuración global de Chart.js
+
     Chart.defaults.font.family = "'Montserrat', sans-serif";
     Chart.defaults.color = "#264574";
 
-    // Obtener fecha actual para cálculos dinámicos
     const ahora = new Date();
     const mesActual = ahora.getMonth();
     const anioActual = ahora.getFullYear();
 
-    // --- REDIRECCIONES DE TARJETAS ---
     const cardPacientes = document.getElementById('card-total-pacientes');
     if (cardPacientes) {
         cardPacientes.addEventListener('click', () => window.location.href = 'pacientes.html');
     }
+
     const cardCitas = document.getElementById('card-citas-mes');
     if (cardCitas) {
         cardCitas.addEventListener('click', () => window.location.href = 'citas.html');
     }
 
-    // --- CARGA DE DATOS FILTRADOS POR PSICÓLOGO ---
+    /**
+     * Recupera y orquestra la visualización de todas las estadísticas del psicólogo.
+     */
     async function cargarDashboard() {
         try {
             const [respEstadisticasGenerales, respPendientes] = await Promise.all([
-                fetch(`${API_BASE}/psicologos/estadisticas`, { 
+                fetch(`${API_BASE}/psicologos/estadisticas`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 }),
-                fetch(`${API_BASE}/psicologos/sesiones/false/pagadas`, { 
+                fetch(`${API_BASE}/psicologos/sesiones/false/pagadas`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 })
             ]);
@@ -37,9 +41,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 throw new Error("Error en la respuesta del servidor");
             }
 
-            const estadisticasGenerales = await respEstadisticasGenerales.json(); 
-            const sesionesPendientes = await respPendientes.json(); 
-
+            const estadisticasGenerales = await respEstadisticasGenerales.json();
+            const sesionesPendientes = await respPendientes.json();
 
             actualizarTarjetas(estadisticasGenerales);
 
@@ -55,7 +58,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // --- LÓGICA DE TARJETAS ---
+    /**
+     * Actualiza los valores numéricos de las tarjetas superiores.
+     */
     function actualizarTarjetas(estadisticasGenerales) {
         document.getElementById('total-pacientes').textContent = estadisticasGenerales.numPacientesTotales;
         document.getElementById('citas-mes').textContent = estadisticasGenerales.numCitasDelMes;
@@ -67,7 +72,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('ingresos-mes').textContent = `${estadisticasGenerales.totalMensual.toFixed(2)}€`;
     }
 
-    // Gráfico Género
+    /**
+     * Renderiza el gráfico circular de distribución por género.
+     */
     function procesarGraficoGenero(statsGenero) {
         const counts = { 'Hombre': statsGenero.numHombres, 'Mujer': statsGenero.numMujeres, 'No especificado': statsGenero.numNE };
 
@@ -100,7 +107,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // Gráfico Estado
+    /**
+     * Renderiza el gráfico de barras del estado clínico de los pacientes.
+     */
     function procesarGraficoEstado(statsEstado) {
         const mapeoEstados = {
             'Evaluación': { conteo: statsEstado.numEvaluacion, color: '#fef9c3' },
@@ -153,7 +162,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // Gráfico Pacientes por Mes
+    /**
+     * Renderiza el gráfico de barras de crecimiento de pacientes mensual.
+     */
     function procesarGraficoPacientesPorMes(nuevosPacientesMes) {
         const mesesLabels = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
         const datosMeses = new Array(12).fill(0);
@@ -194,7 +205,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // Función de utilidad para manejar fechas en formato String o Array de Spring Boot
+    /**
+     * Parsea formatos de fecha variados del backend.
+     */
     function parsearFecha(fechaRaw) {
         if (!fechaRaw) return null;
         if (Array.isArray(fechaRaw)) {
@@ -203,7 +216,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         return new Date(fechaRaw);
     }
 
-    // Gráfico Facturación
+    /**
+     * Renderiza el gráfico de líneas con la evolución económica desglosada por tipo de cita.
+     */
     function procesarGraficoFacturacionPorMes(ingresosDetallados, totalAnual) {
         const mesesLabels = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
@@ -323,12 +338,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // --- TABLA DE SESIONES PENDIENTES ---
+    /**
+     * Genera la tabla de sesiones realizadas que aún no han sido marcadas como pagadas.
+     */
     function cargarPendientesFacturar(sesionesPendientes) {
         const tbody = document.getElementById('pendientes-facturar-body');
         if (!tbody) return;
 
-        // El backend ya devuelve solo las pendientes, pero filtramos por si acaso el estado de cita
         const pendientes = sesionesPendientes.filter(s => s.estadoCita !== 'Cancelada');
 
         if (pendientes.length === 0) {
@@ -336,21 +352,19 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
 
-        const ahora = new Date(); // Obtenemos el momento actual
+        const ahora = new Date();
 
         tbody.innerHTML = pendientes
-
             .filter(s => {
                 const fechaCita = parsearFecha(s.fechaHora);
                 return fechaCita && fechaCita < ahora
             })
-            // ORDENAR: De más reciente a más antigua
+
             .sort((a, b) => {
                 const fechaA = parsearFecha(a.fechaHora);
                 const fechaB = parsearFecha(b.fechaHora);
                 return fechaB - fechaA;
             })
-            // MAPEAR: Generar el HTML
             .map(s => {
                 const nombreP = s.pacientes && s.pacientes.length > 0
                     ? s.pacientes.map(p => `${p.nombre} ${p.apellidos}`).join(' , ')
@@ -363,11 +377,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const urlSesion = `sesion.html?idPaciente=${idBuscado}&idCita=${s.id}`;
                 const sessionId = s.idSesion;
 
-                const isPaid = false; // Este endpoint solo devuelve sesiones no facturadas
+                const isPaid = false;
                 const tagClass = isPaid ? 'tag-success' : 'tag-danger';
                 const tagText = isPaid ? 'Pagada' : 'Pendiente';
 
-                // Generar opciones filtradas: solo mostramos la opción contraria al estado actual
                 const paidOptions = isPaid
                     ? `<div onclick="window.cambiarFacturada(event, ${sessionId}, false)">Pendiente</div>`
                     : `<div onclick="window.cambiarFacturada(event, ${sessionId}, true)">Pagada</div>`;
@@ -390,6 +403,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             }).join('');
     }
 
+    /**
+     * Actualiza un campo específico de una sesión mediante una llamada PUT.
+     */
     async function updateSessionField(idSesion, fieldName, newValue) {
         try {
             const resGet = await fetch(`${API_BASE}/sesiones/${idSesion}`, {
@@ -424,13 +440,16 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
 
             if (resPut.ok) {
-                await cargarDashboard(); // Esperamos el refresco completo del dashboard
+                await cargarDashboard();
             }
         } catch (e) {
             console.error(`Error updating session ${fieldName}:`, e);
         }
     }
 
+    /**
+     * Gestiona la visibilidad del desplegable de pago.
+     */
     window.togglePaidDropdown = (event, idSesion) => {
         event.stopPropagation();
         const dropdown = document.getElementById(`dropdown-paid-${idSesion}`);

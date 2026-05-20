@@ -1,8 +1,13 @@
+/**
+ * Lógica de la página principal (Home).
+ * Gestiona el resumen de actividad diaria y el listado de citas de hoy.
+ */
 document.addEventListener('DOMContentLoaded', () => {
-    // Las variables API_BASE, token y user vienen de auth-guard.js
     const sesionesBody = document.getElementById('sesiones-body');
 
-    // CARGA DE DATOS Y DASHBOARD
+    /**
+     * Obtiene estadísticas de hoy y el listado de citas del día actual.
+     */
     window.cargarDashboard = async () => {
 
         const welcomeTitle = document.querySelector('.welcome-banner h2 strong');
@@ -34,12 +39,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    /**
+     * Vincula los datos obtenidos de la API con los elementos del DOM.
+     */
     function actualizarDashboard(stats, citasHoy) {
-        // Stats Pacientes
         const elPacientes = document.getElementById('stat-pacientes');
         if (elPacientes) elPacientes.textContent = stats.numPacientesSeguimiento;
 
-        // Stats Sesiones Hoy
         const elementoSesionesHoy = document.getElementById('stat-sesiones-hoy');
         if (elementoSesionesHoy) elementoSesionesHoy.textContent = citasHoy.length;
 
@@ -52,9 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const elementoIngresos = document.getElementById('stat-ingresos');
         if (elementoIngresos) elementoIngresos.textContent = `${(stats.ingresosDelMes || 0).toFixed(2)}€`;
 
-        // Guardamos las citas en un cache global para poder usarlas en los cambios de estado/modalidad
         window.citasHoyCache = citasHoy.map(c => {
-            // Normalizar fecha si viene como array de números (común en Spring)
             if (Array.isArray(c.fechaHora)) {
                 c.fechaHora = new Date(c.fechaHora[0], c.fechaHora[1] - 1, c.fechaHora[2], c.fechaHora[3], c.fechaHora[4]).toISOString();
             }
@@ -64,6 +68,9 @@ document.addEventListener('DOMContentLoaded', () => {
         renderTabla(citasHoy);
     }
 
+    /**
+     * Genera dinámicamente las filas de la tabla de sesiones diarias.
+     */
     function renderTabla(citas) {
         if (!sesionesBody) return;
         if (citas.length === 0) {
@@ -84,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const estadoRaw = cita.estadoCita || 'Programada';
                 const estado = estadoRaw.toUpperCase().replace(/ /g, '_');
 
-                let iconoClase = 'fa-clock text-primary'; // Programada
+                let iconoClase = 'fa-clock text-primary';
                 let statusTagClass = 'tag-blue';
                 let estadoTexto = estadoRaw;
                 let rowClass = '';
@@ -106,14 +113,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const idPaciente = cita.pacientes.length > 0 ? (cita.pacientes[0].id || cita.pacientes[0].idPaciente) : null;
                 const urlSesion = `sesion.html?idPaciente=${idPaciente}&idCita=${idCita}`;
 
-                // Filtrar opciones de modalidad para no mostrar la actual
                 const modalidadesDisponibles = ['Presencial', 'Online'];
                 const opcionesModalidadHtml = modalidadesDisponibles
                     .filter(m => m !== mod)
                     .map(m => `<div onclick="window.cambiarModalidadCitaHome(event, ${idCita}, '${m}')">${m}</div>`)
                     .join('');
 
-                // Filtrar opciones de estado para no mostrar la actual
                 const estadosDisponibles = [{ val: 'Programada', text: 'Programada' }, { val: 'Realizada', text: 'Realizada' }, { val: 'No_Presentado', text: 'No Presentado' }];
                 const opcionesEstadoHtml = estadosDisponibles
                     .filter(e => e.val.toUpperCase() !== estado)
@@ -149,6 +154,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }).join('');
     }
 
+    /**
+     * Alterna la visibilidad de los menús desplegables de estado y modalidad.
+     */
     window.toggleDropdownHome = (event, idCita) => {
         event.stopPropagation();
         const dropdown = document.getElementById(`dropdown-status-${idCita}`);
@@ -167,12 +175,14 @@ document.addEventListener('DOMContentLoaded', () => {
         dropdown.classList.toggle('show');
     };
 
+    /**
+     * Actualiza el estado de una cita directamente desde el dashboard.
+     */
     window.cambiarEstadoCitaHome = async (event, idCita, nuevoEstado) => {
         event.stopPropagation();
         const cita = (window.citasHoyCache || []).find(c => (c.idCita || c.id) === idCita);
         if (!cita) return;
 
-        // Construimos el body completo como en citas.js para disparar la lógica del backend
         const body = {
             id: idCita,
             idPacientes: cita.pacientes.map(p => p.id || p.idPaciente),
@@ -187,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const response = await fetch(`${API_BASE}/citas/${idCita}`, {
                 method: 'PUT',
-                headers: { 
+                headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 },
@@ -202,6 +212,9 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (e) { console.error(e); }
     };
 
+    /**
+     * Actualiza la modalidad de una cita desde el dashboard.
+     */
     window.cambiarModalidadCitaHome = async (event, idCita, nuevaModalidad) => {
         event.stopPropagation();
         const cita = (window.citasHoyCache || []).find(c => (c.idCita || c.id) === idCita);
@@ -221,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const response = await fetch(`${API_BASE}/citas/${idCita}`, {
                 method: 'PUT',
-                headers: { 
+                headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 },
@@ -240,7 +253,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.status-options-dropdown').forEach(d => d.classList.remove('show'));
     });
 
-    // Notas Rápidas
     const notasTextarea = document.getElementById('notas-dashboard');
     if (notasTextarea) {
         notasTextarea.value = localStorage.getItem('notas_rapidas') || '';

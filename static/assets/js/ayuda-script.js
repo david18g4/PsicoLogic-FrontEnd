@@ -1,3 +1,7 @@
+/**
+ * Lógica del Centro de Ayuda.
+ * Gestiona el carrusel informativo y el enlace dinámico de soporte técnico.
+ */
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Centro de Ayuda PsicoLogic inicializado.');
 
@@ -42,12 +46,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const iconContEl = document.getElementById('help-icon');
     const dots = document.querySelectorAll('.dot');
 
+    /**
+     * Escucha el evento de cambio de slide del carrusel Bootstrap.
+     * Ejecuta una animación personalizada de salida y entrada del contenido textual.
+     */
     carouselEl.addEventListener('slide.bs.carousel', function (event) {
         const index = event.to;
-        const direction = event.direction; // 'left' es Siguiente, 'right' es Anterior
+        const direction = event.direction;
         const data = helpData[index];
 
-        // 1. Iniciamos la SALIDA del contenido actual
         if (direction === 'left') {
             animator.classList.add('content-exit-next');
         } else {
@@ -55,7 +62,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         setTimeout(() => {
-            // 2. Quitamos clases de salida y PREPARAMOS el nuevo contenido en el lado opuesto
             animator.classList.remove('content-exit-next', 'content-exit-prev');
 
             if (direction === 'left') {
@@ -64,25 +70,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 animator.classList.add('content-prepare-prev');
             }
 
-            // 3. Cambiamos los textos e iconos mientras el contenedor es invisible
             titleEl.textContent = data.title;
             textEl.textContent = data.text;
             iconContEl.className = `help-icon ${data.colorClass}`;
             iconContEl.innerHTML = `<i class="fa-solid ${data.icon}"></i>`;
 
-            // Actualizar indicadores (dots)
             dots.forEach(d => d.classList.remove('active'));
             dots[index].classList.add('active');
 
-            // 4. Forzamos al navegador a procesar el cambio de posición y luego activamos la entrada
             requestAnimationFrame(() => {
-                // Un pequeño delay para asegurar que el 'prepare' se aplicó sin transición
                 setTimeout(() => {
                     animator.classList.remove('content-prepare-next', 'content-prepare-prev');
                 }, 20);
             });
 
-        }, 350); // Tiempo sincronizado con la salida del CSS
+        }, 350);
     });
     
     const navWrapper = document.querySelector('.help-navigation-wrapper');
@@ -93,13 +95,15 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('mouseleave', () => navWrapper.classList.remove('nav-hovering'));
     });
 
-    // --- LÓGICA DE SOPORTE TÉCNICO ---
+    /**
+     * Configuración del botón de soporte técnico.
+     * Genera un enlace mailto dinámico con el nombre del usuario logueado.
+     */
     const btnSoporte = document.getElementById('btn-soporte-admin');
     if (btnSoporte && typeof user !== 'undefined' && user) {
         const nombreUsuario = `${user.nombre || ''} ${user.apellidos || ''}`.trim();
         const subject = encodeURIComponent(`Soporte técnico: ${nombreUsuario}`);
         
-        // Cambiamos el enlace a mailto con el asunto dinámico
         btnSoporte.href = `mailto:davidgonzalezramajo@outlook.es?subject=${subject}`;
         btnSoporte.removeAttribute('target');
         btnSoporte.removeAttribute('rel');

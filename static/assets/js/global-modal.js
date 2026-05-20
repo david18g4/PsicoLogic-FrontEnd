@@ -1,8 +1,14 @@
+/**
+ * Manager de Modales Globales.
+ * Proporciona una interfaz para crear diálogos de alerta y confirmación sin redundancia de HTML.
+ */
 window.UiModal = {
-    init: function() {
+    /**
+     * Inyecta el contenedor del modal en el body si no existe.
+     */
+    init: function () {
         if (document.getElementById('global-modal-overlay')) return;
 
-        // Inject HTML
         const html = `
             <div id="global-modal-overlay" class="global-modal-overlay" style="display: none;">
                 <div class="global-modal-box">
@@ -15,22 +21,27 @@ window.UiModal = {
             </div>
         `;
         document.body.insertAdjacentHTML('beforeend', html);
-        
-        // Load CSS dynamically if missing
+
         if (!document.querySelector('link[href*="global-modal.css"]')) {
             const link = document.createElement('link');
             link.rel = 'stylesheet';
-            link.href = '/assets/css/global-modal.css'; 
+            link.href = '/assets/css/global-modal.css';
             document.head.appendChild(link);
         }
     },
 
-    open: function(title, message, buttons) {
+    /**
+     * Abre el modal con un título, mensaje y lista de botones personalizada.
+     * @param {string} title - Título del modal.
+     * @param {string} message - Contenido HTML del mensaje.
+     * @param {Array} buttons - Array de objetos con {text, class, callback, close}.
+     */
+    open: function (title, message, buttons) {
         this.init();
-        
+
         document.getElementById('global-modal-title').textContent = title;
         document.getElementById('global-modal-message').innerHTML = message;
-        
+
         const footer = document.getElementById('global-modal-actions');
         footer.innerHTML = '';
 
@@ -47,11 +58,14 @@ window.UiModal = {
 
         const overlay = document.getElementById('global-modal-overlay');
         overlay.style.display = 'flex';
-        overlay.offsetHeight; // Force reflow
+        overlay.offsetHeight;
         overlay.classList.add('show');
     },
 
-    close: function() {
+    /**
+     * Cierra el modal con una animación de desvanecimiento.
+     */
+    close: function () {
         const overlay = document.getElementById('global-modal-overlay');
         if (overlay) {
             overlay.classList.remove('show');
@@ -59,13 +73,19 @@ window.UiModal = {
         }
     },
 
-    info: function(message, title = "Información", onAccept) {
+    /**
+     * Shortcut para mostrar un mensaje informativo con un botón de aceptar.
+     */
+    info: function (message, title = "Información", onAccept) {
         this.open(title, message, [
             { text: 'Aceptar', class: 'btn-modal-primary', callback: onAccept }
         ]);
     },
 
-    confirm: function(message, title = "Confirmar acción", onConfirm, onCancel) {
+    /**
+     * Shortcut para mostrar un diálogo de confirmación (Aceptar/Cancelar).
+     */
+    confirm: function (message, title = "Confirmar acción", onConfirm, onCancel) {
         this.open(title, message, [
             { text: 'Cancelar', class: 'btn-modal-secondary', callback: onCancel },
             { text: 'Continuar', class: 'btn-modal-primary', callback: onConfirm }

@@ -1,16 +1,19 @@
-// 1. VARIABLES GLOBALES (Disponibles para todos los archivos que carguen este JS)
-// const API_BASE = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
+/**
+ * Configuración global y gestión de sesión.
+ * Este script centraliza la autenticación y las peticiones a la API.
+ */
 const API_BASE = "http://98.83.121.160:8080";
 let token = localStorage.getItem('psicologo_token');
 let user = JSON.parse(localStorage.getItem('psicologo'));
 
-// --- INTERCEPTOR GLOBAL DE FETCH ---
-// Detecta si alguna petición devuelve 401 (Token caducado) y expulsa al usuario
+/**
+ * Interceptor global para la función fetch.
+ * Inyecta automáticamente el token JWT y gestiona redirecciones por caducidad (401).
+ */
 const originalFetch = window.fetch;
 window.fetch = async (...args) => {
     let [resource, config] = args;
 
-    // Si el token existe y la petición va a nuestra API, lo inyectamos automáticamente
     if (token && resource.toString().startsWith(API_BASE)) {
         config = config || {};
         config.headers = {
@@ -20,23 +23,25 @@ window.fetch = async (...args) => {
     }
 
     const response = await originalFetch(resource, config);
-    // Si recibimos un 401 y no es una página pública (login o registro), forzamos salida
+
     const currentPath = window.location.pathname;
     const esPublico = currentPath.includes("index.html") || currentPath.includes("registro-completo.html");
 
     if (response.status === 401 && !esPublico) {
         console.warn("Sesión invalidada por el servidor (401). Redirigiendo...");
         forzarLogout();
-        return new Promise(() => { }); // Detiene la ejecución posterior
+        return new Promise(() => { });
     }
     return response;
 };
 
+/**
+ * IIFE: Verificación técnica de la sesión al cargar cualquier página.
+ */
 (function () {
     const path = window.location.pathname;
     let sesionValida = false;
 
-    // 2. VERIFICACIÓN TÉCNICA
     if (token && user) {
         try {
             const payload = JSON.parse(atob(token.split('.')[1]));
@@ -51,9 +56,8 @@ window.fetch = async (...args) => {
         }
     }
 
-    // 3. CONTROL DE REDIRECCIONES
-    const esPaginaPublica = path.endsWith("index.html") || path === "/" || path.endsWith("/") || 
-                            path.endsWith("login.html") || path.endsWith("registro-completo.html");
+    const esPaginaPublica = path.endsWith("index.html") || path === "/" || path.endsWith("/") ||
+        path.endsWith("login.html") || path.endsWith("registro-completo.html");
 
     if (esPaginaPublica) {
         if (sesionValida) window.location.href = "home.html";
@@ -62,7 +66,9 @@ window.fetch = async (...args) => {
     }
 })();
 
-// --- 5. VIGILANCIA ACTIVA ---
+/**
+ * Monitoriza el tiempo restante de la sesión y ofrece renovación antes de expirar.
+ */
 function vigilarSesion() {
     if (!token) return;
     try {
@@ -70,7 +76,7 @@ function vigilarSesion() {
         const exp = payload.exp * 1000;
         const tiempoRestante = exp - Date.now();
 
-        if (tiempoRestante > 0 && tiempoRestante < 600000) { // 5 MINUTOS (revisar para no interrumpir sesiones)
+        if (tiempoRestante > 0 && tiempoRestante < 600000) {
             const minutos = Math.floor(tiempoRestante / 60000);
             const segundos = Math.floor((tiempoRestante % 60000) / 1000);
 
@@ -81,7 +87,6 @@ function vigilarSesion() {
                 if (confirm(mensaje)) {
                     extenderSesion();
                 } else {
-                    // El usuario hizo clic en Cancelar en el diálogo de confirmación
                     window.confirmandoExpiracion = false;
                 }
             }
@@ -90,6 +95,9 @@ function vigilarSesion() {
     } catch (e) { forzarLogout(); }
 }
 
+/**
+ * Solicita un nuevo token al servidor para prolongar la sesión.
+ */
 async function extenderSesion() {
     try {
         const resp = await fetch(`${API_BASE}/auth/refresh`, {
@@ -102,35 +110,38 @@ async function extenderSesion() {
         if (resp.ok) {
             const data = await resp.json();
             localStorage.setItem('psicologo_token', data.token);
-            token = data.token; // ACTUALIZACIÓN CRÍTICA: Actualiza la variable en memoria
+            token = data.token;
             alert("Sesión extendida.");
         } else {
             forzarLogout();
         }
     } catch (error) {
         console.error("Error al refrescar:", error);
-        forzarLogout(); // Forzar cierre de sesión también en caso de error al refrescar
+        forzarLogout();
     } finally {
-        window.confirmandoExpiracion = false; // Restablecer la bandera después de intentar refrescar
+        window.confirmandoExpiracion = false;
     }
 }
+
+/**
+ * Limpia los datos locales y redirige al inicio de sesión.
+ */
 function forzarLogout() {
     window.confirmandoExpiracion = false;
     localStorage.clear();
     window.location.href = "index.html?error=expired";
 }
 
-// Vigilancia cada 30 segundos para mayor precisión
 setInterval(vigilarSesion, 30000);
 
-
-// --- 6. SISTEMA GLOBAL DE MODALES (UiModal) ---
-// Integrado aquí para asegurar disponibilidad en toda la aplicación sin editar HTMLs
+/**
+ * UI Manager: Sistema global de modales (UiModal).
+ * Permite inyectar diálogos de información y confirmación de forma dinámica.
+ */
 window.UiModal = {
     init: function () {
         if (document.getElementById('global-modal-overlay')) return;
 
-        // Inyectar HTML del modal
         const html = `
             <div id="global-modal-overlay" class="global-modal-overlay" style="display: none;">
                 <div class="global-modal-box">
@@ -144,7 +155,6 @@ window.UiModal = {
         `;
         document.body.insertAdjacentHTML('beforeend', html);
 
-        // Cargar CSS dinámicamente si falta
         if (!document.querySelector('link[href*="global-modal.css"]')) {
             const link = document.createElement('link');
             link.rel = 'stylesheet';
@@ -154,7 +164,7 @@ window.UiModal = {
     },
 
     open: function (title, message, buttons) {
-        this.init(); // Asegurar que existe
+        this.init();
 
         document.getElementById('global-modal-title').textContent = title;
         document.getElementById('global-modal-message').innerHTML = message;
@@ -175,7 +185,6 @@ window.UiModal = {
 
         const overlay = document.getElementById('global-modal-overlay');
         overlay.style.display = 'flex';
-        // Forzar reflow para la animación
         overlay.offsetHeight;
         overlay.classList.add('show');
     },
@@ -202,5 +211,4 @@ window.UiModal = {
     }
 };
 
-// Inicializar modal cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', () => window.UiModal.init());

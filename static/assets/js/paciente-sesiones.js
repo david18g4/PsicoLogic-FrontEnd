@@ -1,3 +1,7 @@
+/**
+ * Historial Detallado de Sesiones de un Paciente.
+ * Lista de forma cronológica todas las intervenciones con posibilidad de edición rápida.
+ */
 document.addEventListener('DOMContentLoaded', async () => {
     const params = new URLSearchParams(window.location.search);
     const idPaciente = params.get('idPaciente');
@@ -11,6 +15,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const headerNombre = document.getElementById('header-nombre-paciente');
     const totalBadge = document.getElementById('total-sesiones-badge');
 
+    /**
+     * Parsea fechas recibidas de la API.
+     */
     function parsearFecha(fechaRaw) {
         if (!fechaRaw) return null;
         if (Array.isArray(fechaRaw)) {
@@ -19,6 +26,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         return new Date(fechaRaw);
     }
 
+    /**
+     * Carga de forma concurrente los datos del paciente, sus sesiones y citas.
+     */
     async function cargarDatos() {
         const idPsico = user.idPsicologo || user.id;
         try {
@@ -48,6 +58,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
+    /**
+     * Renderiza las cards de sesión con lógica de edición en línea.
+     */
     function renderSesiones(sesiones, citasData) {
         if (sesiones.length === 0) {
             container.innerHTML = `
@@ -74,7 +87,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             const tipoClass = `tag-${tipo.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")}`;
 
             const estado = s.estadoCita || 'Programada';
-            // Normalización idéntica a paciente-detalle.js para asegurar compatibilidad
             const estadoNorm = estado.toLowerCase().replace(/ /g, '_').trim();
             const isNoPresentado = estadoNorm === 'no_presentado';
 
@@ -85,7 +97,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             const estadoDisplay = estado === 'No_Presentado' ? 'No Presentado' : estado;
 
-            // Generar opciones filtradas para no mostrar la opción actual
             const modOptions = ['Presencial', 'Online'].filter(m => m.toLowerCase() !== mod.toLowerCase())
                 .map(m => `<div onclick="window.cambiarModalidad(event, ${idS}, '${m}')">${m}</div>`).join('');
 
@@ -95,32 +106,30 @@ document.addEventListener('DOMContentLoaded', async () => {
             let tipoTagOnClick = `onclick="window.toggleTipoDropdown(event, ${idS})"`;
 
             if (tipoNormalizado === 'pareja') {
-                tipoTagClickableClass = ''; // No es clickable si es Pareja
-                tipoTagOnClick = ''; // Sin acción al pulsar
+                tipoTagClickableClass = '';
+                tipoTagOnClick = '';
             } else {
-                // Para el resto, filtramos la opción de Pareja y el tipo actual
-                tipoOptions = ['Individual', 'Sexología'].filter(t => 
+                tipoOptions = ['Individual', 'Sexología'].filter(t =>
                     t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase() !== tipoNormalizado)
                     .map(t => `<div onclick="window.cambiarTipo(event, ${idS}, '${t}')">${t}</div>`).join('');
             }
 
             const estadoNormalizado = estadoDisplay.toLowerCase().replace(/ /g, '_');
-            const estadoOptions = ['Programada', 'Realizada', 'No Presentado'].filter(e => 
+            const estadoOptions = ['Programada', 'Realizada', 'No Presentado'].filter(e =>
                 e.toLowerCase().replace(/ /g, '_') !== estadoNormalizado)
                 .map(e => `<div onclick="window.cambiarEstado(event, ${idS}, '${e}')">${e}</div>`).join('');
 
-            const paidOptions = s.facturada 
+            const paidOptions = s.facturada
                 ? `<div onclick="window.cambiarFacturada(event, ${idS}, false)">Pendiente</div>`
                 : `<div onclick="window.cambiarFacturada(event, ${idS}, true)">Pagada</div>`;
 
-            // Lógica para detectar pacientes involucrados
             const citaAsociada = citasData.find(c => (c.id === s.idCita || c.idCita === s.idCita));
 
             let extraPatientsHtml = '';
             if (citaAsociada && citaAsociada.pacientes && citaAsociada.pacientes.length > 1) {
                 const otrosPacientes = citaAsociada.pacientes
                     .filter(p => (p.id || p.idPaciente) != idPaciente);
-                
+
                 if (otrosPacientes.length > 0) {
                     const links = otrosPacientes.map(p => {
                         const pid = p.id || p.idPaciente;
@@ -133,7 +142,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             return `
                 <div class="session-full-card ${isNoPresentado ? 'is-no-presentado' : ''}">
                     <div class="session-info-left">
-                        <!-- GRUPO 1: FECHA Y HORA -->
                         <div class="info-group">
                             <div class="session-date-box">
                                 <span class="day">${dia}</span>
@@ -144,7 +152,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                         <div class="info-divider"></div>
                         
-                        <!-- GRUPO 2: TIPO DE CITA -->
                         <div class="info-group">
                             <div class="status-selector-wrapper">
                                 <span class="tag ${modClass} clickable-tag" onclick="window.toggleModalidadDropdown(event, ${idS})">${mod}</span>
@@ -162,7 +169,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                         <div class="info-divider"></div>
 
-                        <!-- GRUPO 3: ESTADO Y PAGO -->
                         <div class="info-group">
                             <div class="status-selector-wrapper">
                                 <span class="tag ${estadoClass} clickable-tag" onclick="window.toggleEstadoDropdown(event, ${idS})">${estadoDisplay}</span>
@@ -205,6 +211,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         }).join('');
     }
 
+    /**
+     * Genera un bloque de texto si existe contenido.
+     */
     function renderBlock(title, text) {
         if (!text || text.trim() === '') return '';
         return `
@@ -215,10 +224,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         `;
     }
 
-    // --- Funciones para actualizar modalidad y estado de pago ---
     document.addEventListener('click', () => {
         document.querySelectorAll('.status-options-dropdown').forEach(d => d.classList.remove('show'));
     });
+
+    /**
+     * Controladores de visibilidad para dropdowns en el historial.
+     */
 
     window.toggleModalidadDropdown = (event, idSesion) => {
         event.stopPropagation();
@@ -256,19 +268,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         dropdown.classList.toggle('show');
     };
 
+    /**
+     * Actualiza de forma persistente un campo de la sesión.
+     */
     async function updateSessionField(idSesion, fieldName, newValue) {
         try {
-            // Fetch current session data
             const resGet = await fetch(`${API_BASE}/sesiones/${idSesion}`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             if (!resGet.ok) throw new Error('Failed to fetch session for update.');
             const sessionToUpdate = await resGet.json();
 
-            // Construct the DTO for update.
-            // The backend SesionCreateDto does not expect idPacientes.
-            // It expects fields like idCita, estadoCita, tipoSesion, etc.
-            // We need to map the SesionDto fields to SesionCreateDto fields.
             const updateDto = {
                 id: sessionToUpdate.id,
                 idCita: sessionToUpdate.idCita,
@@ -277,7 +287,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 duracionMinutos: sessionToUpdate.duracionMinutos,
                 precio: sessionToUpdate.precio,
                 facturada: sessionToUpdate.facturada,
-                procedenciaSesion: sessionToUpdate.procedencia, // Map 'procedencia' from DTO to 'procedenciaSesion' in CreateDto
+                procedenciaSesion: sessionToUpdate.procedencia,
                 urlVideollamada: sessionToUpdate.urlVideollamada,
                 motivoSesion: sessionToUpdate.motivoSesion,
                 contenidos: sessionToUpdate.contenidos,
@@ -286,10 +296,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 hipotesis: sessionToUpdate.hipotesis,
                 modalidad: sessionToUpdate.modalidad
             };
-            // Update the specific field
             updateDto[fieldName] = newValue;
 
-            const resPut = await fetch(`${API_BASE}/sesiones/${idSesion}`, { // Use idSesion from parameter
+            const resPut = await fetch(`${API_BASE}/sesiones/${idSesion}`, {
                 method: 'PUT',
                 headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
                 body: JSON.stringify(updateDto)

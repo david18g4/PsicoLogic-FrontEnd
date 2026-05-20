@@ -48,7 +48,7 @@
     border-radius: 20px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
     display: flex;
-    overflow: visible; /* Cambiado a visible para que los dropdowns no se corten */
+    overflow: visible;
     position: relative;
     border: 1px solid #f1f5f9;
     transition: transform 0.2s;
@@ -118,11 +118,22 @@
     align-items: center;
 }
 
-.session-date-box .day { font-size: 1.8rem; font-weight: 800; color: #264574; line-height: 1; }
-.session-date-box .month-year { font-size: 0.8rem; font-weight: 600; color: #64748b; text-transform: uppercase; }
+.session-date-box .day {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #264574;
+    line-height: 1;
+}
+
+.session-date-box .month-year {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+}
 
 .session-time-text {
-    font-weight: 700; 
+    font-weight: 700;
     color: #64748b;
 }
 
@@ -142,7 +153,7 @@
 }
 
 .btn-mostrar-sesion {
-    margin-left: auto; /* Empuja el botón a la derecha */
+    margin-left: auto;
     background: #f0f7ff;
     color: #348ec2;
     border: 1px solid #348ec2;
@@ -158,7 +169,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: 0; /* Quitamos el margen porque lo gestiona el contenedor padre */
+    margin-bottom: 0;
     font-size: 0.95rem;
     color: #264574;
     background: #f0f7ff;
@@ -191,12 +202,34 @@
     margin-bottom: 20px;
 }
 
-.content-block:last-child { margin-bottom: 0; }
+.content-block:last-child {
+    margin-bottom: 0;
+}
 
-.block-title { display: block; font-weight: 800; font-size: 0.8rem; color: #348ec2; text-transform: uppercase; margin-bottom: 5px; padding-left: 0px;}
-.block-text { font-size: 0.95rem; color: #475569; line-height: 1.6; margin: 0; white-space: pre-wrap; }
+.block-title {
+    display: block;
+    font-weight: 800;
+    font-size: 0.8rem;
+    color: #348ec2;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    padding-left: 0px;
+}
 
-.loading-state { text-align: center; padding: 50px; color: #94a3b8; font-size: 1.2rem; }
+.block-text {
+    font-size: 0.95rem;
+    color: #475569;
+    line-height: 1.6;
+    margin: 0;
+    white-space: pre-wrap;
+}
+
+.loading-state {
+    text-align: center;
+    padding: 50px;
+    color: #94a3b8;
+    font-size: 1.2rem;
+}
 
 .empty-sessions-card {
     justify-content: center;
@@ -226,29 +259,30 @@
     font-size: 0.95rem;
 }
 
-/* Estilos para los selectores de estado/modalidad (copiados de citas.css/home.css) */
 .status-selector-wrapper {
     position: relative;
     display: inline-block;
-    z-index: 5; /* Asegura que el dropdown esté por encima de otros elementos */
+    z-index: 5;
 }
 
 .status-options-dropdown {
     display: none;
     position: absolute;
     top: 100%;
-    left: 0; /* Alineado a la izquierda del tag */
+    left: 0;
     margin-top: 5px;
     background: white;
     border-radius: 10px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    z-index: 99999; /* Valor muy alto para asegurar que esté encima de todo */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    z-index: 99999;
     min-width: 140px;
     border: 1px solid #e2e8f0;
     overflow: hidden;
 }
 
-.status-options-dropdown.show { display: block; }
+.status-options-dropdown.show {
+    display: block;
+}
 
 .status-options-dropdown div {
     padding: 8px 15px;
@@ -257,29 +291,29 @@
     color: #475569;
     transition: background 0.2s;
 }
-.status-options-dropdown div:hover { background: #f1f5f9; color: #264574; }
 
-/* Eleva la card completa cuando el menú está abierto para que no la tape la de abajo */
+.status-options-dropdown div:hover {
+    background: #f1f5f9;
+    color: #264574;
+}
+
 .session-full-card:has(.status-options-dropdown.show) {
-    z-index: 1000 !important; /* Eleva la tarjeta completa sobre las demás */
+    z-index: 1000 !important;
     position: relative;
 }
 
-/* Eleva el contenedor específico del selector para que el desplegable no sea tapado por el contenido derecho */
 .status-selector-wrapper:has(.status-options-dropdown.show) {
     z-index: 1001;
     position: relative;
 }
 
-/* Estado No Presentado: Fondo rojo claro para la card completa */
 .session-full-card.is-no-presentado {
-    background-color: #fffafa !important; /* Rojo muy sutil para la card completa */
+    background-color: #fffafa !important;
 }
 
-/* Ajuste del panel izquierdo y bordes para el estado No Presentado */
 .session-full-card.is-no-presentado .session-info-left {
-    background: #fff0f0; /* Rojo claro, ligeramente más oscuro que el fondo de la card */
-    border-right-color: #fee2e2; /* Borde para contraste */
+    background: #fff0f0;
+    border-right-color: #fee2e2;
 }
 
 .session-full-card.is-no-presentado:hover {

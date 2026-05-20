@@ -3,7 +3,6 @@
     margin: 0 auto;
 }
 
-/* --- Grid Superior de Tarjetas Numéricas --- */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -15,9 +14,7 @@
     background: white;
     padding: 25px;
     border-radius: 20px;
-    /* Igual que el welcome-banner */
     box-shadow: 0 10px 25px rgba(38, 69, 116, 0.08);
-    /* Sombra suave de home */
     display: flex;
     align-items: center;
     gap: 25px;
@@ -30,7 +27,6 @@
     box-shadow: 0 15px 30px rgba(38, 69, 116, 0.12);
 }
 
-/* Deshabilitar interacción para tarjetas puramente informativas */
 .stat-card.no-click {
     cursor: default;
 }
@@ -40,7 +36,6 @@
     box-shadow: 0 10px 25px rgba(38, 69, 116, 0.08);
 }
 
-/* Colores de Iconos (Coherencia con Home) */
 .stat-card i {
     font-size: 1.8rem;
     padding: 18px;
@@ -52,27 +47,21 @@
     height: 65px;
 }
 
-/* Asignación de colores por posición */
 .stat-card:nth-child(1) i {
     background: #e3f2fd;
     color: #2196f3;
 }
 
-/* Icon-blue */
 .stat-card:nth-child(2) i {
     background: #f3e5f5;
     color: #9c27b0;
 }
 
-/* Icon-purple */
 .stat-card:nth-child(3) i {
     background: #e0f2f1;
     color: #009688;
 }
 
-/* Icon-teal */
-
-/* Texto en las tarjetas */
 .stat-card h3 {
     font-size: var(--font-size-lg);
     color: #264574;
@@ -87,7 +76,6 @@
     letter-spacing: 0.5px;
 }
 
-/* --- Grid de Gráficos --- */
 .charts-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
@@ -124,7 +112,6 @@
     gap: 10px;
 }
 
-/* Ajuste para que el canvas ocupe el espacio */
 canvas {
     flex-grow: 1;
     max-width: 100% !important;
@@ -139,7 +126,6 @@ canvas {
     animation-delay: 0.5s;
 }
 
-/* --- Responsive --- */
 @media (max-width: 768px) {
     .charts-grid {
         grid-template-columns: 1fr;
@@ -156,28 +142,22 @@ canvas {
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     height: 400px;
-    /* Altura total de la card */
     display: flex;
     flex-direction: column;
-    /* Alinea título y gráfico en vertical */
     overflow: hidden;
     margin-top: 20px;
 }
 
 .chart-box h4 {
     margin: 0 0 15px 0;
-    /* Margen solo abajo */
     flex-shrink: 0;
-    /* Impide que el título se comprima */
     font-size: 1.1rem;
     color: #264574;
 }
 
 .chart-container {
     flex-grow: 1;
-    /* Ocupa TODO el espacio que sobra del título */
     min-height: 0;
-    /* Truco de Flexbox para evitar desbordamientos */
     position: relative;
 }
 
@@ -192,7 +172,6 @@ canvas {
     margin: 0 auto;
 }
 
-/* --- Grid Superior de Tarjetas Numéricas --- */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -257,7 +236,6 @@ canvas {
     letter-spacing: 0.5px;
 }
 
-/* --- Grid de Gráficos --- */
 .charts-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
@@ -291,7 +269,6 @@ canvas {
     max-width: 100% !important;
 }
 
-/* --- 1. ESTILOS BASE DE LA TABLA (Mantenemos lo visual) --- */
 .table-container {
     width: 100%;
     height: 20%;
@@ -302,7 +279,6 @@ canvas {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0 8px;
-    /* Valor base */
 }
 
 .tabla-general th {
@@ -316,7 +292,6 @@ canvas {
 .tabla-general td {
     background: #fcfcfc;
     padding: 15px;
-    /* Valor base */
     border-top: 1px solid #f0f0f0;
     border-bottom: 1px solid #f0f0f0;
     color: #264574;
@@ -343,7 +318,6 @@ canvas {
     border-radius: 0 10px 10px 0;
 }
 
-/* --- 2. AJUSTES ESPECÍFICOS PARA EL DASHBOARD (Lo nuevo) --- */
 .chart-box.table-box {
     width: 100%;
     height: auto;
@@ -362,15 +336,12 @@ canvas {
 .chart-box.table-box .table-container {
     margin-top: 0px;
     height: auto;
-    /* IMPORTANTE: Borra el 'height: 20%' que tenías, estaba aplastando la tabla */
     overflow-y: auto;
     overflow-x: hidden;
     flex-grow: 1;
     padding-top: 40px;
-    /* Zona segura para que el desplegable no se corte */
 }
 
-/* Sobrescribimos valores base para que en esta tabla se vea más compacto */
 .chart-box.table-box .tabla-general {
     border-spacing: 0 4px;
 }
@@ -390,10 +361,8 @@ canvas {
     right: 20px;
     background: white;
     z-index: 500;
-    /* Encima de filas normales, debajo de desplegables */
 }
 
-/* Scrollbar personalizado */
 .chart-box.table-box .table-container::-webkit-scrollbar {
     width: 6px;
 }
@@ -403,7 +372,6 @@ canvas {
     border-radius: 10px;
 }
 
-/* --- 3. RESPONSIVE --- */
 @media (max-width: 768px) {
     .charts-grid {
         grid-template-columns: 1fr;
@@ -417,7 +385,6 @@ canvas {
     overflow: visible !important;
 }
 
-/* Eleva la fila completa cuando el menú está abierto para que no lo tapen los tags de otros pacientes */
 .tabla-general tr:has(.status-options-dropdown.show) {
     position: relative;
     z-index: 1001 !important;

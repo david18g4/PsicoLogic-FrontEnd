@@ -120,7 +120,6 @@
                                     <i class="fa-solid fa-pen"></i>
                                 </button>
                             </div>
-                            <!-- Contenedor con Scroll (Solo Datos Personales) -->
                             <div class="info-scrollable-content" id="info-main-scroller">
                                 <div class="data-row">
                                     <strong>DNI:</strong>
@@ -171,7 +170,6 @@
                                     <span id="p-inicio-terapia">-</span>
                                 </div>
                             </div>
-                            <!-- Sección de Contactos Fija -->
                             <div class="contacts-fixed-section">
                                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; margin-top: 10px;">
                                     <h3 style="text-transform: uppercase; margin: 0;">Contactos</h3>
@@ -181,7 +179,6 @@
                                 </div>
                                 <div id="p-lista-contactos"></div>
                             </div>
-                            <!-- Motivo Fijo abajo -->
                             <div class="motivo-fixed-footer">
                                 <h3 style="text-transform: uppercase; margin-bottom: 10px;">Motivo</h3>
                                 <p id="p-motivo" class="text-muted" style="margin-top:0; line-height: 1.4;"></p>
@@ -233,7 +230,6 @@
                                 </a>
                             </div>
                             <div id="p-sesiones-list" class="sessions-cards-container" style="padding-bottom: 35px !important;">
-                                <!-- Se rellena dinámicamente desde JS --></div>
                         </div>
                     </div>
                 </div>
@@ -336,7 +332,6 @@
                 </form>
             </div>
         </div>
-        <!-- MODAL SUBIR DOCUMENTO -->
         <div id="modal-upload-document" class="modal-overlay">
             <div class="modal-content" style="width: 500px;">
                 <div class="modal-header">
@@ -357,8 +352,7 @@
                     </div>
                     <div class="form-group" style="margin-bottom: 20px;">
                         <label>Tipo de Documento</label>
-                        <select id="upload-doc-tipo" class="form-control">
-                            <!-- Se rellena dinámicamente desde JS --></select>
+                        <select id="upload-doc-tipo" class="form-control"></select>
                     </div>
                     <div id="drop-zone" class="upload-drop-zone">
                         <i class="fa-solid fa-file-circle-plus"></i>
@@ -382,7 +376,6 @@
             </div>
         </div>
     </div>
-    <!-- MODAL EDITAR PACIENTE -->
     <div id="modal-editar-paciente-overlay" class="modal-overlay">
         <div class="modal-content" style="width: 800px;">
             <div class="modal-header">

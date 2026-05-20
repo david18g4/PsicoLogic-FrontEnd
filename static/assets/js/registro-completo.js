@@ -1,5 +1,9 @@
+/**
+ * Controlador del formulario de Registro Completo.
+ * Gestiona el paso final de creación de cuenta del psicólogo.
+ */
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Obtener email de la URL y asignarlo al campo readonly
+
     const params = new URLSearchParams(window.location.search);
     const emailUrl = params.get('email');
     if (emailUrl) {
@@ -7,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (emailInput) emailInput.value = emailUrl;
     }
 
-    // 2. Manejo del botón cancelar
+
     const btnCancelar = document.getElementById('btn-cancelar-registro');
     if (btnCancelar) {
         btnCancelar.addEventListener('click', () => {
@@ -15,13 +19,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 3. Manejo del envío del formulario
+    /**
+     * Envía todos los datos del perfil y la cuenta bancaria inicial al servidor.
+     */
     const form = document.getElementById('form-registro-completo');
     if (form) {
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            // El DTO en el backend es plano, no anidado
             const payload = {
                 nombre: document.getElementById('reg-nombre').value,
                 apellidos: document.getElementById('reg-apellidos').value,

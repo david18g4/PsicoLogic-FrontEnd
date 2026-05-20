@@ -1,18 +1,23 @@
+/**
+ * Gestión de Agenda y Calendario.
+ * Implementa FullCalendar para la visualización de citas, gestión de estados y arrastre.
+ */
 document.addEventListener('DOMContentLoaded', async function () {
 
-    // --- 1. VARIABLES ---
     const datosSesion = user;
     const calendarEl = document.getElementById('calendar');
     let todasLasCitas = [];
     let pacientesData = [];
-    let pacientesSeleccionados = []; // Array de pacientes seleccionados
+    let pacientesSeleccionados = [];
     let pacienteSelectorActual = null;
     let rangeInicioCargado = null;
     let rangeFinCargado = null;
 
     if (!datosSesion || !token) return;
 
-    // --- 2. CARGA INICIAL DE PACIENTES ---
+    /**
+     * Obtiene la lista completa de pacientes asociados al psicólogo.
+     */
     async function cargarPacientes() {
         try {
             const idPsicologo = datosSesion.idPsicologo || datosSesion.id;
@@ -30,29 +35,28 @@ document.addEventListener('DOMContentLoaded', async function () {
             console.error("Error al cargar pacientes:", error);
         }
     }
-    await cargarPacientes(); // Esperamos a que los pacientes se carguen antes de inicializar el calendario
+    await cargarPacientes();
 
-    // --- 2.5. CONFIGURACIÓN DEL SELECTOR DE ESTADO DEL PACIENTE ---
     const pacienteStatusTag = document.getElementById('paciente-status-tag');
     const pacienteStatusOptions = document.getElementById('paciente-status-options');
 
+    /**
+     * Muestra y aplica clases visuales al tag de estado del paciente en el modal diario.
+     */
     function mostrarEstadoPaciente(idPaciente, estadoActual) {
         if (!pacienteStatusTag) return;
 
         pacienteSelectorActual = idPaciente;
         const estadosPosibles = ["Alta", "Seguimiento", "Evaluación"];
 
-        // Actualizar tag
         pacienteStatusTag.setAttribute('data-estado', estadoActual);
         pacienteStatusTag.textContent = estadoActual || '---';
 
-        // Aplicar clase según estado
         pacienteStatusTag.className = 'tag clickable-tag';
         if (estadoActual === 'Alta') pacienteStatusTag.classList.add('tag-success');
         else if (estadoActual === 'Seguimiento') pacienteStatusTag.classList.add('tag-blue');
         else if (estadoActual === 'Evaluación') pacienteStatusTag.classList.add('tag-warning');
 
-        // Configurar dropdown con otros estados
         const otrosEstados = estadosPosibles.filter(est => est !== estadoActual);
         if (pacienteStatusOptions) {
             pacienteStatusOptions.innerHTML = otrosEstados.map(est =>
@@ -60,7 +64,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             ).join('');
         }
 
-        // Mostrar tag
         pacienteStatusTag.style.display = 'inline-block';
     }
 
@@ -77,10 +80,16 @@ document.addEventListener('DOMContentLoaded', async function () {
         });
     }
 
+    /**
+     * Helper para normalizar la obtención del ID de un objeto paciente.
+     */
     function getPatientId(p) {
         return p?.idPaciente ?? p?.id_paciente ?? p?.id ?? null;
     }
 
+    /**
+     * Actualiza el estado clínico de un paciente mediante una llamada PUT.
+     */
     window.cambiarEstadoPacienteDesdeModal = async (event, nuevoEstado) => {
         event.stopPropagation();
         if (!pacienteSelectorActual) return;
@@ -109,7 +118,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         } catch (error) { console.error("Error al cambiar estado:", error); }
     };
 
-    // Función para normalizar fechas del backend (String o Array)
+    /**
+     * Normaliza los formatos de fecha recibidos del backend (String o Array de números).
+     */
     function normalizarFecha(fechaRaw) {
         if (!fechaRaw) return null;
         if (Array.isArray(fechaRaw)) {
@@ -118,7 +129,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         return fechaRaw;
     }
 
-    // --- 3. CONFIGURACIÓN DEL CALENDARIO ---
+    /**
+     * Inicialización y configuración de FullCalendar.
+     */
     const calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'timeGridWeek',
         locale: 'es',
@@ -129,9 +142,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         expandRows: true,
         handleWindowResize: true,
         slotEventOverlap: false,
-        snapDuration: '00:15:00', // Permite ajustar a intervalos de 15min (necesario para 75min)
-        editable: true, // Permite arrastrar y redimensionar eventos
-        height: 'auto', // Se adapta al contenido, manteniendo filas iguales en mes
+        snapDuration: '00:15:00',
+        editable: true,
+        height: 'auto',
         nowIndicator: true,
         headerToolbar: {
             left: 'prev,next today',
@@ -143,12 +156,11 @@ document.addEventListener('DOMContentLoaded', async function () {
         },
         noEventsContent: 'Ninguna cita por el momento',
 
-        // Se ejecuta al cambiar de vista o de fecha
         datesSet: function () {
             const harness = calendarEl.querySelector('.fc-view-harness');
             if (harness) {
                 harness.classList.remove('fc-animate');
-                void harness.offsetWidth; // Forzar reflujo para reiniciar animación
+                void harness.offsetWidth;
                 harness.classList.add('fc-animate');
             }
         },
@@ -158,7 +170,6 @@ document.addEventListener('DOMContentLoaded', async function () {
                 const startReq = new Date(info.start);
                 const endReq = new Date(info.end);
 
-                // Función interna para mapear citas a eventos y evitar duplicidad de lógica
                 const mapCitasToEvents = (citas) => {
                     return citas.map(cita => {
                         const modStr = (cita.modalidad || 'Presencial').toLowerCase();
@@ -191,13 +202,11 @@ document.addEventListener('DOMContentLoaded', async function () {
                     });
                 };
 
-                // Si el rango solicitado ya está cubierto por la caché en memoria, servimos localmente
                 if (rangeInicioCargado && rangeFinCargado && startReq >= rangeInicioCargado && endReq <= rangeFinCargado) {
                     successCallback(mapCitasToEvents(todasLasCitas));
                     return;
                 }
 
-                // Si no, calculamos el bloque mensual (desde el día 1 del mes de inicio al último del mes de fin)
                 const fetchStart = new Date(startReq.getFullYear(), startReq.getMonth(), 1);
                 const fetchEnd = new Date(endReq.getFullYear(), endReq.getMonth() + 1, 0, 23, 59, 59);
 
@@ -215,7 +224,6 @@ document.addEventListener('DOMContentLoaded', async function () {
 
                 const fetchedCitas = await response.json();
 
-                // Actualizamos la lista global y los límites de la caché
                 todasLasCitas = fetchedCitas.filter(c => (c.estadoCita || '').toLowerCase() !== 'cancelada')
                     .map(cita => {
                         cita.fechaHora = normalizarFecha(cita.fechaHora);
@@ -259,7 +267,10 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     calendar.render();
 
-    // --- 3.5 HELPER PARA ACTUALIZAR CITA TRAS MOVIMIENTO EN CALENDARIO ---
+    /**
+     * Persiste los cambios de fecha o duración realizados mediante arrastre/redimensión 
+     * en el calendario.
+     */
     async function actualizarCitaTrasArrastre(info) {
         const idCita = info.event.id;
         const citaOriginal = todasLasCitas.find(c => (c.idCita || c.id) == idCita);
@@ -269,7 +280,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             return;
         }
 
-        // Formatear la nueva fecha y hora al formato que espera el backend (local ISO)
         const date = info.event.start;
         const y = date.getFullYear();
         const m = String(date.getMonth() + 1).padStart(2, '0');
@@ -278,32 +288,28 @@ document.addEventListener('DOMContentLoaded', async function () {
         const mm = String(date.getMinutes()).padStart(2, '0');
         const nuevaFechaHora = `${y}-${m}-${d}T${hh}:${mm}:00`;
 
-        // Calcular la duración real y asegurar que existan las fechas
         const start = info.event.start;
         const end = info.event.end || new Date(start.getTime() + (citaOriginal.duracion || 60) * 60000);
         let duracionReal = Math.round((end - start) / 60000);
 
-        // Restringir a los valores permitidos: 30, 60 o 75
         const permitidas = [30, 60, 75];
         let nuevaDuracion = permitidas.reduce((prev, curr) =>
             Math.abs(curr - duracionReal) < Math.abs(prev - duracionReal) ? curr : prev
         );
 
-        // En caso de que se intente estirar más allá del máximo o menos del mínimo
         if (duracionReal < 30) nuevaDuracion = 30;
         if (duracionReal > 75) nuevaDuracion = 75;
 
-        // Ajustar visualmente el evento al valor permitido
         info.event.setEnd(new Date(info.event.start.getTime() + nuevaDuracion * 60000));
 
         const idPacs = citaOriginal.pacientes
-            ? citaOriginal.pacientes.map(p => p.id) // CitaCalendarioDto has pacientes with 'id'
-            : []; // Should not happen if citaOriginal is valid
+            ? citaOriginal.pacientes.map(p => p.id)
+            : [];
 
         const body = {
             id: parseInt(idCita),
             idPacientes: [...new Set(idPacs)],
-            idPsicologo: datosSesion.idPsicologo || datosSesion.id, // Use session ID for psychologist
+            idPsicologo: datosSesion.idPsicologo || datosSesion.id,
             modalidad: citaOriginal.modalidad === 'Online' ? 'Online' : 'Presencial',
             fechaHora: nuevaFechaHora,
             duracionMinutos: nuevaDuracion,
@@ -323,15 +329,12 @@ document.addEventListener('DOMContentLoaded', async function () {
 
             if (!response.ok) throw new Error("Error en servidor");
 
-            // Actualizamos localmente para mantener la coherencia de datos enriquecidos
             const citaActualizada = await response.json();
 
-            // Al haber modificado datos, invalidamos la caché para forzar una recarga limpia
             rangeInicioCargado = null;
             rangeFinCargado = null;
             calendar.refetchEvents();
 
-            // Comprobar si falló la generación del enlace Zoom
             const modalidadFinal = (citaActualizada.modalidad || body.modalidad || '').toLowerCase();
             const esOnline = modalidadFinal.includes('online');
 
@@ -345,7 +348,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         } catch (error) {
             console.error("Error al mover la cita:", error);
             UiModal.info("No se pudo actualizar la cita tras el movimiento.", "Error");
-            info.revert(); // Revierte el movimiento en la UI si falla el servidor
+            info.revert();
         }
     }
 
@@ -354,7 +357,10 @@ document.addEventListener('DOMContentLoaded', async function () {
     });
     observer.observe(calendarEl);
 
-    // --- 4. BUSCADOR DE PACIENTES (MÚLTIPLES) ---
+    /**
+     * Implementación del buscador reactivo de pacientes para la selección múltiple
+     * en el formulario de citas.
+     */
     const inputBusqueda = document.getElementById('busquedaPacienteInput');
     const resContenedor = document.getElementById('resultadosBusquedaPacientes');
     const pacientesContainer = document.getElementById('pacientesSeleccionadosContainer');
@@ -374,7 +380,6 @@ document.addEventListener('DOMContentLoaded', async function () {
                 const nombreCompleto = `${p.nombre || ''} ${p.apellidos || ''}`.toLowerCase();
                 const dni = (p.dni || '').toLowerCase();
                 const idPac = getPatientId(p);
-                // No mostrar ya seleccionados
                 const yaSeleccionado = pacientesSeleccionados.some(sel => getPatientId(sel) == idPac);
                 return !yaSeleccionado && (nombreCompleto.includes(term) || dni.includes(term));
             });
@@ -405,16 +410,17 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     });
 
+    /**
+     * Añade un paciente al array de seleccionados, validando el límite (máximo 2).
+     */
     function agregarPacienteSeleccionado(paciente) {
         const idPac = getPatientId(paciente);
 
-        // Restricción: Máximo 2 pacientes por sesión
         if (pacientesSeleccionados.length >= 2) {
             UiModal.info("No se pueden añadir más de dos pacientes a una sesión.", "Límite alcanzado");
             return;
         }
 
-        // Evitar duplicados
         if (pacientesSeleccionados.some(p => getPatientId(p) == idPac)) {
             return;
         }
@@ -432,6 +438,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         verificarYCambiarATipoPareja();
     }
 
+    /**
+     * Actualiza el DOM para reflejar las tarjetas de los pacientes seleccionados.
+     */
     function actualizarVistaSeleccionados() {
         pacientesListDiv.innerHTML = '';
 
@@ -475,15 +484,13 @@ document.addEventListener('DOMContentLoaded', async function () {
             pacientesListDiv.appendChild(card);
         });
 
-        // Ajustar altura del contenedor dinámicamente
         const numPacientes = pacientesSeleccionados.length;
         let alturaNecesaria;
         if (numPacientes === 1) {
-            alturaNecesaria = 65.33 + 24; // Altura de la card + padding vertical del list
+            alturaNecesaria = 65.33 + 24; 
         } else if (numPacientes >= 2) {
-            alturaNecesaria = 168; // Tamaño máximo
+            alturaNecesaria = 168; 
         } else {
-            // Para 0 pacientes (placeholder), usar altura similar a 1
             alturaNecesaria = 65.33 + 24;
         }
         pacientesContainer.style.height = alturaNecesaria + 'px';
@@ -493,6 +500,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         removerPacienteSeleccionado(idPaciente);
     };
 
+    /**
+     * Cambia automáticamente el tipo de cita a 'Pareja' si hay dos pacientes seleccionados.
+     */
     function verificarYCambiarATipoPareja() {
         const selectTipoCita = document.getElementById('tipoCita');
         if (!selectTipoCita) return;
@@ -504,7 +514,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     }
 
-    // --- 5. MODAL DE CITAS DEL DÍA ---
+    /**
+     * Abre el modal que lista todas las citas programadas para un día concreto.
+     */
     function abrirModalCitasDia(fechaISO) {
         const modal = document.getElementById('modalCitas');
         const listaContenedor = document.getElementById('listaCitasDia');
@@ -519,12 +531,9 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         const fechaBusqueda = fechaISO.split('T')[0];
 
-        // Filter directly from todasLasCitas (which are CitaCalendarioDto objects)
         const citasDia = todasLasCitas.filter(c => c.fechaHora.split('T')[0] === fechaBusqueda && (c.estadoCita || '').toLowerCase() !== 'cancelada');
-        // Ordenar por hora
         citasDia.sort((a, b) => new Date(a.fechaHora) - new Date(b.fechaHora));
 
-        // Mostrar estado del paciente de la primera cita
         if (citasDia.length > 0) {
             const firstCita = citasDia[0];
             const firstPatient = firstCita.pacientes && firstCita.pacientes.length > 0 ? firstCita.pacientes[0] : null;
@@ -533,7 +542,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 if (pacienteCompleto) {
                     mostrarEstadoPaciente(getPatientId(pacienteCompleto), pacienteCompleto.estadoPaciente);
                 } else {
-                    mostrarEstadoPaciente(firstPatient.id, 'Desconocido'); // Fallback
+                    mostrarEstadoPaciente(firstPatient.id, 'Desconocido');
                 }
             }
         } else if (pacienteStatusTag) {
@@ -547,7 +556,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             listaContenedor.classList.remove('empty-state');
             citasDia.forEach(cita => {
                 const fechaInicio = new Date(cita.fechaHora);
-                const duracion = cita.duracion || 60; // Use 'duracion' from CitaCalendarioDto
+                const duracion = cita.duracion || 60; 
                 const fechaFin = new Date(fechaInicio.getTime() + (duracion * 60000));
                 const esPasada = fechaFin < new Date();
 
@@ -556,23 +565,20 @@ document.addEventListener('DOMContentLoaded', async function () {
                 const modLower = modalidad.toLowerCase();
                 const modContainerClass = modLower.includes('online') ? 'online' : 'presencial';
 
-                // Clases de etiquetas según el diseño del calendario y common-components.css
                 const modTagClass = modLower.includes('online') ? 'tag-online' : 'tag-presencial';
                 const tipoTagClass = `tag-${String(cita.tipoCita || 'Individual').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")}`;
-                const claseColor = modLower.includes('online') ? 'evento-online' : 'evento-individual'; // Mantenemos para el borde de la card
+                const claseColor = modLower.includes('online') ? 'evento-online' : 'evento-individual'; 
 
-                // Normalizamos categoría para CSS (Sexología -> sexologia)
                 let catCSS = String(cita.tipoCita || 'Individual').toLowerCase()
                     .replace('á', 'a').replace('é', 'e').replace('í', 'i').replace('ó', 'o').replace('ú', 'u');
 
-                // Get names from cita.pacientes
                 const nombresGrupo = (cita.pacientes || []).map(p => `${p.nombre} ${p.apellidos}`).join(' , ');
                 const estado = cita.estadoCita || 'Programada';
                 const estadoNorm = estado.toLowerCase().replace(/ /g, '_');
 
                 const availableStatuses = ['Programada', 'Realizada', 'No_Presentado'];
                 const filteredOptionsHtml = availableStatuses
-                    .filter(s => s.toLowerCase() !== estadoNorm) // Comparar versiones en minúsculas y con guiones bajos
+                    .filter(s => s.toLowerCase() !== estadoNorm)
                     .map(s => `<div onclick="window.cambiarEstadoCitaModal(event, ${cita.id}, '${s}')">${s === 'No_Presentado' ? 'No Presentado' : s}</div>`)
                     .join('');
 
@@ -593,7 +599,6 @@ document.addEventListener('DOMContentLoaded', async function () {
                     statusIcon = 'fa-solid fa-triangle-exclamation status-aviso';
                 }
 
-                // Get the ID of the first patient for the sesion.html link
                 const firstPatientId = (cita.pacientes && cita.pacientes.length > 0) ? cita.pacientes[0].id : null;
 
                 const div = document.createElement('div');
@@ -627,7 +632,6 @@ document.addEventListener('DOMContentLoaded', async function () {
                     </div>
                 `;
                 div.onclick = (e) => {
-                    // Si el clic fue dentro del status-selector-wrapper, no redirigir
                     if (e.target.closest('.status-selector-wrapper')) {
                         return;
                     }
@@ -641,7 +645,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         modal.style.display = 'flex';
     }
 
-    // --- FUNCIONES PARA CAMBIO DE ESTADO RÁPIDO ---
+    /**
+     * Alterna la visibilidad del desplegable de cambio de estado en el modal.
+     */
     window.toggleStatusDropdownModal = function (event, idCita) {
         event.stopPropagation();
         const dropdown = document.getElementById(`dropdown-status-modal-${idCita}`);
@@ -651,6 +657,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         dropdown.classList.toggle('show');
     };
 
+    /**
+     * Ejecuta el cambio de estado de una cita y refresca el calendario.
+     */
     window.cambiarEstadoCitaModal = async function (event, idCita, nuevoEstado) {
         event.stopPropagation();
         const cita = todasLasCitas.find(c => c.id === idCita);
@@ -658,14 +667,13 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         const idPacs = cita.pacientes ? cita.pacientes.map(p => p.id || p.idPaciente) : [parseInt(cita.idPaciente)];
 
-        // Preparamos el DTO de actualización
         const body = {
             id: cita.id,
-            idPacientes: (cita.pacientes || []).map(p => p.id), // Use 'pacientes' from CitaCalendarioDto
-            idPsicologo: datosSesion.idPsicologo || datosSesion.id, // Use session ID for psychologist
+            idPacientes: (cita.pacientes || []).map(p => p.id),
+            idPsicologo: datosSesion.idPsicologo || datosSesion.id,
             modalidad: cita.modalidad,
             fechaHora: cita.fechaHora,
-            duracionMinutos: cita.duracion, // Use 'duracion' from CitaCalendarioDto
+            duracionMinutos: cita.duracion,
             tipoCita: cita.tipoCita,
             estadoCita: nuevoEstado
         };
@@ -690,11 +698,10 @@ document.addEventListener('DOMContentLoaded', async function () {
                     todasLasCitas[index] = updatedCita;
                 }
 
-                // Invalidar caché tras cambio de estado
                 rangeInicioCargado = null;
                 rangeFinCargado = null;
                 calendar.refetchEvents();
-                // Refrescar el modal diario para ver el cambio
+
                 const fechaISO = document.getElementById('modalCitas').getAttribute('data-fecha-click');
                 abrirModalCitasDia(fechaISO);
             }
@@ -705,7 +712,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         document.querySelectorAll('.status-options-dropdown').forEach(d => d.classList.remove('show'));
     });
 
-    // --- 6. MODAL SELECCIÓN PACIENTE ---
+    /**
+     * Abre el modal de selección de paciente para citas nuevas.
+     */
     window.abrirModalSeleccionarPaciente = function () {
         const modal = document.getElementById('modalSeleccionPaciente');
         modal.style.display = 'flex';
@@ -716,6 +725,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         document.getElementById('modalSeleccionPaciente').style.display = 'none';
     };
 
+    /**
+     * Filtra la tabla de pacientes en el modal de búsqueda.
+     */
     window.filtrarTablaPacientes = function (termino) {
         const filtrados = pacientesData.filter(p => {
             const nombreCompleto = `${p.nombre || ''} ${p.apellidos || ''}`.toLowerCase();
@@ -725,6 +737,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         renderizarTablaPacientes(filtrados);
     };
 
+    /**
+     * Genera dinámicamente el contenido de la tabla de selección de pacientes.
+     */
     function renderizarTablaPacientes(lista) {
         const cuerpo = document.getElementById('cuerpoTablaPacientes');
         cuerpo.innerHTML = '';
@@ -745,11 +760,13 @@ document.addEventListener('DOMContentLoaded', async function () {
         });
     }
 
+    /**
+     * Carga los datos de una cita existente en el formulario para su edición.
+     */
     window.editarCita = function (id) {
         const cita = todasLasCitas.find(c => c.id == id);
         if (!cita) return;
 
-        // Guardamos la fecha actual del modal para poder refrescarlo luego
         const fechaActualModal = document.getElementById('modalCitas').getAttribute('data-fecha-click');
         document.getElementById('modalNuevaCita').setAttribute('data-refresh-date', fechaActualModal);
 
@@ -758,7 +775,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         document.getElementById('tituloModalCita').textContent = "Editar Cita";
         document.getElementById('idCitaEditando').value = cita.id;
 
-        // Limpiar pacientes seleccionados previos
         pacientesSeleccionados = [];
 
         if (cita.pacientes && cita.pacientes.length > 0) {
@@ -785,7 +801,6 @@ document.addEventListener('DOMContentLoaded', async function () {
     };
 
     window.seleccionarEstePaciente = function (id, nombre) {
-        // En lugar de buscar inputs que ya no existen, usamos la lógica de selección múltiple
         const paciente = {
             id: id,
             nombre: nombre.split(' ')[0],
@@ -795,6 +810,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         cerrarModalSeleccion();
     };
 
+    /**
+     * Configura y abre el modal de creación de nueva cita.
+     */
     window.abrirModalNuevaCita = function () {
         cerrarModal();
         const modal = document.getElementById('modalNuevaCita');
@@ -802,13 +820,11 @@ document.addEventListener('DOMContentLoaded', async function () {
         const inputHora = document.getElementById('horaCita');
         const containerPsico = document.getElementById('containerSeleccionPsicologo');
 
-        // Resetear modo edición
         document.getElementById('idCitaEditando').value = '';
         document.getElementById('rowEstadoCita').style.display = 'none';
         document.getElementById('btnCancelarCita').style.display = 'none';
         document.getElementById('tituloModalCita').textContent = "Nueva Cita";
 
-        // Limpiar pacientes seleccionados para nueva cita
         pacientesSeleccionados = [];
         actualizarVistaSeleccionados();
 
@@ -824,12 +840,14 @@ document.addEventListener('DOMContentLoaded', async function () {
             inputHora.value = ahora.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
         }
 
-        // Simplificado: Sin lógica de roles por ahora
         containerPsico.style.display = 'none';
         modal.style.display = 'flex';
-        modal.scrollTop = 0; // Asegura que el scroll empiece arriba al abrir
+        modal.scrollTop = 0;
     };
 
+    /**
+     * Popula el combo de psicólogos (usado principalmente en modo administración).
+     */
     async function cargarPsicologosCombo() {
         const select = document.getElementById('selectPsicologoCita');
         if (select.options.length > 0) return;
@@ -852,7 +870,10 @@ document.addEventListener('DOMContentLoaded', async function () {
         actualizarVistaSeleccionados();
     };
 
-    // --- 7. GUARDAR CITA (ADAPTADO AL CitaCreateDto) ---
+    /**
+     * Manejador de envío del formulario de citas. 
+     * Realiza validaciones de negocio y persiste la información en el backend.
+     */
     document.getElementById('formNuevaCita').addEventListener('submit', async function (e) {
         e.preventDefault();
 
@@ -862,8 +883,8 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         const idCitaEditando = document.getElementById('idCitaEditando').value;
-        const fechaVal = document.getElementById('fechaCita').value; // yyyy-mm-dd
-        const horaVal = document.getElementById('horaCita').value;   // hh:mm
+        const fechaVal = document.getElementById('fechaCita').value;
+        const horaVal = document.getElementById('horaCita').value;
         const tipoCitaVal = document.getElementById('tipoCita').value;
         const estadoVal = idCitaEditando ? document.getElementById('estadoCitaForm').value : 'Programada';
 
@@ -872,13 +893,10 @@ document.addEventListener('DOMContentLoaded', async function () {
             return;
         }
 
-        // Usamos el ID del psicólogo de la sesión actual
         const idPsicologoVal = datosSesion.idPsicologo || datosSesion.id;
 
-        // Usar lista de pacientes
         const idPacientes = pacientesSeleccionados.map(p => parseInt(getPatientId(p)));
 
-        // --- VALIDACIONES DE NEGOCIO (Sincronizadas con Backend) ---
         if (tipoCitaVal === 'Pareja' && idPacientes.length !== 2) {
             UiModal.info("Las citas de tipo 'Pareja' deben tener exactamente 2 pacientes.", "Validación");
             return;
@@ -918,7 +936,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             if (response.ok) {
                 const citaGuardada = await response.json();
 
-                // Invalidar caché tras cambio exitoso
                 rangeInicioCargado = null;
                 rangeFinCargado = null;
                 calendar.refetchEvents();
@@ -930,12 +947,10 @@ document.addEventListener('DOMContentLoaded', async function () {
                 cerrarModalNuevaCita();
                 cerrarModal();
 
-                // Si es una creación nueva, mostramos confirmación
                 if (!idCitaEditando) {
                     UiModal.info("La cita se ha programado correctamente.", "Éxito");
                 }
 
-                // Aviso de Zoom solo si realmente es online y el link no ha llegado (tras el fix del back esto no debería saltar por error)
                 if (esOnline && !tieneUrl) {
                     abrirModalAvisoZoom();
                 }
@@ -955,6 +970,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     });
 
+    /**
+     * Cambia el estado de una cita a 'Cancelada'.
+     */
     window.marcarComoCancelada = function () {
         const id = document.getElementById('idCitaEditando').value;
         if (!id) return;
@@ -965,11 +983,11 @@ document.addEventListener('DOMContentLoaded', async function () {
 
             const body = {
                 id: parseInt(id),
-                idPacientes: (cita.pacientes || []).map(p => p.id), // Use 'pacientes' from CitaCalendarioDto
-                idPsicologo: datosSesion.idPsicologo || datosSesion.id, // Use session ID for psychologist
+                idPacientes: (cita.pacientes || []).map(p => p.id),
+                idPsicologo: datosSesion.idPsicologo || datosSesion.id,
                 modalidad: cita.modalidad,
                 fechaHora: cita.fechaHora,
-                duracionMinutos: cita.duracion, // Use 'duracion' from CitaCalendarioDto
+                duracionMinutos: cita.duracion,
                 tipoCita: cita.tipoCita,
                 estadoCita: 'Cancelada'
             };
@@ -985,7 +1003,6 @@ document.addEventListener('DOMContentLoaded', async function () {
                 });
 
                 if (response.ok) {
-                    // Invalidar caché tras cancelación
                     rangeInicioCargado = null;
                     rangeFinCargado = null;
                     calendar.refetchEvents();
@@ -998,17 +1015,18 @@ document.addEventListener('DOMContentLoaded', async function () {
         });
     };
 
-    // --- 8. DETECCIÓN DE PARÁMETROS URL (DESDE PACIENTES) ---
+    /**
+     * Detecta parámetros en la URL para iniciar automáticamente el flujo 
+     * de creación de cita desde la página de pacientes.
+     */
     const params = new URLSearchParams(window.location.search);
     if (params.get('nuevaCita') === 'true') {
         const pId = params.get('idPaciente');
         const pNombre = params.get('nombre');
 
         if (pId && pNombre) {
-            // Abrimos modal
             abrirModalNuevaCita();
 
-            // En lugar de asignar a un input que no existe, agregamos al array de selección
             const pacienteSimulado = {
                 id: parseInt(pId),
                 nombre: pNombre.split(' ')[0],
@@ -1019,6 +1037,9 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 });
 
+/**
+ * Abre un aviso informativo si una cita online no tiene link de Zoom generado.
+ */
 window.abrirModalAvisoZoom = function () {
     const modal = document.getElementById('modalAvisoZoom');
     if (modal) modal.style.display = 'flex';
@@ -1029,7 +1050,6 @@ window.cerrarModalAvisoZoom = function () {
     if (modal) modal.style.display = 'none';
 };
 
-// Funciones globales
 window.cerrarModal = function () {
     const m = document.getElementById('modalCitas');
     if (m) m.style.display = 'none';

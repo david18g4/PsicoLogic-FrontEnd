@@ -1,8 +1,15 @@
+/**
+ * Script de Comportamiento del Layout.
+ * Gestiona la barra lateral (sidebar), navegación activa y el perfil de usuario en el header.
+ */
 document.addEventListener('DOMContentLoaded', () => {
     const sidebar = document.getElementById('sidebar');
     const toggleBtn = document.getElementById('toggle-sidebar');
     const menuLinks = document.querySelectorAll('.sidebar a');
 
+    /**
+     * Control del colapso de la barra lateral.
+     */
     if (toggleBtn && sidebar) {
         toggleBtn.addEventListener('click', () => {
             sidebar.classList.toggle('collapsed');
@@ -20,7 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Resaltado de enlace activo
+    /**
+     * Resaltado automático del enlace activo en el menú lateral.
+     */
     const currentPath = window.location.pathname;
     menuLinks.forEach(link => {
         link.classList.remove('active');
@@ -28,23 +37,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (linkHref && currentPath.includes(linkHref) && linkHref !== "#") {
             link.classList.add('active');
         }
-        // Caso especial para páginas que no están en el menú directo pero pertenecen a una sección
-        if (linkHref && currentPath.includes('sesion.html') && linkHref.includes('citas')) {
-            // Opcional: si quisieras marcar Citas cuando estás en sesión
-        }
     });
 
-    // --- 2. LÓGICA DE HEADER Y AVATAR (Anteriormente en auth-guard.js) ---
     if (typeof user !== 'undefined' && user) {
         document.querySelectorAll('.user-name-dinamico').forEach(el => el.textContent = user.nombre);
 
-        // Quitamos el padding al span de debajo del nombre en el dropdown (especialidad)
         const specSpan = document.querySelector('.dropdown-header span');
         if (specSpan) {
             if (user.actividadLegal) {
                 specSpan.textContent = user.actividadLegal;
             } else {
-                // Si no está en la sesión, lo cargamos del perfil para que aparezca siempre
                 fetch(`${API_BASE}/psicologos/${user.idPsicologo || user.id}`)
                     .then(res => res.json())
                     .then(data => {
@@ -70,16 +72,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 dropdownPanel?.classList.toggle('show');
             });
 
-            // Inyectamos la opción de Tarifas y el separador en el desplegable
             if (dropdownPanel && !dropdownPanel.querySelector('a[href="tarifas.html"]')) {
                 const linkTarifas = document.createElement('a');
                 linkTarifas.href = 'tarifas.html';
                 linkTarifas.innerHTML = '<i class="fa-solid fa-euro-sign"></i> Tarifas';
 
                 const separator = document.createElement('hr');
-
-                // Buscamos el enlace de Ayuda como punto de anclaje para mantener el orden:
-                // Mi Cuenta (estático) -> Tarifas (dinámico) -> Separador (dinámico) -> Ayuda (estático)
                 const linkAyuda = dropdownPanel.querySelector('a[href="ayuda.html"], a[href="configuracion.html"]')
                     || Array.from(dropdownPanel.querySelectorAll('a')).find(a => a.textContent.includes('Ayuda'));
 
@@ -100,7 +98,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- 3. LÓGICA DE LOGOUT GLOBAL ---
     const btnLogouts = document.querySelectorAll('a[href="index.html"], #logout-link, .logout-section a');
     btnLogouts.forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -112,7 +109,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- 4. LÓGICA DE LOGO (SCROLL TO TOP) ---
     const logoLink = document.querySelector('.header-logo');
     const contentArea = document.querySelector('.content');
 
@@ -120,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
         logoLink.addEventListener('click', (e) => {
             if (contentArea.scrollTop > 0) {
                 e.preventDefault();
-                e.stopPropagation(); // Evita que salte el aviso de "cambios sin guardar" en sesion.html
+                e.stopPropagation();
                 contentArea.scrollTo({ top: 0, behavior: 'smooth' });
             }
         });

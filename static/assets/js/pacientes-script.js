@@ -1,6 +1,8 @@
+/**
+ * Gestión del Listado de Pacientes.
+ */
 document.addEventListener('DOMContentLoaded', () => {
 
-    // Usamos la constante global para construir la URL de pacientes
     const API_URL = `${API_BASE}/pacientes`;
 
     const tableBody = document.getElementById('lista-pacientes-body');
@@ -10,10 +12,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.pacientesData = [];
 
-    // Solo calculamos el psicologoId localmente si no existe
     const psicologoId = user?.idPsicologo || user?.id;
 
-    // --- CARGAR PROVINCIAS ---
+    /**
+     * Popula el datalist de provincias para el registro de nuevos pacientes.
+     */
     async function cargarProvincias() {
         try {
             const res = await fetch(`${API_BASE}/provincias`, { headers: { 'Authorization': `Bearer ${token}` } });
@@ -29,7 +32,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (e) { console.error("Error provincias:", e); }
     }
 
-    // --- LISTENER PARA CAPTURAR SELECCIÓN DE PROVINCIA ---
     const provinciaSearch = document.getElementById('nuevo-provincia-search');
     const provinciaId = document.getElementById('nuevo-provincia-id');
 
@@ -46,9 +48,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 2. LÓGICA DE PACIENTES ---
+    /**
+     * Obtiene y filtra la lista de pacientes según los criterios de búsqueda y estado.
+     */
     async function cargarPacientes() {
-        // 'token' y 'psicologoId' ya son accesibles globalmente
         if (!token || !psicologoId) {
             console.warn("Falta token o ID de psicólogo");
             return;
@@ -79,6 +82,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    /**
+     * Construye las filas de la tabla de pacientes con sus respectivas acciones.
+     */
     function renderTable(data) {
         if (!tableBody) return;
         tableBody.innerHTML = '';
@@ -102,7 +108,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const row = document.createElement('tr');
             row.style.cursor = 'pointer';
             row.onclick = (e) => {
-                // No redirigir si el clic fue en el selector de estado, el botón de nueva cita o el enlace de email
                 if (e.target.closest('.status-selector-wrapper') || e.target.closest('.btn-icon') || e.target.closest('.email-link') || e.target.closest('.phone-link')) {
                     return;
                 }
@@ -140,12 +145,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td data-label="Contacto">
                     <small>
                         ${p.contactos && p.contactos.length > 0 ? (() => {
-                    // BUSCAMOS EL PRINCIPAL, SI NO HAY, COGEMOS EL PRIMERO
                     const contactoPrincipal = p.contactos.find(c => c.principal === true) || p.contactos[0];
                     const masContactos = p.contactos.length - 1;
 
                     let html = '';
-                    // Usamos la información del contactoPrincipal encontrado
                     if (contactoPrincipal.telefono) {
                         html += `<div class="phone-link" style="margin-bottom: 2px;"><i class="fa-solid fa-phone" style="width: 15px;"></i> ${contactoPrincipal.telefono}</div>`;
                     }
@@ -173,7 +176,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 3. ACCIONES DE FORMULARIO ---
+    /**
+     * Manejador de envío para el registro de un nuevo paciente.
+     */
     const formNuevo = document.getElementById('formNuevoPaciente');
     if (formNuevo) {
         formNuevo.addEventListener('submit', async (event) => {
@@ -241,12 +246,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 4. FUNCIONES DE VENTANA (MODALES) ---
     window.abrirModalNuevo = () => {
         const modal = document.getElementById('modalNuevoPaciente');
         if (modal) {
             modal.style.display = 'flex';
-            // Limpiar campo de provincia al abrir el modal
+
             const provinciaSearch = document.getElementById('nuevo-provincia-search');
             const provinciaId = document.getElementById('nuevo-provincia-id');
             if (provinciaSearch) provinciaSearch.value = '';
@@ -262,7 +266,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- FUNCIONES PARA CAMBIO DE ESTADO DEL PACIENTE ---
+    /**
+     * Controladores de estado rápido para pacientes desde el listado.
+     */
     window.toggleDropdownPaciente = (event, idPaciente) => {
         event.stopPropagation();
         const dropdown = document.getElementById(`dropdown-estado-${idPaciente}`);
@@ -284,7 +290,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (response.ok) {
-                // Actualizar en local
                 const idx = pacientesData.findIndex(p => p.id === idPaciente);
                 if (idx !== -1) pacientesData[idx].estadoPaciente = nuevoEstado;
                 cargarPacientes();
@@ -297,7 +302,10 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.status-options-dropdown').forEach(d => d.classList.remove('show'));
     });
 
-    // --- 5. FILTROS E INICIO ---
+    /**
+     * Lee los parámetros de la URL para aplicar filtros automáticos 
+     * (ej: filtrado por estado desde el dashboard).
+     */
     function inicializarFiltrosDesdeURL() {
         const urlParams = new URLSearchParams(window.location.search);
         const estadoURL = urlParams.get('estado');

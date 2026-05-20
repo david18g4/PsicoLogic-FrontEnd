@@ -1,22 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
-/* ==========================================
-   1. CONFIGURACIÓN BASE (Reset y Estructura)
-   ========================================== */
 :root {
-    /* Escala tipográfica unificada */
     --font-size-xl: 2rem;
-    /* Títulos grandes (Login) */
     --font-size-lg: 1.5rem;
-    /* Títulos de sección (Headers) */
     --font-size-md: 1.125rem;
-    /* Subtítulos o nombres destacados */
     --font-size-base: 1rem;
-    /* Texto de lectura general */
     --font-size-sm: 0.875rem;
-    /* Tablas, inputs y menús */
     --font-size-xs: 0.75rem;
-    /* Tags, leyendas y labels */
 }
 
 * {
@@ -31,7 +21,6 @@ body {
     width: 100%;
     font-family: 'Montserrat', sans-serif;
     font-size: 16px;
-    /* Base del navegador */
     overflow: hidden;
 }
 
@@ -43,9 +32,6 @@ body.app-view {
     flex-direction: column;
 }
 
-/* ==========================================
-   2. HEADER (Fijo en la parte superior)
-   ========================================== */
 .header-app {
     height: 70px;
     background: #fff;
@@ -83,9 +69,6 @@ body.app-view {
     border: 2px solid #5fb3e3;
 }
 
-/* ==========================================
-   3. LAYOUT PRINCIPAL (Sidebar + Contenido)
-   ========================================== */
 .main-layout {
     background: linear-gradient(to right, aliceblue, #c8ecff);
     margin-top: 70px;
@@ -114,9 +97,6 @@ body.app-view {
     padding: 10px;
 }
 
-/* ==========================================
-   4. ESTILOS UNIFICADOS (Tags y Animaciones)
-   ========================================== */
 .tag {
     padding: 6px 12px;
     border-radius: 8px;
@@ -176,9 +156,6 @@ body.app-view {
     height: 42px;
 }
 
-/* ==========================================
-   5. DROPDOWN MENU (Avatar)
-   ========================================== */
 .user-menu-container {
     position: relative;
     display: flex;
@@ -212,7 +189,6 @@ body.app-view {
     animation: fadeInUp 0.3s ease;
 }
 
-/* Mostrar el panel mediante JS */
 .dropdown-panel.show {
     display: block;
 }
@@ -263,27 +239,34 @@ body.app-view {
     padding-bottom: 5px;
 }
 
-/* Contenedor del contenido debe ser relativo para que el loader se posicione bien */
 .content {
     position: relative;
-    min-height: 200px; /* Evita que colapse si está vacío */
+    min-height: 200px;
 }
 
-/* Estilo para el logo dentro del loader */
 .loader-logo {
     width: 100px;
     height: 100px;
-    /* Animación de latido suave */
     animation: pulse 1.5s ease-in-out infinite;
 }
 
 @keyframes pulse {
-    0% { transform: scale(0.95); opacity: 0.8; }
-    50% { transform: scale(1.05); opacity: 1; }
-    100% { transform: scale(0.95); opacity: 0.8; }
+    0% {
+        transform: scale(0.95);
+        opacity: 0.8;
+    }
+
+    50% {
+        transform: scale(1.05);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(0.95);
+        opacity: 0.8;
+    }
 }
 
-/* El contenedor que ya tenías */
 .inner-loader {
     position: absolute;
     inset: 0;

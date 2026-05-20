@@ -1,8 +1,3 @@
-/* ==========================================
-    PERFIL DEL PACIENTE - ESTILOS COMPLETOS
-   ========================================== */
-
-/* 1. Card de Cabecera y Botones en línea */
 .profile-header-card {
     display: flex;
     justify-content: space-between;
@@ -14,9 +9,7 @@
     border-radius: 20px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
     position: relative;
-    /* Necesario para que z-index funcione */
     z-index: 100;
-    /* Base suficiente para la cabecera */
     overflow: visible !important;
     min-width: 995px;
 }
@@ -26,19 +19,14 @@
     align-items: center;
     gap: 25px;
     overflow: visible !important;
-    /* Asegura que el contenido interno no se corte */
 }
 
-/* Forzamos que los contenedores intermedios del nombre y badges no recorten el menú */
 .profile-titles,
 .badges-container,
 .status-selector-wrapper {
     overflow: visible !important;
     position: relative;
-    /* Crea el contexto para el dropdown absoluto */
 }
-
-/* Eleva el selector específicamente cuando el menú está abierto para que flote sobre todo */
 
 .profile-quick-actions {
     display: flex;
@@ -59,7 +47,6 @@
     box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
-/* 2. Grid de Detalles */
 .details-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -67,7 +54,6 @@
     align-items: stretch;
     position: relative;
     z-index: 1;
-    /* Forzamos que el grid esté en una capa inferior a la cabecera */
 }
 
 .modal-footer {
@@ -81,10 +67,8 @@
     flex-direction: column;
     gap: 25px;
     min-width: 0;
-    /* Fundamental para el slider horizontal */
 }
 
-/* Cards de la columna derecha: fluidas */
 .next-appointment-card,
 .files-card {
     background: white;
@@ -95,7 +79,6 @@
     flex-direction: column;
     min-width: 0;
     flex-grow: 1;
-    /* Permite que la tarjeta de archivos crezca para llenar el espacio restante */
     min-width: 410px;
 }
 
@@ -112,7 +95,6 @@
     display: flex;
     flex-direction: column;
     height: 580px !important;
-    /* Altura fija solicitada */
     max-height: 800px !important;
 }
 
@@ -129,11 +111,9 @@
     scrollbar-width: thin;
     scrollbar-color: #cbd5e1 transparent;
     background-color: #ffffff;
-    /* Fondo gris suave para crear el efecto de "recipiente" */
     border: 1px solid #e2e8f0;
     border-radius: 15px;
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
-    /* Sombra interna para dar profundidad */
     padding: 0px 10px;
 }
 
@@ -158,7 +138,6 @@
 
 #p-lista-contactos {
     max-height: 165px;
-    /* Altura ajustada para ver 2 contactos y asomar el tercero */
     overflow-y: auto;
     padding: 12px;
     margin-top: 10px;
@@ -181,19 +160,13 @@
     border-radius: 10px;
 }
 
-
-
-/* 3. Estilos de Modal y Overlay (Elegante) */
-
 .modal-body-scroll {
-    /* Padding lateral para los inputs */
     margin: 0;
     max-height: 60vh;
     overflow-y: auto;
     padding-right: 10px;
 }
 
-/* Estilo del scrollbar para el modal */
 .modal-body-scroll::-webkit-scrollbar {
     width: 6px;
 }
@@ -203,7 +176,6 @@
     border-radius: 10px;
 }
 
-/* 5. Próxima Cita - Estilo Específico Solicitado */
 .appointment-content {
     background: linear-gradient(135deg, #f0f7ff 0%, #e3f2fd 100%);
     padding: 20px;
@@ -212,7 +184,6 @@
     align-items: center;
     align-content: center;
     flex-grow: 1;
-    /* Permite que el contenido crezca para llenar el espacio disponible */
 }
 
 .next-cita-box {
@@ -242,24 +213,18 @@
     letter-spacing: 1px;
 }
 
-/* 6. Archivos Adjuntos */
 .files-horizontal-container {
     display: flex;
     overflow-x: auto;
     width: 100%;
-    /* Asegura que ocupe todo el ancho de la card */
     gap: 15px;
     padding: 10px 10px;
     scrollbar-width: thin;
     scrollbar-color: #cbd5e1 transparent;
     align-items: center;
-    /* Centra las cards verticalmente sin estirarlas */
     justify-content: safe center;
-    /* Centra si hay espacio, alinea a la izquierda si desborda */
     background-color: #f0f7ff;
-    /* Fondo sutil para las franjas superior e inferior */
     border-radius: 15px;
-    /* Bordes redondeados para que se integre mejor con la card padre */
 }
 
 .files-horizontal-container::-webkit-scrollbar {
@@ -271,7 +236,6 @@
     border-radius: 10px;
 }
 
-/* Centrado del mensaje de "Sin documentos" */
 #files-container:not(.files-horizontal-container) {
     display: flex;
     align-items: center;
@@ -290,7 +254,6 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    /* Centra el contenido verticalmente dentro de la card */
     text-align: center;
     gap: 10px;
     transition: all 0.3s ease;
@@ -332,16 +295,14 @@
     opacity: 1;
 }
 
-/* Hover específico en rojo para el botón de eliminar archivo */
 .file-card .btn-delete-file:hover {
     background: #ef4444;
     color: white;
 }
 
-/* Estilos específicos para el footer del modal de contactos */
 #modal-contacto-overlay .modal-footer {
     display: flex;
-    justify-content: flex-end; /* Por defecto a la derecha */
+    justify-content: flex-end;
     align-items: center;
     width: 100%;
 }
@@ -353,12 +314,11 @@
     padding: 10px 15px;
     border-radius: 10px;
     cursor: pointer;
-    margin-right: auto; /* Esto lo empuja a la izquierda */
+    margin-right: auto;
     align-items: center;
     gap: 8px;
 }
 
-/* 8. Filas de Datos */
 .data-row {
     padding: 12px 0;
     border-bottom: 1px solid #f1f5f9;
@@ -375,14 +335,10 @@
     display: inline-block;
 }
 
-/* Estilo destacado para el Motivo de Consulta */
 #p-motivo {
     background-color: #fffbeb;
-    /* Amarillo muy suave */
     border: 1px solid #fcd34d;
-    /* Borde dorado sutil */
     color: #92400e;
-    /* Texto marrón/dorado oscuro */
     padding: 15px;
     border-radius: 12px;
     margin-top: 10px;
@@ -390,7 +346,6 @@
     line-height: 1.5;
 }
 
-/* 9. Historial de Sesiones */
 .sessions-history-card {
     grid-column: 1 / span 2;
     display: flex;
@@ -405,7 +360,6 @@
     color: #264574;
 }
 
-/* --- Nuevo Historial basado en Cards (Estilo Contactos) --- */
 .sessions-cards-container {
     display: flex;
     flex-direction: column;
@@ -433,7 +387,6 @@
     box-shadow: 0 8px 25px rgba(52, 142, 194, 0.1);
 }
 
-/* Estado No Presentado: Fondo rojo claro */
 .session-item-card.is-no-presentado,
 .session-full-card.is-no-presentado {
     background-color: #fef2f2 !important;
@@ -449,7 +402,6 @@
     box-shadow: 0 4px 15px rgba(239, 68, 68, 0.1);
 }
 
-/* Columnas de la Card */
 .session-info-left {
     width: 38%;
     background: #f8fafc;
@@ -458,17 +410,11 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    /* Align items vertically in the row */
     justify-content: space-around;
-    /* Distribute space between date-time-group, divider, and tags-row */
     gap: 15px;
-    /* Gap between elements */
     align-items: center;
-    /* Align items vertically in the row */
     justify-content: space-around;
-    /* Distribute space between date-time-group, divider, and tags-row */
     gap: 15px;
-    /* Gap between elements */
     border-radius: 16px 0 0 16px;
     flex-shrink: 0;
 }
@@ -476,9 +422,7 @@
 .info-divider {
     width: 1px;
     height: 60px;
-    /* Make it taller to be more prominent */
     height: 60px;
-    /* Make it taller to be more prominent */
     background: #e2e8f0;
     margin: 0;
     border-radius: 2px;
@@ -517,14 +461,10 @@
 .date-time-group {
     display: flex;
     flex-direction: row;
-    /* Date and time are in a row */
     align-items: center;
     gap: 15px;
-    /* Gap between date badge and time tag */
     flex: 1;
-    /* Take up half the space */
     justify-content: center;
-    /* Center content within its half */
 }
 
 .session-time-tag {
@@ -551,7 +491,6 @@
     gap: 8px;
     justify-content: center;
     flex-wrap: wrap;
-    /* Allow tags to wrap */
     flex: 1;
     width: 100%;
 }
@@ -592,7 +531,6 @@
     color: #348ec2;
 }
 
-/* Scroller vertical genérico */
 .scroller-vertical {
     max-height: 220px;
     overflow-y: auto;
@@ -652,10 +590,8 @@
     color: white;
 }
 
-/* 7. Lista de Contactos - Rediseño Agenda / Cards */
 .contact-item-card {
     background: white;
-    /* Cambiado a blanco puro para que resalte sobre el fondo del contenedor */
     border: 1px solid #e2e8f0;
     border-radius: 12px;
     padding: 12px 15px;
@@ -756,7 +692,6 @@
     padding-right: 35px;
 }
 
-/* Estilos básicos para inputs del modal si no los tienes */
 .form-control {
     width: 100%;
     padding: 10px;
@@ -773,10 +708,7 @@
 
 #files-container {
     max-height: none;
-    max-height: none;
-    /* Ya estaba, asegura que no haya un límite de altura fijo */
     flex: 1;
-    /* Permite que el contenedor de archivos crezca dentro de su padre (.files-card) */
     box-shadow: rgba(0, 0, 0, 0.05) 0px 2px 4px inset;
 }
 
@@ -813,9 +745,7 @@
     padding: 24px 20px;
     gap: 12px;
     padding: 20px;
-    /* Ligeramente menos padding */
     gap: 15px;
-    /* Más espacio entre elementos */
     border-top: 4px solid #348ec2;
 }
 
@@ -828,13 +758,10 @@
     justify-content: center;
     font-size: 1.8rem;
     font-size: 2rem;
-    /* Icono ligeramente más grande */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
     background: #f8fafc;
-    /* Fondo neutral por defecto */
     color: #94a3b8;
-    /* Color neutral para el icono */
 }
 
 .patient-info-content {
@@ -843,16 +770,13 @@
     flex-direction: column;
     gap: 4px;
     gap: 6px;
-    /* Más espacio entre nombre y DNI */
 }
 
 .patient-info-content h3 {
     margin: 0;
     font-size: 1.15rem;
     font-size: 1.3rem;
-    /* Nombre más grande */
     line-height: 1.2;
-    /* Mejor espaciado de línea */
     transition: color 0.2s;
 }
 
@@ -860,14 +784,10 @@
     background: #e2e8f0;
     color: #475569;
     padding: 3px 10px;
-    /* Más padding */
     border-radius: 15px;
-    /* Más redondeado */
     font-size: 0.8rem;
-    /* DNI ligeramente más grande */
     font-weight: 600;
     letter-spacing: 0.5px;
-    /* Un poco más espaciado */
 }
 
 .patient-meta-list {
@@ -875,9 +795,7 @@
     margin-top: 8px;
     padding-top: 15px;
     margin-top: 10px;
-    /* Más espacio encima de la lista de metadatos */
     padding-top: 18px;
-    /* Más padding encima del borde */
     border-top: 1px solid #f1f5f9;
 }
 
@@ -886,7 +804,6 @@
     align-items: center;
     gap: 12px;
     gap: 15px;
-    /* Más espacio entre icono y texto */
     color: #64748b;
 }
 
@@ -894,22 +811,18 @@
     font-size: 1.1rem;
     color: #94a3b8;
     font-size: 1.2rem;
-    /* Icono ligeramente más grande */
     color: #94a3b8;
-    /* Color neutral para el icono de calendario */
 }
 
 .meta-text {
     display: flex;
     flex-direction: column;
     gap: 2px;
-    /* Pequeño espacio entre small y span */
 }
 
 .meta-text small {
     font-size: 0.7rem;
     font-size: 0.8rem;
-    /* Etiqueta más grande */
     text-transform: uppercase;
     letter-spacing: 0.5px;
     color: #94a3b8;
@@ -918,60 +831,42 @@
 .meta-text span {
     font-size: 0.9rem;
     font-size: 1rem;
-    /* Fecha más grande */
     font-weight: 700;
     color: #264574;
     line-height: 1.3;
-    /* Mejor espaciado de línea */
 }
 
 .btn-video-link {
     transition: all 0.3s ease;
     text-decoration: none;
-    /* Elimina el subrayado */
     display: flex;
-    /* Asegura que el contenido esté centrado */
     justify-content: center;
     align-items: center;
 }
 
-/* Evita que el icono herede colores de enlace visitado */
 .btn-video-link i {
     text-decoration: none;
 }
 
-/* Cuando el JS detecte que no hay URL, el botón se verá así */
 .btn-video-link[style*="pointer-events: none"] {
     background: #cbd5e1 !important;
-    /* Gris claro */
     cursor: not-allowed;
     opacity: 0.6;
-    /* Un toque extra visual de "desactivado" */
 }
 
-/* Opcional: un pequeño efecto al pasar el ratón si está activo */
 .btn-video-link:not([style*="pointer-events: none"]):hover {
     background: #264574 !important;
-    /* Un azul más oscuro al hacer hover */
     transform: translateY(-1px);
 }
 
 .separador-sesion {
-    /* Quitamos cualquier estilo previo */
     border: none !important;
-
-    /* Copiamos el estilo del borde de "Datos de sesión" */
     border-bottom: 0.02px solid #f1f5f9 !important;
-
-    /* Ajustamos el espacio para que respire igual que el título */
     margin: 20px 0 !important;
-
-    /* Forzamos que ocupe todo el ancho */
     width: 100% !important;
     display: block !important;
 }
 
-/* Estilos para el Selector de Estado */
 .status-selector-wrapper {
     display: inline-block;
     position: relative;
@@ -991,20 +886,16 @@
     display: none;
     position: absolute;
     bottom: 100%;
-    /* El desplegable se abre hacia arriba */
     left: 0;
     margin-bottom: 5px;
-    /* Margen para que el desplegable no toque el tag */
     background: white;
     border-radius: 8px;
     box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
-    /* Sombra hacia arriba */
     z-index: 1002;
     min-width: 140px;
     border: 1px solid #e2e8f0;
 }
 
-/* Eleva la fila completa cuando el menú está abierto para que pase por encima de las filas superiores */
 .session-item-card:has(.status-options-dropdown.show) {
     z-index: 101;
     background: white;
@@ -1014,7 +905,6 @@
     display: block;
 }
 
-/* Desplegables del Historial: Forzar apertura hacia abajo */
 .sessions-cards-container .status-options-dropdown {
     bottom: auto;
     top: 100%;
@@ -1039,27 +929,19 @@
 .input-group label {
     margin-bottom: 8px;
     display: block;
-    /* Si quieres que se despeguen un poco más de la línea superior: */
     margin-top: 5px;
 }
 
-/* Forzar que todos los elementos de formulario ocupen el 100% de su contenedor */
 .form-control,
 select.form-control,
 input.form-control {
     width: 100% !important;
-    /* El !important asegura que sobreescriba estilos nativos */
     display: block;
     box-sizing: border-box;
-    /* Crucial para que el padding no sume al ancho total */
     appearance: none;
-    /* Opcional: quita el estilo nativo del sistema para más control */
     -webkit-appearance: none;
-    /* Específico para Safari/Mac */
 }
 
-/* Si quieres mantener la flechita pero con control, asegúrate de que el contenedor 
-   del grid no sea el que los está "estrujando" */
 .form-grid .form-group select {
     min-width: 100%;
 }
@@ -1071,7 +953,6 @@ input.form-control {
     margin-right: 5px;
 }
 
-/* Estilos para el Modal de Selección de Atributos de Archivo */
 .tipo-doc-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1138,7 +1019,6 @@ input.form-control {
     text-decoration: underline;
 }
 
-/* --- Estilos Globales de Contactos y Buscador (Movidos fuera de Media Queries) --- */
 .contact-item-card.is-principal {
     background-color: #fffbeb !important;
     border: 1px solid #fcd34d !important;
@@ -1176,7 +1056,7 @@ input.form-control {
     border-radius: 10px;
     font-size: 0.85rem;
     width: 200px;
-    height: 32px; /* Altura idéntica al botón .btn-icon-small */
+    height: 32px;
     box-sizing: border-box;
     transition: border-color 0.2s;
 }
@@ -1186,141 +1066,89 @@ input.form-control {
     border-color: #348ec2;
 }
 
-/* ==========================================
-    RESPONSIVE DESIGN - Session History Only
-   ========================================== */
-
 @media (max-width: 1413px) {
 
-    /* Mantener la estructura de dos columnas principales para la card de sesión */
     .session-item-card {
 
-        /* No change needed, already defined */
         .session-item-card {
-            /* No change needed, already defined */
             flex-direction: row;
             min-height: 120px;
             height: auto;
             min-height: 140px;
-            /* Permitir que la altura aumente */
             align-items: stretch;
-            /* Asegura que ambos lados midan lo mismo */
         }
 
-        /* La parte izquierda de la card se convierte en una columna interna */
         .session-info-left {
             width: 38%;
-            /* Mantener la proporción original */
             flex-direction: column;
-            /* Cambiamos a columna para apilar los dos bloques de 50% */
             gap: 0;
             padding: 10px 15px;
-            /* Ajustar padding */
             justify-content: center;
             justify-content: space-evenly;
-            /* Centrar contenido verticalmente */
             align-items: center;
-            /* Centrar contenido horizontalmente */
             display: flex;
             min-height: 140px;
-            /* Centrar contenido horizontalmente */
         }
 
-        /* Nuevo: Agrupar fecha y hora en una fila */
         .date-time-group {
-            /* Keep existing styles, ensure it's a row */
             display: flex;
             gap: 8px;
             justify-content: center;
             width: 100%;
             flex: 1;
-            /* Takes vertical space in column layout */
             flex: 1;
-            /* Takes vertical space in column layout */
             align-items: center;
             flex-direction: row;
-            /* Date and time are in a row */
             flex-direction: row;
-            /* Date and time are in a row */
         }
 
-        /* Asegurar que el divisor sea visible y actúe como separador horizontal */
         .info-divider {
             display: block;
-            /* Hacer visible el divisor */
             width: 100%;
-            /* Asegurar que ocupe todo el ancho */
             max-width: 80%;
             height: 1px;
-            /* Hacerlo una línea fina */
             background: #e2e8f0;
             background: #cbd5e1;
-            /* Color del divisor */
             margin: 5px 0;
-            /* Ajustar margen vertical */
         }
 
         .session-content-right {
             flex: 1;
-            /* Hace que el lado derecho crezca para llenar el espacio */
             align-items: center;
         }
 
-        /* Ajustes para los elementos de fecha y hora */
         .session-date-badge {
             min-width: 80px;
-            /* Ensure the badge is not too small */
             max-width: 80px;
-            /* Ensure the badge is not too small */
             min-width: 80px;
-            /* Ensure the badge is not too small */
             max-width: 80px;
-            /* Ensure the badge is not too small */
         }
 
         .session-time-tag {
             margin-right: 0;
-            /* Remove right margin */
             width: fit-content;
-            /* Adjust to content */
             margin-right: 0;
-            /* Remove right margin */
             width: fit-content;
-            /* Adjust to content */
         }
 
-        /* Ajustes para la fila de tags */
         .tags-row {
             width: 100%;
             flex: 1;
-            /* Toma el 50% del espacio inferior */
             display: flex;
-            /* Ensure it's a flex container */
             display: flex;
-            /* Ensure it's a flex container */
             align-items: center;
-            /* Asegurar que la fila de tags ocupe todo el ancho */
             justify-content: center;
-            /* Centrar tags horizontalmente */
             flex-wrap: wrap;
-            /* Permitir que los tags se envuelvan */
         }
 
-        /* Ajustes para el dropdown de estado/tipo en el historial */
         .sessions-cards-container .status-options-dropdown {
             left: auto;
             right: 0;
             transform: none;
         }
-
-        /* Las cards de información y próxima cita no se ajustan en este breakpoint */
-        /* Se eliminan las reglas para .info-card y .next-appointment-card */
     }
 
-    @media (max-width: 992px) {
-        /* No hay ajustes específicos para el historial de sesiones en este breakpoint
-       que no estén ya cubiertos por el breakpoint de 1413px o el diseño base. */
-    }
+    @media (max-width: 992px) {}
 
     @media (max-width: 768px) {
         .session-content-right p {
@@ -1331,25 +1159,18 @@ input.form-control {
             max-height: 350px;
         }
 
-        /* Ajustes finos para los elementos de la parte izquierda de la sesión */
         .session-info-left {
 
-            /* No change needed, already defined */
             .session-info-left {
-                /* No change needed, already defined */
                 width: 45%;
-                /* Aumentamos ligeramente el ancho en pantallas más pequeñas */
             }
 
             .date-time-group {
                 flex-direction: column;
                 gap: 10px;
                 gap: 10px;
-                /* Keep existing gap */
                 gap: 10px;
-                /* Keep existing gap */
-                /* Mantiene la fila pero con menos espacio */
-                /* Reducir el espacio entre fecha y hora */
+                gap: 10px;
             }
 
             .session-date-badge {
@@ -1378,24 +1199,16 @@ input.form-control {
 
         @media (max-width: 480px) {
 
-            /* Ajustes adicionales para pantallas muy pequeñas */
             .session-info-left {
 
-                /* No change needed, already defined */
                 .session-info-left {
-                    /* No change needed, already defined */
                     width: 100%;
-                    /* La parte izquierda ocupa todo el ancho */
                     border-right: none;
                     border-bottom: 1px solid #f1f5f9;
                     border-bottom: 1px solid #e2e8f0;
-                    /* Añadir borde inferior */
                     border-radius: 16px 16px 0 0;
-                    /* Ajustar border radius */
                     padding: 15px 20px;
-                    /* Ajustar padding */
                     flex-wrap: wrap;
-                    /* Permitir que los elementos se envuelvan */
                     height: auto;
                     min-height: 150px;
                 }

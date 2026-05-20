@@ -8,7 +8,6 @@
 
 .modal-content {
     width: 800px;
-    /* Sobrescribimos ancho por defecto */
     margin-top: 20px;
 }
 
@@ -43,7 +42,6 @@
     background: white;
 }
 
-/* Resto de estilos del archivo original se mantienen igual */
 .main-layout {
     background-color: aliceblue;
 }
@@ -171,7 +169,7 @@
     transform: scale(1.2);
 }
 
-/* Hacer que la fila cambie de color al pasar el ratón */
+
 #lista-pacientes-body tr {
     transition: background-color 0.2s ease;
     cursor: pointer;
@@ -179,14 +177,10 @@
 
 #lista-pacientes-body tr:hover {
     background-color: #f0f7ff;
-    /* Un azul muy claro */
 }
-
-/* --- RESPONSIVIDAD DE LA TABLA --- */
 
 @media screen and (max-width: 768px) {
 
-    /* Ocultar el encabezado original de la tabla */
     .session-table thead {
         display: none;
     }
@@ -222,11 +216,9 @@
     .session-table td:last-child {
         border-bottom: none;
         justify-content: center;
-        /* Centrar botones de acción */
         padding-left: 0;
     }
 
-    /* Insertar los nombres de las columnas antes del dato */
     .session-table td::before {
         content: attr(data-label);
         position: absolute;
@@ -266,7 +258,6 @@
     }
 }
 
-/* ========== ESTILOS DEL DROPDOWN DE ESTADO ========== */
 .status-selector-wrapper {
     position: relative;
     display: inline-block;
@@ -289,7 +280,7 @@
     left: 0;
     background: white;
     border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     z-index: 1001;
     min-width: 150px;
     border: 1px solid #e2e8f0;
@@ -318,10 +309,10 @@
 }
 
 @media screen and (max-width: 1100px) and (min-width: 769px) {
-    /* En pantallas medianas, ocultamos columnas menos importantes para ganar espacio */
-    .session-table th:nth-child(2), /* DNI */
+
+    .session-table th:nth-child(2),
     .session-table td:nth-child(2),
-    .session-table th:nth-child(4), /* Género */
+    .session-table th:nth-child(4),
     .session-table td:nth-child(4) {
         display: none;
     }
@@ -339,7 +330,7 @@
     text-decoration: none;
     transition: color 0.2s;
     display: inline-block;
-    max-width: 160px; /* Límite para activar los puntos suspensivos */
+    max-width: 160px;
     overflow: hidden;
     text-overflow: ellipsis;
 }
