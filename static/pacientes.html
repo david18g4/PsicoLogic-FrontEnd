@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="icon" href="assets/img/PsicoLogicLogo.png" type="image/png">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="assets/css/general.css">
+        <link rel="stylesheet" href="assets/css/sidebar.css">
+        <link rel="stylesheet" href="assets/css/common-components.css">
+        <link rel="stylesheet" href="assets/css/modals.css">
+        <link rel="stylesheet" href="assets/css/pacientes.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+        <title>Pacientes</title>
+        <script src="assets/js/auth-guard.js"></script>
+    </head>
+    <body class="app-view">
+        <header class="header-app">
+            <a href="home.html" class="logo-link">
+                <div class="logo-section">
+                    <h1 class="nombre-app-texto small">PsicoLogic</h1>
+                </div>
+            </a>
+            <img src="assets/img/PsicoLogicLogo.png" class="header-logo" alt="Logo">
+            <div class="user-info">
+                <span>Pacientes -
+                    <strong class="user-name-dinamico">Cargando...</strong>
+                </span>
+                <div class="user-menu-container">
+                    <img
+                        src
+                        class="avatar avatar-dinamico"
+                        alt="Avatar"
+                        id="avatar-click"
+                    >
+                    <div class="dropdown-panel" id="dropdown-panel">
+                        <div class="dropdown-header">
+                            <strong class="user-name-dinamico">Cargando...</strong>
+                            <span>Psicólogo Colegiado</span>
+                        </div>
+                        <hr>
+                        <a href="perfil.html">
+                            <i class="fa-solid fa-user-gear"></i> Mi Cuenta
+                        </a>
+                        <a href="ayuda.html">
+                            <i class="fa-solid fa-circle-question"></i>
+                            Ayuda
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="main-layout">
+            <aside class="sidebar collapsed" id="sidebar">
+                <div class="toggle-btn" id="toggle-sidebar">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+                <nav class="menu-links">
+                    <a href="home.html">
+                        <i class="fa-solid fa-house"></i>
+                        <span>Inicio</span>
+                    </a>
+                    <a href="pacientes.html" class="active">
+                        <i class="fa-solid fa-user-group"></i>
+                        <span>Pacientes</span>
+                    </a>
+                    <a href="citas.html">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <span>Citas</span>
+                    </a>
+                    <a href="estadisticas.html">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>Estadísticas</span>
+                    </a>
+                </nav>
+                <div class="logout-section">
+                    <a href="index.html" style="color: #ff7675;">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>Cerrar Sesión</span>
+                    </a>
+                </div>
+            </aside>
+            <main class="content">
+                <div id="content-loader" class="inner-loader">
+                    <img src="assets/img/PsicoLogicLogo.png" class="loader-logo" alt="Logo">
+                </div>
+                <div class="welcome-banner">
+                    <div>
+                        <h2>Gestión de Pacientes</h2>
+                        <p>
+                            Visualiza, filtra y busca en tu base de datos
+                            clínica.
+                        </p>
+                    </div>
+                    <button class="btn-primary" onclick="abrirModalNuevo()">
+                        <i class="fa-solid fa-user-plus"></i>
+                        Nuevo Paciente
+                    </button>
+                </div>
+                <div class="card toolbar-pacientes">
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="buscador" placeholder="Buscar por nombre, DNI o email...">
+                    </div>
+                    <div class="filters">
+                        <select id="filter-estado">
+                            <option value="all">Todos los estados</option>
+                            <option value="Alta">Alta</option>
+                            <option value="Seguimiento">Seguimiento</option>
+                            <option value="Evaluación">Evaluación</option>
+                        </select>
+                        <select id="sort-pacientes">
+                            <option value="nombre-asc">Nombre (A-Z)</option>
+                            <option value="nombre-desc">Nombre (Z-A)</option>
+                            <option value="edad-asc">Menor edad</option>
+                            <option value="edad-desc">Mayor edad</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="card table-container">
+                    <table class="session-table" id="tabla-pacientes">
+                        <thead>
+                            <tr>
+                                <th>Paciente</th>
+                                <th style="text-align: center;">DNI</th>
+                                <th style="text-align: center;">Edad</th>
+                                <th style="text-align: center;">Género</th>
+                                <th style="text-align: center">Estado</th>
+                                <th style="min-width: 200px;">Contacto</th>
+                                <th style="text-align: center">Nueva Cita</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lista-pacientes-body"></tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+        <div id="modalNuevoPaciente" class="modal-overlay" onclick="if(event.target == this) cerrarModalNuevo()">
+            <form id="formNuevoPaciente" class="modal-content card">
+                <div class="modal-header">
+                    <h3>
+                        <i class="fa-solid fa-user-plus"></i>
+                        Registro de
+                        Paciente
+                    </h3>
+                    <button type="button" class="btn-close-x" onclick="cerrarModalNuevo()">&times;</button>
+                </div>
+                <div class="modal-body-scroll">
+                    <h4 class="form-section-title">Datos Personales</h4>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Nombre</label>
+                            <input
+                                type="text"
+                                id="nuevo-nombre"
+                                required
+                                placeholder="Ej. Laura María"
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label>Apellidos</label>
+                            <input
+                                type="text"
+                                id="nuevo-apellidos"
+                                required
+                                placeholder="Ej. Martínez García"
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label>DNI / NIE</label>
+                            <input
+                                type="text"
+                                id="nuevo-dni"
+                                required
+                                placeholder="12345678X"
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label>Fecha de Nacimiento</label>
+                            <input type="date" id="nuevo-fecha" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Género</label>
+                            <select id="nuevo-genero">
+                                <option value="Mujer">Mujer</option>
+                                <option value="Hombre">Hombre</option>
+                                <option value="No_especificado">No especificado</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Estado Civil</label>
+                            <select id="nuevo-estado-civil">
+                                <option value="Soltero">Soltero</option>
+                                <option value="Casado">Casado</option>
+                                <option value="Divorciado">Divorciado</option>
+                                <option value="Viudo">Viudo</option>
+                                <option value="Pareja_Hecho">Pareja de Hecho</option>
+                            </select>
+                        </div>
+                    </div>
+                    <h4 class="form-section-title">Contacto y Ubicación</h4>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Nombre de Contacto</label>
+                            <input type="text" id="nuevo-contacto-nombre" placeholder="Ej. María López">
+                        </div>
+                        <div class="form-group">
+                            <label>Correspondencia del Contacto</label>
+                            <input type="text" id="nuevo-contacto-parentesco" placeholder="Ej: Propio, Madre, Pareja, Tutor legal...">
+                        </div>
+                        <div class="form-group">
+                            <label>Teléfono</label>
+                            <input type="tel" id="nuevo-telefono" placeholder="600000000">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="nuevo-email" placeholder="ejemplo@correo.com">
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Dirección</label>
+                            <textarea id="nuevo-direccion" rows="2" placeholder="Calle, número, piso..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Municipio</label>
+                            <input type="text" id="nuevo-municipio">
+                        </div>
+                        <div class="form-group">
+                            <label>Código Postal</label>
+                            <input type="text" id="nuevo-cp">
+                        </div>
+                        <div class="form-group">
+                            <label>Provincia</label>
+                            <input
+                                type="text"
+                                id="nuevo-provincia-search"
+                                class="form-control"
+                                list="provincias-list-nuevo"
+                                placeholder="Escriba para buscar..."
+                            >
+                            <datalist id="provincias-list-nuevo"></datalist>
+                            <input type="hidden" id="nuevo-provincia-id">
+                        </div>
+                        <div class="form-group">
+                            <label>Estado del Paciente</label>
+                            <select id="nuevo-estado">
+                                <option value="Evaluación">Evaluación</option>
+                                <option value="Seguimiento">Seguimiento</option>
+                                <option value="Alta">Alta</option>
+                            </select>
+                        </div>
+                    </div>
+                    <h4 class="form-section-title">
+                        Situación
+                            Socio-Laboral
+                    </h4>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Situación Laboral</label>
+                            <select id="nuevo-situacion-laboral">
+                                <option value="Empleado">Empleado</option>
+                                <option value="Desempleado">Desempleado</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>¿Estudia?</label>
+                            <select id="nuevo-estudiando">
+                                <option value="false">No</option>
+                                <option value="true">Sí</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Nivel de Estudios</label>
+                            <input type="text" id="nuevo-nivel-estudios" placeholder="Ej. Grado Universitario">
+                        </div>
+                    </div>
+                    <h4 class="form-section-title">Información Clínica</h4>
+                    <div class="form-group full-width">
+                        <label>Motivo de la Consulta</label>
+                        <textarea id="nuevo-motivo" rows="4" placeholder="Notas iniciales..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer" style="padding-bottom: 0px; padding-top: 30px; padding-right: 30px;">
+                    <button type="button" class="btn-secundario" onclick="cerrarModalNuevo()">Cancelar</button>
+                    <button type="submit" class="btn-primary">
+                        Guardar
+                        Paciente
+                    </button>
+                </div>
+            </form>
+        </div>
+        <script src="assets/js/layout.js"></script>
+        <script src="assets/js/pacientes-script.js"></script>
+    </body>
+</html>

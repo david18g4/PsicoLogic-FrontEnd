@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" href="assets/img/PsicoLogicLogo.png" type="image/png">
+        <link rel="stylesheet" href="assets/css/general.css">
+        <link rel="stylesheet" href="assets/css/sidebar.css">
+        <link rel="stylesheet" href="assets/css/common-components.css">
+        <link rel="stylesheet" href="assets/css/home.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+        <title>Inicio</title>
+    </head>
+    <body class="app-view">
+        <header class="header-app">
+            <a href="home.html" class="logo-link">
+                <div class="logo-section">
+                    <h1 class="nombre-app-texto small">PsicoLogic</h1>
+                </div>
+            </a>
+            <img src="assets/img/PsicoLogicLogo.png" class="header-logo" alt="Logo">
+            <div class="user-info">
+                <span>Inicio -
+                    <strong class="user-name-dinamico">Cargando...</strong>
+                </span>
+                <div class="user-menu-container">
+                    <img
+                        src
+                        class="avatar avatar-dinamico"
+                        alt="Avatar"
+                        id="avatar-click"
+                    >
+                    <div class="dropdown-panel" id="dropdown-panel">
+                        <div class="dropdown-header">
+                            <strong class="user-name-dinamico">Cargando...</strong>
+                            <span>Psicólogo Colegiado</span>
+                        </div>
+                        <hr>
+                        <a href="perfil.html">
+                            <i class="fa-solid fa-user-gear"></i> Mi Cuenta
+                        </a>
+                        <a href="ayuda.html">
+                            <i class="fa-solid fa-circle-question"></i>
+                            Ayuda
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="main-layout">
+            <aside class="sidebar collapsed" id="sidebar">
+                <div class="toggle-btn" id="toggle-sidebar">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+                <nav class="menu-links">
+                    <a href="home.html" class="active">
+                        <i class="fa-solid fa-house"></i>
+                        <span>Inicio</span>
+                    </a>
+                    <a href="pacientes.html">
+                        <i class="fa-solid fa-user-group"></i>
+                        <span>Pacientes</span>
+                    </a>
+                    <a href="citas.html">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <span>Citas</span>
+                    </a>
+                    <a href="estadisticas.html">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>Estadísticas</span>
+                    </a>
+                </nav>
+                <div class="logout-section">
+                    <a href="index.html" style="color: #ff7675;">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>
+                            Cerrar
+                            Sesión
+                        </span>
+                    </a>
+                </div>
+            </aside>
+            <main class="content">
+                <div id="content-loader" class="inner-loader">
+                    <img src="assets/img/PsicoLogicLogo.png" class="loader-logo" alt="Logo">
+                </div>
+                <header class="welcome-banner">
+                    <div>
+                        <h2>Bienvenido,
+                            <strong class="user-name-dinamico">Cargando...</strong>
+                        </h2>
+                        <p id="welcome-message">
+                            Cargando sesiones
+                            programadas...
+                        </p>
+                    </div>
+                    <img src="https://cdn-icons-png.flaticon.com/512/4807/4807695.png" alt="Equipo Médico" style="width: 100px;">
+                </header>
+                <div class="dashboard-grid">
+                    <section class="stats-cards">
+                        <a href="pacientes.html?estado=Seguimiento" class="card card-link" style="text-decoration: none; color: inherit; display: flex;">
+                            <i class="fa-solid fa-users icon-blue"></i>
+                            <div>
+                                <h3 id="stat-pacientes">0</h3>
+                                <p>
+                                    En
+                                    Seguimiento
+                                </p>
+                            </div>
+                        </a>
+                        <div class="card no-hover">
+                            <i class="fa-solid fa-video icon-purple"></i>
+                            <div>
+                                <h3 id="stat-sesiones-hoy">0</h3>
+                                <p>
+                                    Sesiones
+                                    Hoy
+                                </p>
+                            </div>
+                        </div>
+                        <div class="card no-hover">
+                            <i class="fa-solid fa-clock icon-teal"></i>
+                            <div>
+                                <h3 id="stat-pendientes">0</h3>
+                                <p>Pendientes</p>
+                            </div>
+                        </div>
+                        <a href="estadisticas.html" class="card card-link" style="text-decoration: none; color: inherit; display: flex;">
+                            <i class="fa-solid fa-wallet icon-green"></i>
+                            <div>
+                                <h3 id="stat-ingresos">0€</h3>
+                                <p>
+                                    Ingresos
+                                    Mes
+                                </p>
+                            </div>
+                        </a>
+                    </section>
+                    <section class="card">
+                        <h3>Próximas Sesiones Hoy</h3>
+                        <table class="session-table">
+                            <thead>
+                                <tr>
+                                    <th>Paciente</th>
+                                    <th>Hora</th>
+                                    <th style="text-align: center;">Modalidad</th>
+                                    <th style="text-align: center;">Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody id="sesiones-body">
+                                <tr>
+                                    <td colspan="4" style="text-align:center; padding:20px;">
+                                        Cargando
+                                        sesiones...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section class="card card-notas">
+                        <h3>Notas Temporales</h3>
+                        <textarea class="notas-rapidas" id="notas-dashboard" placeholder="Escribe un recordatorio..."></textarea>
+                    </section>
+                </div>
+            </main>
+        </div>
+        <script src="/assets/js/auth-guard.js"></script>
+        <script src="/assets/js/layout.js"></script>
+        <script src="/assets/js/home-script.js"></script>
+    </body>
+</html>

@@ -1,0 +1,149 @@
+/* Estilos específicos para la página de tarifas */
+.content h2 {
+    font-size: 1.5rem;
+    color: #264574;
+    margin-bottom: 30px;
+}
+
+/* Contenedor con bordes redondeados (Estilo Historial de Sesiones) */
+.table-container-scroll {
+    max-height: none; /* Ajustado al tamaño de la card */
+    overflow: hidden;
+    border: 1px solid #f1f5f9;
+    border-radius: 12px;
+    margin-top: 0;
+}
+
+.table-container-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+
+.table-container-scroll::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+.session-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.session-table th,
+.session-table td {
+    padding: 12px 15px;
+    text-align: center;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.session-table th {
+    position: sticky;
+    top: 0;
+    background: #f1f5f9; /* Tono gris distinto al de las celdas agrupadas */
+    z-index: 100; /* Z-index alto para que el contenido pase por debajo */
+    color: #64748b;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 2px solid #d7eaf6 !important; /* Línea fija entre títulos y datos */
+}
+
+.session-table tbody tr:hover {
+    background-color: #f0f7ff;
+}
+
+.session-table td {
+    font-size: 1.1rem;
+    color: #2d3748;
+}
+
+.session-table tr {
+    position: relative;
+    transition: all 0.2s;
+}
+
+/* Estilo para la celda agrupada */
+.tipo-col-agrupada {
+    background: #f8fafc;
+    font-weight: 500;
+    color: #264574;
+    border-right: 2px solid #e2e8f0;
+    vertical-align: middle;
+    font-size: 1.2rem !important;
+}
+
+/* Raya divisoria entre grupos más fina */
+.group-divider td {
+    border-top: 1px solid #d7eaf6 !important; /* Más fina como se solicitó */
+}
+
+/* Contenedor relativo para el precio */
+.price-cell-container {
+    position: relative;
+    display: inline-flex; /* Permite que el botón se posicione respecto al texto centrado */
+    align-items: center;
+    justify-content: center;
+}
+
+/* Botón de edición flotante (Estilo paciente-detalle) */
+.btn-edit-tarifa {
+    position: absolute;
+    right: -50px; /* Empieza más lejos para la transición */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: none;
+    background: #348ec2;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease; /* Transición más suave estilo paciente-detalle */
+    opacity: 0;
+    z-index: 20;
+}
+
+.session-table tr:hover .btn-edit-tarifa {
+    right: -35px; /* Aparece justo al lado del símbolo € */
+    opacity: 1;
+}
+
+.btn-edit-tarifa:hover {
+    color: white;
+    background: #264574; /* Contraste fuerte para el hover */
+}
+
+/* Estilos para el input de edición visualmente bonito */
+.price-edit-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.edit-input-precio {
+    width: 80px;
+    padding: 5px 8px;
+    border: 2px solid #348ec2;
+    border-radius: 8px;
+    font-family: inherit;
+    font-weight: 700;
+    color: #264574;
+    text-align: center;
+    outline: none;
+    font-size: 1.1rem; /* Mismo tamaño que el texto de la columna */
+}
+
+.btn-save-inline {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 1.3rem;
+    color: #27ae60;
+    padding: 5px;
+    transition: transform 0.2s;
+}
+.btn-save-inline:hover { transform: scale(1.2); }

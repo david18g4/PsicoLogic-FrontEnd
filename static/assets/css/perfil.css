@@ -1,0 +1,46 @@
+/* Estilos específicos para la página de perfil */
+
+.profile-header-card .gender-icon-large {
+    background: #eef2ff;
+    color: #4f46e5;
+}
+
+.details-grid {
+    margin-top: 25px;
+}
+
+.info-card {
+    height: auto !important;
+    min-height: 300px;
+}
+
+.full-width-card {
+    grid-column: 1 / span 2;
+    height: auto !important;
+    min-height: unset;
+}
+
+.data-row strong {
+    width: 130px;
+}
+
+.session-table td {
+    padding: 15px;
+}
+
+.card {
+    margin-bottom: 0px !important;
+}
+
+/* Ajuste de proporciones para la tabla de cuentas (2/10, 3.5/10, 4.5/10) */
+.session-table th:nth-child(1) {
+    width: 20%;
+}
+
+.session-table th:nth-child(2) {
+    width: 35%;
+}
+
+.session-table th:nth-child(3) {
+    width: 45%;
+}

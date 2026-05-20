@@ -1,0 +1,318 @@
+.help-container {
+    max-width: 1400px;
+    width: 95%;
+    margin: 0 auto;
+}
+
+.help-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+
+.welcome-banner {
+    background: white;
+    padding: 30px 40px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+    flex-direction: column;
+}
+
+.welcome-banner h1 {
+    color: #264574;
+    margin-bottom: 10px;
+    font-size: 1.8rem;
+    text-align: center;
+    width: 100%;
+    font-weight: bold;
+}
+
+.help-navigation-wrapper {
+    position: relative;
+    width: 100%;
+    margin-bottom: 40px;
+    overflow: visible;
+}
+
+.help-overlay-nav {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 60px;
+    border: none;
+    background: transparent;
+    color: rgba(52, 142, 194, 0.4);
+    /* Flecha visible pero tenue por defecto */
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+    opacity: 1;
+}
+
+.help-overlay-nav:hover {
+    background: radial-gradient(circle at center, rgba(38, 69, 116, 0.18) 0%, transparent 70%);
+    color: #264574;
+    transform: scale(1.05);
+}
+
+.help-overlay-nav.prev {
+    left: -60px;
+    border-radius: 20px 0 0 20px;
+}
+
+.help-overlay-nav.next {
+    right: -60px;
+    border-radius: 0 20px 20px 0;
+}
+
+.help-interactive-layout {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    width: 100%;
+}
+
+.help-info-side {
+    flex: 1;
+    max-width: 480px;
+}
+
+.help-preview-side {
+    flex: 1.5;
+}
+
+.help-card {
+    background: white;
+    padding: 35px;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(38, 69, 116, 0.04);
+    transition: all 0.4s ease;
+    border: 1px solid transparent;
+    overflow: hidden;
+}
+
+/* Estado base: El contenido en su sitio */
+#card-inner-animator {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 1;
+    transform: translateX(0);    
+    min-height: 252px;
+}
+
+/* SALIDA: El contenido viejo se va */
+.content-exit-next {
+    /* Hacia la izquierda */
+    opacity: 0 !important;
+    transform: translateX(-100px) !important;
+}
+
+.content-exit-prev {
+    /* Hacia la derecha */
+    opacity: 0 !important;
+    transform: translateX(100px) !important;
+}
+
+/* ENTRADA: El contenido nuevo viene desde el lado opuesto */
+.content-prepare-next {
+    opacity: 0 !important;
+    transform: translateX(100px) !important;
+    /* Viene desde la derecha */
+    transition: none !important;
+}
+
+.content-prepare-prev {
+    opacity: 0 !important;
+    transform: translateX(-100px) !important;
+    /* Viene desde la izquierda */
+    transition: none !important;
+}
+
+
+.dynamic-content {
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    border: 1px solid #e3f2fd;
+}
+
+.help-icon-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.help-card h3 {
+    color: #264574;
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.help-card p {
+    color: #64748b;
+    line-height: 1.7;
+    font-size: 1rem;
+}
+
+/* Carrusel Estilo Tablet */
+.app-preview {
+    width: 100%;
+    position: relative;
+    border: 14px solid #1a1a1a;
+    border-radius: 30px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    background: #000;
+    animation: fadeInUp 0.8s ease-out backwards;
+    animation-delay: 0.15s;
+}
+
+.carousel-item img {
+    object-fit: cover;
+    height: auto;
+    aspect-ratio: 16 / 10;
+}
+
+/* Indicadores personalizados debajo del texto */
+.carousel-indicators-custom {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 30px;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    background: #cbd5e1;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.dot.active {
+    background: #348ec2;
+    width: 25px;
+    border-radius: 10px;
+}
+
+.full-width-contact {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.help-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.help-card h3 {
+    color: #264574;
+    margin-bottom: 15px;
+    font-size: 1.25rem;
+}
+
+.help-card p {
+    color: #64748b;
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+/* Colores de Iconos */
+.icon-blue {
+    background: #e3f2fd;
+    color: #2196f3;
+}
+
+.icon-teal {
+    background: #e0f2f1;
+    color: #009688;
+}
+
+.icon-purple {
+    background: #f3e5f5;
+    color: #9c27b0;
+}
+
+.icon-green {
+    background: #e8f5e9;
+    color: #4caf50;
+}
+
+.icon-orange {
+    background: #fff3e0;
+    color: #ff9800;
+}
+
+.icon-red {
+    background: #ffebee;
+    color: #f44336;
+}
+
+.admin-contact {
+    background: white;
+    animation-delay: 0.3s;
+}
+
+.contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+    color: #348ec2;
+    text-decoration: none;
+    font-weight: 700;
+    padding: 8px 15px;
+    background: #f0f7ff;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.contact-link:hover {
+    background: #348ec2;
+    color: white;
+}
+
+.help-footer {
+    margin-top: 30px;
+    text-align: center;
+    padding-top: 30px;
+    border-top: 1px solid #e2e8f0;
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+.footer-links {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.footer-links a {
+    color: #64748b;
+    text-decoration: none;
+}
+
+.footer-links a:hover {
+    color: #348ec2;
+}

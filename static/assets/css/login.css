@@ -1,0 +1,404 @@
+body {
+    background: linear-gradient(to right, aliceblue, #c8ecff);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.nombre-app-texto {
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    background: linear-gradient(to right, #264574 50%, #5fb3e3 50%);
+    background-size: 200% 100%;
+    background-position: 0% 0%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    transition: background-position 0.6s ease-in-out;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+}
+
+body:has(.contenedor.active) .nombre-app-texto {
+    background-position: 100% 0%;
+}
+
+.contenedor {
+    background-color: #fff;
+    border-radius: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+    position: relative;
+    overflow: hidden;
+    width: 768px;
+    max-width: 100%;
+    min-height: 480px;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* Animación para el encabezado de la página de login */
+.encabezado-nombre-app {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.contenedor-formulario form {
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 40px;
+    height: 100%;
+    text-align: center;
+}
+
+.contenedor input {
+    background-color: aliceblue;
+    border: none;
+    width: 100%;
+    margin: 8px 0;
+    padding: 10px 15px;
+    font-size: 13px;
+    border-radius: 8px;
+    outline: none;
+}
+
+.inicio-sesion {
+    left: 0;
+    width: 50%;
+    z-index: 2;
+    position: absolute;
+    height: 100%;
+    transition: all 0.6s ease-in-out;
+}
+
+.contenedor.active .inicio-sesion {
+    transform: translateX(100%);
+    opacity: 0;
+}
+
+.crear-cuenta {
+    left: 0;
+    width: 50%;
+    opacity: 0;
+    z-index: 1;
+    position: absolute;
+    height: 100%;
+    transition: all 0.6s ease-in-out;
+}
+
+.contenedor.active .crear-cuenta {
+    transform: translateX(100%);
+    opacity: 1;
+    z-index: 5;
+    animation: move 0.6s;
+}
+
+.contenedor button {
+    font-size: 14px;
+    padding: 10px 30px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+#iniciar-sesion,
+#btn-registrar {
+    background-color: #384e6f;
+    color: #fff;
+    border: none;
+}
+
+#iniciar-sesion:hover,
+#btn-registrar:hover {
+    background-color: #348ec2;
+}
+
+.btn-ghost {
+    background-color: rgba(255, 255, 255, 0.15);
+    border: 2px solid #ffffff;
+    color: #ffffff;
+}
+
+.contenedor-turno {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: all 0.6s ease-in-out;
+    border-radius: 150px 0 0 100px;
+    z-index: 1000;
+}
+
+.contenedor.active .contenedor-turno {
+    transform: translateX(-100%);
+    border-radius: 0 150px 100px 0;
+}
+
+.turno {
+    height: 100%;
+    background: linear-gradient(to right, #5fb3e3, #3964a5);
+    color: #fff;
+    position: relative;
+    left: -100%;
+    width: 200%;
+    transform: translateX(0);
+    transition: all 0.6s ease-in-out;
+}
+
+.contenedor.active .turno {
+    transform: translateX(50%);
+}
+
+.panel-turno {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 30px;
+    text-align: center;
+    top: 0;
+    transition: all 0.6s ease-in-out;
+}
+
+.turno-izquierda {
+    transform: translateX(-200%);
+}
+
+.contenedor.active .turno-izquierda {
+    transform: translateX(0);
+}
+
+.turno-derecha {
+    right: 0;
+    transform: translateX(0);
+}
+
+.contenedor.active .turno-derecha {
+    transform: translateX(200%);
+}
+
+.iconos-inicio-sesion {
+    margin: 20px 0;
+}
+
+.iconos-inicio-sesion a {
+    border: 1px solid #264574;
+    border-radius: 20%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 3px;
+    width: 40px;
+    height: 40px;
+    color: #264574;
+    text-decoration: none;
+}
+
+@keyframes move {
+
+    0%,
+    49.99% {
+        opacity: 0;
+        z-index: 1;
+    }
+
+    50%,
+    100% {
+        opacity: 1;
+        z-index: 5;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translate3d(0, 30px, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+/* Mantenemos la simetría y separación exacta en el formulario de registro */
+.crear-cuenta h1 {
+    margin-bottom: 5px;
+}
+
+.crear-cuenta span {
+    margin-top: 15px;
+    /* Compensa visualmente el espacio de los iconos en el login */
+    margin-bottom: 15px;
+}
+
+/* Unificamos la estética de los textos de ayuda en los paneles deslizantes */
+.panel-turno span {
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: 0.3px;
+    margin: 15px 0 25px;
+    /* Margen equilibrado entre el título y el botón */
+    display: block;
+}
+
+.contenedor-completo {
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    width: 800px;
+    max-width: 95%;
+    padding: 0;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 440px;
+    max-height: calc(100vh - 160px);
+    scroll-behavior: smooth;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.encabezado-logo-app {
+    margin-bottom: 10px;
+    text-align: center;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.encabezado-logo-app img {
+    height: 60px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+.contenedor-completo h1 {
+    color: #264574;
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 5px;
+}
+
+.contenedor-completo span {
+    color: #64748b;
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.contenedor-completo input, 
+.contenedor-completo select {
+    background-color: aliceblue;
+    border: 1px solid transparent; /* Aseguramos que el espacio del borde siempre esté reservado */
+    width: 100%;
+    margin: 8px 0;
+    padding: 12px 15px;
+    font-size: 13px;
+    border-radius: 8px;
+    outline: none;
+    font-family: 'Montserrat', sans-serif;
+    color: #264574;
+}
+.modal-header {
+    padding: 30px 40px 10px;
+    border-bottom: 1px solid #f1f5f9;
+    text-align: center;
+}
+
+.contenedor-completo button {
+    font-size: 14px;
+    padding: 10px 30px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    background-color: #384e6f;
+    color: #fff;
+    border: none;
+}
+
+.contenedor-completo button:hover {
+    background-color: #348ec2;
+}
+
+/* Botón cancelar rojo específico para el contenedor de registro completo */
+.contenedor-completo .btn-ghost {
+    color: #ef4444 !important;
+    border: 2px solid #ef4444 !important;
+    background-color: transparent !important;
+    text-transform: uppercase;
+}
+
+.contenedor-completo .btn-ghost:hover {
+    background-color: #ef4444 !important;
+    color: #fff !important;
+}
+
+.modal-body-scroll {
+    padding: 20px 40px;
+    overflow-y: auto;
+    flex: 1; /* Permite que el cuerpo use el espacio disponible */
+}
+
+.modal-footer {
+    padding: 20px 40px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.contenedor-completo input:focus, 
+.contenedor-completo select:focus {
+    border: 1px solid #348ec2;
+    background-color: #fff;
+}
+
+.contenedor-completo input:read-only {
+    background-color: #e2e8f0;
+    cursor: not-allowed;
+    color: #94a3b8;
+}
+
+.form-section-title {
+    grid-column: span 2;
+    text-align: left;
+    color: #0f172a; /* Azul casi negro, mucho más oscuro para legibilidad */
+    font-size: 0.95rem;
+    font-weight: 800;
+    border-bottom: 2px solid #cbd5e1;
+    padding-bottom: 5px;
+    margin: 25px 0 10px 0;
+}
+
+.contenedor-completo .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 20px;
+}
+
+/* Adaptación para pantallas pequeñas (móviles y tablets) */
+@media (max-width: 768px) {
+    .contenedor-completo .form-grid {
+        grid-template-columns: 1fr; /* Una sola columna en móviles */
+    }
+    
+    .contenedor-completo .full-width,
+    .contenedor-completo .form-section-title {
+        grid-column: span 1;
+    }
+}
+
+.contenedor-completo .full-width {
+    grid-column: span 2;
+}
+
+.btn-finalizar-registro {
+    line-height: 1.2;
+}

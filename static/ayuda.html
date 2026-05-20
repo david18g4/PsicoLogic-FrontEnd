@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" href="assets/img/PsicoLogicLogo.png" type="image/png">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="assets/css/general.css">
+        <link rel="stylesheet" href="assets/css/sidebar.css">
+        <link rel="stylesheet" href="assets/css/common-components.css">
+        <link rel="stylesheet" href="assets/css/ayuda.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+        <title>Ayuda</title>
+        <script src="assets/js/auth-guard.js"></script>
+    </head>
+    <body class="home-body">
+        <header class="header-app">
+            <a href="home.html" class="logo-link">
+                <div class="logo-section">
+                    <h1 class="nombre-app-texto small">PsicoLogic</h1>
+                </div>
+            </a>
+            <img src="assets/img/PsicoLogicLogo.png" class="header-logo" alt="Logo">
+            <div class="user-info">
+                <span>
+                    Ayuda -
+                    <strong class="user-name-dinamico">Cargando...</strong>
+                </span>
+                <div class="user-menu-container">
+                    <img
+                        src
+                        class="avatar avatar-dinamico"
+                        alt="Avatar"
+                        id="avatar-click"
+                    >
+                    <div class="dropdown-panel" id="dropdown-panel">
+                        <div class="dropdown-header">
+                            <strong class="user-name-dinamico">Cargando...</strong>
+                            <span>Psicólogo Colegiado</span>
+                        </div>
+                        <hr>
+                        <a href="perfil.html">
+                            <i class="fa-solid fa-user-gear"></i>
+                            Mi Cuenta
+                        </a>
+                        <a href="ayuda.html">
+                            <i class="fa-solid fa-circle-question"></i>
+                            Ayuda
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="main-layout">
+            <aside class="sidebar collapsed" id="sidebar">
+                <div class="toggle-btn" id="toggle-sidebar">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+                <nav class="menu-links">
+                    <a href="home.html">
+                        <i class="fa-solid fa-house"></i>
+                        <span>Inicio</span>
+                    </a>
+                    <a href="pacientes.html">
+                        <i class="fa-solid fa-user-group"></i>
+                        <span>Pacientes</span>
+                    </a>
+                    <a href="citas.html">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <span>Citas</span>
+                    </a>
+                    <a href="estadisticas.html">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>Estadísticas</span>
+                    </a>
+                </nav>
+                <div class="logout-section">
+                    <a href="index.html" style="color: #ff7675;">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>
+                            Cerrar
+                            Sesión
+                        </span>
+                    </a>
+                </div>
+            </aside>
+            <main class="content">
+                <div id="content-loader" class="inner-loader">
+                    <img src="assets/img/PsicoLogicLogo.png" class="loader-logo" alt="Logo">
+                </div>
+                <div class="help-container">
+                    <div class="welcome-banner">
+                        <h1>¿En qué podemos ayudarte?</h1>
+                        <p>
+                            Explora las funciones de PsicoLogic y resuelve tus
+                            dudas rápidamente.
+                        </p>
+                    </div>
+                    <div class="help-navigation-wrapper">
+                        <div class="help-interactive-layout">
+                            <!-- Columna Izquierda: Card Dinámica -->
+                            <div class="help-info-side">
+                                <div id="dynamic-help-card" class="help-card dynamic-content">
+                                    <div id="card-inner-animator">
+                                        <div class="help-icon-container">
+                                            <div id="help-icon" class="help-icon icon-blue">
+                                                <i class="fa-solid fa-rocket"></i>
+                                            </div>
+                                        </div>
+                                        <h3 id="help-title">Sobre PsicoLogic</h3>
+                                        <p id="help-text">Una plataforma integral diseñada para psicólogos que buscan optimizar la gestión de sus pacientes, sesiones y facturación en un entorno seguro.</p>
+                                    </div>
+                                    <div class="carousel-indicators-custom">
+                                        <span class="dot active" data-bs-target="#previewCarousel" data-bs-slide-to="0"></span>
+                                        <span class="dot" data-bs-target="#previewCarousel" data-bs-slide-to="1"></span>
+                                        <span class="dot" data-bs-target="#previewCarousel" data-bs-slide-to="2"></span>
+                                        <span class="dot" data-bs-target="#previewCarousel" data-bs-slide-to="3"></span>
+                                        <span class="dot" data-bs-target="#previewCarousel" data-bs-slide-to="4"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Columna Derecha: Tablet Carousel -->
+                            <div class="help-preview-side">
+                                <div
+                                    id="previewCarousel"
+                                    class="carousel slide app-preview"
+                                    data-bs-ride="carousel"
+                                    data-bs-interval="5000"
+                                >
+                                    <div class="carousel-inner">
+                                        <div class="carousel-item active">
+                                            <img src="assets/img/Home-cap.png" class="d-block w-100" alt="Vista Inicio">
+                                        </div>
+                                        <div class="carousel-item">
+                                            <img src="assets/img/Paciente-cap.png" class="d-block w-100" alt="Gestión Pacientes">
+                                        </div>
+                                        <div class="carousel-item">
+                                            <img src="assets/img/Citas-cap.png" class="d-block w-100" alt="Agenda">
+                                        </div>
+                                        <div class="carousel-item">
+                                            <img src="assets/img/Stats-cap-2.png" class="d-block w-100" alt="Estadísticas">
+                                        </div>
+                                        <div class="carousel-item">
+                                            <img src="assets/img/Notas-Sesion-cap.png" class="d-block w-100" alt="Notas Sesión">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button
+                            class="help-overlay-nav prev"
+                            type="button"
+                            data-bs-target="#previewCarousel"
+                            data-bs-slide="prev"
+                        >
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </button>
+                        <button
+                            class="help-overlay-nav next"
+                            type="button"
+                            data-bs-target="#previewCarousel"
+                            data-bs-slide="next"
+                        >
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    <div class="help-card admin-contact full-width-contact">
+                        <div class="help-icon icon-red">
+                            <i class="fa-solid fa-headset"></i>
+                        </div>
+                        <h3>Soporte Técnico</h3>
+                        <p>
+                            ¿Tienes algún problema técnico o sugerencia?
+                                Contacta con el administrador del sistema:
+                        </p>
+                        <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=davidgonzalezramajo@outlook.es" id="btn-soporte-admin" class="contact-link">
+                            <i class="fa-solid fa-envelope"></i>
+                            Correo del Administrador
+                        </a>
+                    </div>
+                </div>
+                <footer class="help-footer">
+                    <p>PsicoLogic v1.0.0 - Software de Gestión Clínica</p>
+                    <div class="footer-links">
+                        <a href="#">Términos de Uso</a>
+                        <a href="#">Privacidad</a>
+                    </div>
+                </footer>
+            </div>
+        </main>
+    </div>
+    <script src="assets/js/layout.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/ayuda-script.js"></script>
+</body>
+</html>

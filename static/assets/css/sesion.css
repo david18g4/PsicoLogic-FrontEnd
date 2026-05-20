@@ -1,0 +1,409 @@
+.tag {
+    cursor: default;
+}
+
+.clickable-tag {
+    cursor: pointer !important;
+    transition: all 0.2s ease;
+}
+
+/* Asegura que el header permita que el dropdown flote por encima del contenido */
+.header-app {
+    overflow: visible !important;
+    z-index: 2000 !important;
+}
+
+.session-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    grid-template-rows: 1fr auto;
+    gap: 20px;
+    height: 100%;
+    align-items: stretch;
+}
+
+.session-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 100%;
+}
+
+/* Quita márgenes heredados y estira la última card para igualar altura con columna derecha */
+.session-sidebar .card {
+    margin-bottom: 0;
+}
+
+.session-sidebar .card:last-child {
+    flex: 1;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 18px;
+    box-shadow: 0 10px 25px rgba(38, 69, 116, 0.08) !important;
+    animation: fadeInUp 0.8s ease-out backwards;
+}
+
+.patient-mini-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+}
+
+/* Nombre del paciente en la sidebar */
+.patient-mini-card h3 {
+    font-size: var(--font-size-md);
+    margin-bottom: 10px;
+}
+
+.gender-icon {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.gender-female {
+    color: #ff80ab !important;
+}
+
+.gender-male {
+    color: #264574 !important;
+}
+
+/* Estilos de la tarjeta de cita (Copiados de paciente-detalle.css) */
+.appointment-content {
+    background: linear-gradient(135deg, #f0f7ff 0%, #e3f2fd 100%);
+    padding: 15px;
+    border-radius: 15px;
+    border: 1px dashed #348ec2;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.next-cita-box {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    text-align: left;
+}
+
+.date-badge {
+    background: #264574;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 12px;
+    text-align: center;
+    min-width: 60px;
+    margin: 0;
+    /* Aseguramos que no se desplace dentro del wrapper */
+}
+
+/* Reloj de progreso */
+.progress-ring-wrapper {
+    --progress: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px;
+    border-radius: 15px;
+    background: conic-gradient(#348ec2 calc(var(--progress) * 1%), #cbd5e1 0deg);
+    transition: background 0.3s ease;
+}
+
+.progress-ring-wrapper.completed {
+    background: #27ae60 !important;
+    /* Verde al completar */
+}
+
+.date-badge .day {
+    font-size: 1.2rem;
+    font-weight: 800;
+    display: block;
+}
+
+.date-badge .month {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.next-cita-time {
+    color: #264574;
+    font-size: 1.3rem;
+}
+
+.next-cita-modality {
+    color: #64748b;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.session-details-form h4 {
+    margin-bottom: 15px;
+    color: #264574;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+    font-size: var(--font-size-base);
+}
+
+.input-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.input-group input,
+.input-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: var(--font-size-sm);
+}
+
+.main-notes.card {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+    height: 100%;
+}
+
+.tabs-header {
+    display: flex;
+    gap: 5px;
+    background: #f8f9fa;
+    padding: 10px 10px 0 10px;
+    border-radius: 12px 12px 0 0;
+    border-bottom: 1px solid #eee;
+}
+
+.tab-btn {
+    padding: 10px 20px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: var(--font-size-base);
+    color: #888;
+    border-bottom: 3px solid transparent;
+    transition: 0.3s;
+}
+
+.tab-btn.active {
+    color: #264574;
+    border-bottom: 3px solid #348ec2;
+}
+
+.tabs-content {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+}
+
+.tab-pane {
+    display: none;
+    flex: 1;
+}
+
+.tab-pane.active {
+    display: flex;
+}
+
+.tab-pane textarea {
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    resize: none;
+    font-family: inherit;
+    font-size: var(--font-size-base);
+    line-height: 1.6;
+    color: #444;
+}
+
+.footer-actions {
+    grid-column: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 15px;
+    width: 100%;
+}
+
+#last-saved {
+    font-size: var(--font-size-xs);
+    color: #718096;
+    font-weight: 500;
+}
+
+.btn-primary {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    border-radius: 12px;
+    background: #264574;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: var(--font-size-sm);
+    transition: all 0.3s ease;
+}
+
+#btn-finalizar {
+    transition: all 0.4s ease;
+    min-width: 120px;
+}
+
+.btn-saved-success {
+    background-color: #48bb78 !important;
+    /* Verde suave */
+    transform: scale(1.03);
+    box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
+}
+
+/* Estilos para el selector de estado de la cita */
+.status-selector-wrapper {
+    display: inline-block;
+    position: relative;
+}
+
+/* Etiquetas tipo botón (selectores) */
+.status-selector-wrapper {
+    display: inline-block;
+    position: relative;
+    overflow: visible !important;
+}
+
+.status-selector-wrapper .tag {
+    display: inline-block;
+    min-width: 110px;
+    text-align: center;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.status-options-dropdown {
+    width: 130px;
+    display: none;
+    position: absolute;
+    top: 110%;
+    left: 0;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    z-index: 10000 !important;
+    border: 1px solid #e2e8f0;
+}
+
+.status-options-dropdown.show {
+    display: block;
+}
+
+.status-options-dropdown div {
+    padding: 8px 15px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    color: #475569;
+}
+
+.status-options-dropdown div:hover {
+    background: #f1f5f9;
+    color: #264574;
+}
+
+.fc-event.event-cancelada .fc-event-title {
+    text-decoration: line-through !important;
+}
+
+.cita-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cita-card-header strong {
+    color: #264574;
+    font-size: 1rem;
+}
+
+.cita-card-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+}
+
+.cita-item-card.estado-realizada {
+    background-color: #f0fdf4;
+    /* Verde muy claro */
+    opacity: 0.8;
+}
+
+.cita-item-card.estado-no_presentado {
+    background-color: #fef2f2;
+    /* Rojo muy claro */
+    opacity: 0.8;
+}
+
+.cita-item-card.estado-cancelada {
+    background-color: #f8f8f8;
+    /* Gris muy claro */
+    opacity: 0.6;
+    text-decoration: line-through;
+    filter: grayscale(0.5);
+}
+
+.cita-item-card .btn-icon {
+    font-size: 0.9rem;
+    padding: 6px;
+    color: #64748b;
+}
+
+.p-nombre-item {
+    cursor: pointer;
+    color: #264574;
+    text-decoration: underline;
+    transition: color 0.2s;
+    font-size: 1.1rem;
+    display: block;
+    margin-bottom: 5px;
+    line-height: 1.2;
+}
+
+.p-nombre-item:hover {
+    color: #348ec2;
+}
+
+.btn-video-link {
+    width: 100%;
+    padding: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background: #348ec2;
+    color: white;
+    border-radius: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    border: none;
+    cursor: pointer;
+}

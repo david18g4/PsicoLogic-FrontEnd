@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" href="assets/img/PsicoLogicLogo.png" type="image/png">
+        <link rel="stylesheet" href="assets/css/general.css">
+        <link rel="stylesheet" href="assets/css/login.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+        <title>Completar Registro - PsicoLogic</title>
+    </head>
+    <body>
+        <div class="encabezado-logo-app">
+            <img src="assets/img/PsicoLogicLogo.png" alt="Logo PsicoLogic">
+        </div>
+        <div class="contenedor-completo">
+            <div class="modal-header">
+                <h1>Finalizar Registro</h1>
+                <span>Configura tu perfil profesional y cuenta de cobro</span>
+            </div>
+            <form id="form-registro-completo" style="display: contents;">
+                <div class="modal-body-scroll">
+                    <div class="form-grid">
+                        <h4 class="form-section-title">Datos Profesionales</h4>
+                        <input
+                            type="text"
+                            id="reg-nombre"
+                            placeholder="Nombre"
+                            required
+                        >
+                        <input
+                            type="text"
+                            id="reg-apellidos"
+                            placeholder="Apellidos"
+                            required
+                        >
+                        <input
+                            type="text"
+                            id="reg-dni"
+                            placeholder="DNI / NIE"
+                            required
+                        >
+                        <input
+                            type="text"
+                            id="reg-numColegiado"
+                            placeholder="Nº Colegiado"
+                            required
+                        >
+                        <input
+                            type="text"
+                            id="reg-actividad"
+                            placeholder="Actividad Legal (Ej: Psicólogo General Sanitario)"
+                            class="full-width"
+                            required
+                        >
+                        <input
+                            type="text"
+                            id="reg-direccion"
+                            placeholder="Dirección Fiscal Completa"
+                            class="full-width"
+                            required
+                        >
+                        <h4 class="form-section-title">Seguridad</h4>
+                        <input
+                            type="email"
+                            id="reg-correo"
+                            placeholder="Email"
+                            readonly
+                        >
+                        <input
+                            type="password"
+                            id="reg-password"
+                            placeholder="Contraseña de acceso"
+                            required
+                        >
+                        <h4 class="form-section-title">Cuenta de Cobro</h4>
+                        <input
+                            type="text"
+                            id="bank-desc"
+                            placeholder="Nombre de la cuenta (Ej: Principal)"
+                            required
+                        >
+                        <select id="bank-tipo">
+                            <option value="IBAN">Cuenta Bancaria (IBAN)</option>
+                            <option value="Bizum">Bizum</option>
+                        </select>
+                        <input
+                            type="text"
+                            id="bank-identificador"
+                            placeholder="Identificador (IBAN o Teléfono)"
+                            class="full-width"
+                            required
+                        >
+                    </div>
+                </div>
+                <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center;">
+                    <button type="button" id="btn-cancelar-registro" class="btn-ghost">Cancelar</button>
+                    <button type="submit" id="btn-finalizar" class="btn-finalizar-registro">
+                        Finalizar registro
+                    </button>
+                </div>
+            </form>
+        </div>
+        <script src="assets/js/auth-guard.js"></script>
+        <script src="assets/js/registro-completo.js"></script>
+    </body>
+</html>

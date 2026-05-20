@@ -1,0 +1,478 @@
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* --- Grid Superior de Tarjetas Numéricas --- */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 25px;
+    margin-bottom: 10px !important;
+}
+
+.stat-card {
+    background: white;
+    padding: 25px;
+    border-radius: 20px;
+    /* Igual que el welcome-banner */
+    box-shadow: 0 10px 25px rgba(38, 69, 116, 0.08);
+    /* Sombra suave de home */
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(38, 69, 116, 0.12);
+}
+
+/* Deshabilitar interacción para tarjetas puramente informativas */
+.stat-card.no-click {
+    cursor: default;
+}
+
+.stat-card.no-click:hover {
+    transform: none;
+    box-shadow: 0 10px 25px rgba(38, 69, 116, 0.08);
+}
+
+/* Colores de Iconos (Coherencia con Home) */
+.stat-card i {
+    font-size: 1.8rem;
+    padding: 18px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 65px;
+    height: 65px;
+}
+
+/* Asignación de colores por posición */
+.stat-card:nth-child(1) i {
+    background: #e3f2fd;
+    color: #2196f3;
+}
+
+/* Icon-blue */
+.stat-card:nth-child(2) i {
+    background: #f3e5f5;
+    color: #9c27b0;
+}
+
+/* Icon-purple */
+.stat-card:nth-child(3) i {
+    background: #e0f2f1;
+    color: #009688;
+}
+
+/* Icon-teal */
+
+/* Texto en las tarjetas */
+.stat-card h3 {
+    font-size: var(--font-size-lg);
+    color: #264574;
+    margin-bottom: 2px;
+}
+
+.stat-card p {
+    font-size: var(--font-size-xs);
+    color: #7f8c8d;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* --- Grid de Gráficos --- */
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: 25px;
+}
+
+.chart-box {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(38, 69, 116, 0.08);
+    transition: transform 0.3s ease;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-box:hover {
+    box-shadow: 0 12px 28px rgba(38, 69, 116, 0.1);
+}
+
+.chart-box.table-box:hover {
+    box-shadow: 0 12px 28px rgba(38, 69, 116, 0.1);
+}
+
+.chart-box h4 {
+    font-size: var(--font-size-md);
+    color: #264574;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #f0f7ff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Ajuste para que el canvas ocupe el espacio */
+canvas {
+    flex-grow: 1;
+    max-width: 100% !important;
+}
+
+
+.chart-box:nth-child(1) {
+    animation-delay: 0.4s;
+}
+
+.chart-box:nth-child(2) {
+    animation-delay: 0.5s;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .content {
+        padding: 15px;
+    }
+}
+
+.chart-box {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    height: 400px;
+    /* Altura total de la card */
+    display: flex;
+    flex-direction: column;
+    /* Alinea título y gráfico en vertical */
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+.chart-box h4 {
+    margin: 0 0 15px 0;
+    /* Margen solo abajo */
+    flex-shrink: 0;
+    /* Impide que el título se comprima */
+    font-size: 1.1rem;
+    color: #264574;
+}
+
+.chart-container {
+    flex-grow: 1;
+    /* Ocupa TODO el espacio que sobra del título */
+    min-height: 0;
+    /* Truco de Flexbox para evitar desbordamientos */
+    position: relative;
+}
+
+canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.dashboard-container {
+    animation: fadeInUp 0.6s ease-out;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* --- Grid Superior de Tarjetas Numéricas --- */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 25px;
+    margin-bottom: 20px;
+}
+
+.stat-card {
+    background: white;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(38, 69, 116, 0.08);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeInUp 0.8s ease-out backwards;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(38, 69, 116, 0.12);
+}
+
+.stat-card i {
+    font-size: 1.8rem;
+    padding: 18px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 65px;
+    height: 65px;
+}
+
+.stat-card:nth-child(1) i {
+    background: #e3f2fd;
+    color: #2196f3;
+}
+
+.stat-card:nth-child(2) i {
+    background: #f3e5f5;
+    color: #9c27b0;
+}
+
+.stat-card:nth-child(3) i {
+    background: #e0f2f1;
+    color: #009688;
+}
+
+.stat-card h3 {
+    font-size: var(--font-size-lg);
+    color: #264574;
+    margin-bottom: 2px;
+}
+
+.stat-card p {
+    font-size: var(--font-size-xs);
+    color: #7f8c8d;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* --- Grid de Gráficos --- */
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: 25px;
+}
+
+.chart-box {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(38, 69, 116, 0.08);
+    transition: transform 0.3s ease;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-box h4 {
+    font-size: var(--font-size-md);
+    color: #264574;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #f0f7ff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+canvas {
+    flex-grow: 1;
+    max-width: 100% !important;
+}
+
+/* --- 1. ESTILOS BASE DE LA TABLA (Mantenemos lo visual) --- */
+.table-container {
+    width: 100%;
+    height: 20%;
+    overflow-x: auto;
+}
+
+.tabla-general {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 8px;
+    /* Valor base */
+}
+
+.tabla-general th {
+    text-align: left;
+    padding: 12px 15px;
+    color: #7f8c8d;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+}
+
+.tabla-general td {
+    background: #fcfcfc;
+    padding: 15px;
+    /* Valor base */
+    border-top: 1px solid #f0f0f0;
+    border-bottom: 1px solid #f0f0f0;
+    color: #264574;
+}
+
+.tabla-general td:first-child {
+    max-width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.tabla-general tr:hover td {
+    background: #f1f4f9;
+}
+
+.tabla-general td:first-child {
+    border-left: 1px solid #f0f0f0;
+    border-radius: 10px 0 0 10px;
+}
+
+.tabla-general td:last-child {
+    border-right: 1px solid #f0f0f0;
+    border-radius: 0 10px 10px 0;
+}
+
+/* --- 2. AJUSTES ESPECÍFICOS PARA EL DASHBOARD (Lo nuevo) --- */
+.chart-box.table-box {
+    width: 100%;
+    height: auto;
+    min-height: 150px;
+    max-height: 450px;
+    padding: 20px;
+    display: flex;
+    margin-top: 10px;
+    flex-direction: column;
+    margin-top: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: visible;
+}
+
+.chart-box.table-box .table-container {
+    margin-top: 0px;
+    height: auto;
+    /* IMPORTANTE: Borra el 'height: 20%' que tenías, estaba aplastando la tabla */
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex-grow: 1;
+    padding-top: 40px;
+    /* Zona segura para que el desplegable no se corte */
+}
+
+/* Sobrescribimos valores base para que en esta tabla se vea más compacto */
+.chart-box.table-box .tabla-general {
+    border-spacing: 0 4px;
+}
+
+.chart-box.table-box .tabla-general td {
+    padding: 10px 15px;
+    font-size: 0.9rem;
+}
+
+.chart-box.table-box h4 {
+    margin: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f0f7ff;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    background: white;
+    z-index: 500;
+    /* Encima de filas normales, debajo de desplegables */
+}
+
+/* Scrollbar personalizado */
+.chart-box.table-box .table-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chart-box.table-box .table-container::-webkit-scrollbar-thumb {
+    background: #dcdde1;
+    border-radius: 10px;
+}
+
+/* --- 3. RESPONSIVE --- */
+@media (max-width: 768px) {
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.status-selector-wrapper {
+    position: relative;
+    display: inline-block;
+    z-index: 10;
+    overflow: visible !important;
+}
+
+/* Eleva la fila completa cuando el menú está abierto para que no lo tapen los tags de otros pacientes */
+.tabla-general tr:has(.status-options-dropdown.show) {
+    position: relative;
+    z-index: 1001 !important;
+}
+
+.status-options-dropdown {
+    display: none;
+    position: absolute;
+    bottom: 110%;
+    top: auto;
+    left: 0;
+    margin-bottom: 5px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 -6px 10px rgba(0, 0, 0, 0.115);
+    z-index: 1002;
+    min-width: 90px;
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+}
+
+.status-options-dropdown.show {
+    display: block;
+}
+
+.status-options-dropdown div {
+    padding: 10px 15px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    color: #475569;
+    transition: background 0.2s;
+    text-align: left;
+}
+
+.status-options-dropdown div:hover {
+    background: #f1f5f9;
+    color: #264574;
+}
+
+.clickable-tag {
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.clickable-tag:hover {
+    filter: brightness(0.9);
+    transform: scale(1.05);
+}
+
+.tag-danger {
+    background: #fff5f5;
+    color: #e74c3c;
+    border: 1px solid #ffcccc;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.85em;
+    font-weight: 600;
+}

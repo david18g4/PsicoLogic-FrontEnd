@@ -1,0 +1,1259 @@
+/* --- Estructura de Cabecera --- */
+
+/* Tags de estado para la agenda y modales de citas */
+.tag-success {
+    background: #dcfce7;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.tag-danger {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.tag-blue {
+    background: #dbeafe;
+    color: #1e40af;
+    border: 1px solid #bfdbfe;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.tag-warning {
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fde68a;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.content-header {
+    background: white;
+    padding: 30px 40px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+}
+
+.main-layout {
+    display: flex;
+}
+
+.content {
+    flex-grow: 1;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-text h2 {
+    color: #264574;
+    font-size: 1.8rem;
+    margin: 0;
+}
+
+.header-text p {
+    color: #718096;
+    margin: 5px 0 0 0;
+}
+
+/* --- Botón Estilo PsicoLogic --- */
+.btn-primario {
+    /* Ajuste específico de margen para citas */
+    margin-top: 0;
+}
+
+/* El margen de 20px solo se aplica si el botón está solo en la cabecera, 
+   pero no dentro de los footers de los modales */
+.content-header .btn-primario {
+    margin-top: 20px;
+}
+
+/* --- Contenedor del Calendario --- */
+.calendar-container {
+    padding: 25px;
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-sizing: border-box;
+    display: block;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    width: 100%;
+}
+
+/* Fuerza al div interno de FullCalendar a usar todo el ancho */
+#calendar {
+    width: 100% !important;
+    max-width: 100%;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+/* --- Personalización de FullCalendar --- */
+:root {
+    --fc-border-color: #f0f2f5;
+    --fc-today-bg-color: #f8fbff;
+}
+
+/* Quitar bordes del contenedor y tablas de la vista de Agenda (List View) */
+.fc-theme-standard .fc-list,
+.fc-list-table {
+    border: none !important;
+}
+
+.fc-view-harness {
+    border-radius: 15px;
+    overflow: hidden;
+    transition: height 0.3s ease; /* Suaviza el cambio de altura entre vistas */
+}
+
+/* Clase que dispararemos por JS para la animación */
+.fc-view-harness.fc-animate {
+    animation: fcViewFadeIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes fcViewFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Quitar el borde exterior de la rejilla para que el redondeado sea limpio */
+.fc-theme-standard .fc-scrollgrid {
+    border: none !important;
+}
+
+.fc .fc-toolbar-title {
+    color: #264574;
+    font-weight: 700;
+    font-size: 1.4rem;
+    text-transform: uppercase;
+}
+
+.fc-theme-standard .fc-list-day-cushion {
+    text-transform: uppercase;
+    border-radius: 15px;
+    background: #f1f5f9;
+    padding: 10px 20px !important;
+}
+
+.fc .fc-list-day,
+/* Esto apunta al <th> del encabezado del día en vista de agenda */
+.fc .fc-list-event td {
+    border: none !important;
+    background: transparent !important;
+}
+
+.fc .fc-button {
+    background: #f1f5f9 !important;
+    color: #4a5568 !important;
+    border: none !important;
+    font-weight: 600 !important;
+    padding: 8px 16px !important;
+    text-transform: capitalize !important;
+    border-radius: 15px !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.fc .fc-button:hover {
+    background: #e2e8f0 !important;
+    color: #264574 !important;
+    transform: translateY(-1px);
+}
+
+.fc .fc-button:focus {
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.fc .fc-button-primary:not(:disabled).fc-button-active,
+.fc .fc-button-primary:not(:disabled):active {
+    background: #348ec2 !important;
+    color: white !important;
+}
+
+/* --- ENCABEZADOS DE DÍAS (MAYÚSCULAS Y CONTRASTE) --- */
+.fc .fc-col-header-cell {
+    text-transform: uppercase;
+    border: none !important;
+}
+
+/* --- AJUSTES DE VISTA SEMANAL --- */
+.fc .fc-timegrid-slot:not(.fc-timegrid-slot-minor) {
+    border-bottom: 1px solid #edf0f2 !important;
+}
+
+.fc .fc-timegrid-slot-minor {
+    border-bottom: 1px solid #d8e1ee !important;
+}
+
+.fc .fc-timegrid-axis-frame .fc-timegrid-axis-cushion::after {
+    content: "Hora";
+    color: #264574;
+    font-weight: 700;
+}
+
+/* Color Hoy */
+.fc .fc-day-today {
+    background-color: rgba(255, 238, 0, 0.09) !important;
+}
+
+/* Sombreado para fines de semana */
+.fc-day-sat,
+.fc-day-sun {
+    background-color: #f8fafc !important;
+}
+
+.fc .fc-day-today .fc-col-header-cell-cushion,
+.fc .fc-day-today .fc-daygrid-day-number {
+    color: #264574 !important;
+    font-weight: 800 !important;
+}
+
+/* --- EVENTOS (Vista Cuadrícula/Mes/Semana) --- */
+.fc-event {
+    border: none !important;
+    padding: 2px 4px !important;
+    /* Padding reducido para evitar desbordes */
+    border-radius: 6px !important;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+    overflow: hidden !important;
+}
+
+.fc-event-main {
+    color: inherit !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    /* Cambiado a flex-start para que no se corte por abajo */
+    min-height: 100%;
+    padding-left: 14px !important;
+    position: relative;
+    white-space: normal !important;
+}
+
+/* El punto visual dentro de las citas */
+.fc-event-main::before {
+    content: "";
+    position: absolute;
+    left: 2px;
+    top: 4px;
+    /* Posición fija arriba para que no baile con el texto */
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    z-index: 2;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.fc-event-title {
+    color: inherit !important;
+    font-size: 0.72rem !important;
+    /* Letra más pequeña para que quepa el nombre */
+    font-weight: 700 !important;
+    line-height: 1.1 !important;
+    /* Interlineado más compacto */
+    word-break: break-word;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    /* Limitado a 2 líneas para proteger el diseño */
+    line-clamp: 2;
+    overflow: hidden;
+    white-space: normal !important;
+}
+
+.fc-event-time {
+    color: inherit !important;
+    font-size: 0.6rem !important;
+    /* Hora más pequeña para dar prioridad al nombre */
+    margin-bottom: 1px;
+    font-weight: 600;
+    opacity: 0.9;
+}
+
+.fc-event:hover {
+    filter: brightness(0.92);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
+    z-index: 5;
+}
+
+/* --- ESTADOS VISUALES DEL EVENTO EN CALENDARIO --- */
+.event-realizada {
+    background-color: rgba(39, 174, 96, 0.1) !important;
+    border-left: 4px solid #27ae60 !important;
+    border-right: 4px solid #27ae60 !important;
+}
+
+.event-no-presentado {
+    background-color: rgba(239, 68, 68, 0.1) !important;
+    border-left: 4px solid #ef4444 !important;
+    border-right: 4px solid #ef4444 !important;
+}
+
+.event-programada {
+    border: none !important;
+}
+
+/* --- LÓGICA DE COLORES DE FONDO (MODALIDAD) --- */
+.evento-individual {
+    background-color: rgba(14, 165, 233, 0.12) !important;
+    /* Azul pastel para Presencial */
+    color: #0369a1 !important;
+}
+
+.evento-online {
+    background-color: rgba(249, 115, 22, 0.12) !important;
+    /* Naranja pastel para Online */
+    color: #9a3412 !important;
+}
+
+/* --- LÓGICA DE COLORES DE PUNTOS (CATEGORÍA) --- */
+.cat-sexologia .fc-event-main::before,
+.cat-sexologia .fc-list-event-dot,
+.cat-sexologia .fc-daygrid-event-dot {
+    background-color: #e11d48 !important;
+    border-color: #e11d48 !important;
+}
+
+.cat-pareja .fc-event-main::before,
+.cat-pareja .fc-list-event-dot,
+.cat-pareja .fc-daygrid-event-dot {
+    background-color: #9333ea !important;
+    border-color: #9333ea !important;
+}
+
+.cat-individual .fc-event-main::before,
+.cat-individual .fc-list-event-dot,
+.cat-individual .fc-daygrid-event-dot {
+    background-color: #2563eb !important;
+    border-color: #2563eb !important;
+}
+
+/* --- AJUSTES ESPECÍFICOS VISTA AGENDA (LIST VIEW) --- */
+.fc-list-event {
+    background-color: transparent !important;
+}
+
+.fc-list-event.evento-individual {
+    background-color: #fff !important;
+    color: #348ec2 !important;
+}
+
+.fc-list-event.evento-online {
+    background-color: #fff !important;
+    color: #e67e22 !important;
+}
+
+#modalCitas .modal-content {
+    width: 530px;
+    min-height: 370px;
+    max-height: 90vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0 !important;
+    display: flex;
+    flex-direction: column;
+    scrollbar-width: thin;
+}
+
+#modalCitas .modal-header {
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 20;
+    padding: 20px 30px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+#modalCitas .modal-footer {
+    position: sticky;
+    bottom: 0;
+    background: white;
+    z-index: 10;
+    padding: 15px 30px;
+    border-top: 1px solid #f1f5f9;
+    margin-top: 0;
+}
+
+#modalCitas .lista-citas-modal {
+    padding: 15px 25px;
+    flex: 1;
+    overflow-y: auto;
+    min-height: 350px;
+}
+
+#modalCitas .lista-citas-modal.empty-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.full-width {
+    width: 100%;
+    justify-content: center;
+}
+
+/* --- CITA ITEM CARD (MODAL) --- */
+.cita-item-card {
+    background: #fff;
+    /* Fondo blanco */
+    border: 1px solid #e2e8f0;
+    /* Borde suave */
+    padding: 14px;
+    /* Espaciado interno */
+    border-radius: 12px;
+    /* Bordes redondeados */
+    margin-bottom: 10px;
+    /* Margen inferior */
+    display: flex;
+    /* Flexbox para la estructura interna */
+    flex-direction: column;
+    /* Elementos en columna */
+    gap: 8px;
+    /* Espacio entre elementos */
+    transition: all 0.2s;
+    /* Transición suave para hover */
+    position: relative;
+    /* Para posicionar elementos internos */
+    cursor: pointer;
+    /* Cursor de puntero */
+    border-left: 4px solid transparent;
+    overflow: visible;
+}
+
+.cita-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cita-card-header strong {
+    color: #264574;
+    font-size: 1rem;
+}
+
+.cita-card-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+}
+
+.cita-info-sub {
+    display: flex;
+    gap: 12px;
+    color: #64748b;
+}
+
+.cita-info-sub i {
+    font-size: 0.8rem;
+    width: 14px;
+    text-align: center;
+}
+
+.tipo-badge {
+    color: #718096;
+    font-weight: 500;
+    font-size: 0.75rem;
+    margin-right: 5px;
+}
+
+.clickable-tag {
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.clickable-tag:hover {
+    filter: brightness(0.9);
+    transform: scale(1.05);
+}
+
+/* --- SCROLL PARA EL LISTADO DE LOS MODALES --- */
+#modalCitas .modal-content::-webkit-scrollbar,
+#modalNuevaCita .modal-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+#modalCitas .modal-content::-webkit-scrollbar-track,
+#modalNuevaCita .modal-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+#modalCitas .modal-content::-webkit-scrollbar-thumb,
+#modalNuevaCita .modal-content::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 10px;
+}
+
+#modalCitas .modal-content::-webkit-scrollbar-thumb:hover,
+#modalNuevaCita .modal-content::-webkit-scrollbar-thumb:hover {
+    background: #348ec2;
+}
+
+.cita-item-card.estado-realizada {
+    background-color: #f0fdf4;
+    /* Verde muy claro */
+}
+
+.cita-item-card.estado-no_presentado {
+    background-color: #fef2f2;
+    /* Rojo muy claro */
+}
+
+.cita-item-card .btn-icon {
+    font-size: 0.9rem;
+    padding: 6px;
+    color: #64748b;
+}
+
+.cita-item-card.cat-sexologia {
+    border-left: 6px solid #e11d48 !important;
+    border-right: 6px solid #e11d48 !important;
+}
+
+.cita-item-card.cat-pareja {
+    border-left: 6px solid #9333ea !important;
+    border-right: 6px solid #9333ea !important;
+}
+
+.cita-item-card.cat-individual {
+    border-left: 6px solid #2563eb !important;
+    border-right: 6px solid #2563eb !important;
+}
+
+/* Ajuste para los botones del footer del modal */
+.modal-footer {
+    align-items: center;
+    padding-top: 15px;
+}
+
+
+/* Estilos para estados de cita en el modal */
+.cita-item-card.estado-realizada {
+    background-color: #f0fdf4;
+    /* Verde muy claro */
+}
+
+.cita-item-card.estado-no_presentado {
+    background-color: #fef2f2;
+    /* Rojo muy claro */
+}
+
+.cita-item-card.estado-cancelada {
+    background-color: #f8f8f8;
+    /* Gris muy claro */
+    text-decoration: line-through;
+    filter: grayscale(0.5);
+}
+
+/* Icono de edición en la tarjeta */
+.cita-item-card .btn-icon {
+    font-size: 0.9rem;
+    padding: 6px;
+    color: #64748b;
+}
+
+.cita-item-card:hover {
+    border-color: #348ec2;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    background: #f8fbff;
+}
+
+.cita-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cita-card-header strong {
+    color: #264574;
+    font-size: 1rem;
+}
+
+.cita-card-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+}
+
+/* Selector de estado en miniatura para el modal */
+.status-selector-wrapper {
+    position: relative;
+    z-index: 5;
+}
+
+/* Eleva la card completa cuando el menú está abierto para que no la tape la de abajo */
+.cita-item-card:has(.status-options-dropdown.show) {
+    z-index: 1000 !important;
+    position: relative;
+}
+
+/* Eleva el componente cuando el menú está abierto para que no quede detrás de otras tarjetas */
+.status-selector-wrapper:has(.status-options-dropdown.show) {
+    z-index: 1001;
+}
+
+.status-options-dropdown {
+    display: none;
+    position: absolute;
+    bottom: 110%;
+    top: auto;
+    right: 0;
+    margin-bottom: 5px;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    border-radius: 8px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+    z-index: 10000 !important;
+    min-width: 140px;
+    border: 1px solid #e2e8f0;
+    overflow: visible !important;
+}
+
+.status-options-dropdown div {
+    color: #4a5568 !important;
+    /* Color gris oscuro consistente */
+    font-weight: 500;
+}
+
+.status-options-dropdown.show {
+    display: block;
+}
+
+.status-options-dropdown div {
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+/* Colores para iconos de estado */
+.status-realizada,
+.fa-circle-check {
+    color: #27ae60 !important;
+}
+
+.status-no-presentado {
+    color: #ef4444 !important;
+}
+
+.status-aviso {
+    color: #ffb923 !important;
+}
+
+.status-options-dropdown div:hover {
+    background: #f1f5f9;
+}
+
+.cita-item-card.cat-pareja {
+    border-right: 8px solid #a29bfe;
+}
+
+.cita-item-card.cat-individual {
+    border-right: 8px solid #348ec2;
+}
+
+.cita-item-card:hover {
+    transform: translateY(-2px);
+}
+
+.cita-content-left {
+    display: flex;
+    align-items: start;
+}
+
+.icon-cita {
+    margin-right: 15px;
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+/* --- LEYENDA --- */
+.leyenda-calendario {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.leyenda-item {
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 8px 20px;
+    border-radius: 6px !important;
+}
+
+.dot-red::before,
+.dot-purple::before,
+.dot-blue::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 8px;
+    display: inline-block;
+}
+
+.dot-red::before {
+    background-color: #e11d48;
+}
+
+.dot-purple::before {
+    background-color: #9333ea;
+}
+
+.dot-blue::before {
+    background-color: #2563eb;
+}
+
+.border-green {
+    border-left: 4px solid #27ae60;
+    border-right: 4px solid #27ae60;
+}
+
+.border-red {
+    border-left: 4px solid #ef4444;
+    border-right: 4px solid #ef4444;
+}
+
+.header-separator {
+    width: 100%;
+    height: 1px;
+    background-color: #cedae8;
+}
+
+.fc .fc-button-primary {
+    border-radius: 15px !important;
+}
+
+.fc-timegrid-axis-cushion {
+    font-size: 0.8rem;
+    color: #718096;
+}
+
+.leyenda-grupo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.leyenda-grupo small {
+    color: #718096;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+
+.header-separator-v {
+    width: 1px;
+    height: 20px;
+    background: #cbd5e0;
+}
+
+/* Estilos específicos para el Modal de Formulario */
+.modal-formulario {
+    max-width: 95%;
+}
+
+.modal-body {
+    padding: 20px 30px;
+    flex: 1;
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.form-group input,
+.form-group select {
+    padding: 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+/* Buscador de pacientes */
+.search-container {
+    position: relative;
+}
+
+.resultados-busqueda {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 100;
+    display: none;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.paciente-option {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #f7fafc;
+    font-size: 0.85rem;
+}
+
+.paciente-option:hover {
+    background-color: #f1f5f9;
+}
+
+.paciente-option strong {
+    display: block;
+    color: #264574;
+}
+
+.paciente-option span {
+    color: #718096;
+    font-size: 0.75rem;
+}
+
+/* --- ESTILOS PARA EL MODAL DE SELECCIÓN DE PACIENTE (TABLA) --- */
+
+/* Ajuste para que el modal sea más ancho y quepa la tabla */
+.modal-large {
+    width: 650px !important;
+    max-width: 95%;
+}
+
+.search-bar-container {
+    padding: 15px 20px;
+}
+
+#inputFiltroTabla {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+#inputFiltroTabla:focus {
+    outline: none;
+    border-color: #348ec2;
+    box-shadow: 0 0 0 3px rgba(52, 142, 194, 0.1);
+}
+
+/* Contenedor con scroll para la tabla */
+.table-container {
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 0;
+}
+
+.tabla-pacientes {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.tabla-pacientes thead th {
+    background: #f1f5f9;
+    padding: 15px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #4a5568;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.tabla-pacientes tbody tr {
+    border-bottom: 1px solid #f1f5f9;
+    transition: background 0.2s;
+}
+
+.tabla-pacientes tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+.tabla-pacientes td {
+    padding: 12px 15px;
+    font-size: 0.9rem;
+    color: #2d3748;
+}
+
+/* Estilo para la fila de búsqueda en el formulario de cita */
+.search-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.search-row input[readonly] {
+    background-color: #f7fafc;
+    cursor: default;
+    flex-grow: 1;
+}
+
+.btn-accion-search {
+    background: #348ec2;
+    color: white;
+    border: none;
+    width: 42px;
+    height: 42px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.btn-accion-search:hover {
+    background: #264574;
+    transform: scale(1.05);
+}
+
+.boton-guardar {
+    width: 100%;
+}
+
+/* Personalización del scrollbar para la tabla */
+.table-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.table-container::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 10px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+    background: #348ec2;
+    color: white;
+}
+
+/* Efecto visual al pasar el ratón por la fila interactiva */
+.tabla-general tr[onclick]:hover td {
+    transition: background 0.2s ease;
+}
+
+/* Opcional: si quieres que la fila "se mueva" un poco al pasar el ratón */
+.tabla-general tr[onclick]:hover {
+    transform: scale(1.002);
+}
+
+
+.cita-info-sub {
+    display: flex;
+    gap: 12px;
+    color: #64748b;
+}
+
+.cita-info-sub i {
+    font-size: 0.8rem;
+    width: 14px;
+    text-align: center;
+}
+
+.tipo-badge {
+    color: #718096;
+    font-weight: 500;
+    font-size: 0.75rem;
+    margin-right: 5px;
+}
+
+/* --- CONTENEDOR DE PACIENTES SELECCIONADOS CON SCROLL --- */
+.pacientes-seleccionados-container {
+    margin-top: 10px;
+    display: block;
+}
+
+.pacientes-seleccionados-container.show {
+    display: block;
+}
+
+.pacientes-seleccionados-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: 100%;
+    overflow-y: auto;
+    padding: 12px;
+    background: #f8fbff;
+    border: 1px solid #e2e8f0;
+    border-radius: 15px;
+    scrollbar-width: thin;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.pacientes-seleccionados-list::-webkit-scrollbar {
+    width: 7px;
+}
+
+.pacientes-seleccionados-list::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 10px;
+}
+
+.pacientes-seleccionados-list::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 10px;
+}
+
+.pacientes-seleccionados-list::-webkit-scrollbar-thumb:hover {
+    background: #348ec2;
+}
+
+.paciente-seleccionado-card,
+.paciente-card,
+.paciente-placeholder-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 15px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    transition: all 0.25s ease;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    background-clip: padding-box;
+    -webkit-background-clip: padding-box;
+    height: 65.33px;
+    flex-shrink: 0;
+}
+
+.paciente-seleccionado-card:hover,
+.paciente-card:hover {
+    border-color: #348ec2;
+    transform: translateY(-1px);
+}
+
+.paciente-seleccionado-avatar,
+.contact-avatar {
+    width: 40px;
+    height: 40px;
+    background: #eff6ff;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #348ec2;
+    font-size: 0.95rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+    flex-shrink: 0;
+}
+
+.paciente-seleccionado-info,
+.paciente-card-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.paciente-seleccionado-nombre,
+.paciente-card-nombre {
+    font-weight: 700;
+    color: #264574;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.paciente-seleccionado-dni,
+.paciente-card-dni {
+    font-size: 0.75rem;
+    color: #64748b;
+}
+
+.paciente-placeholder-card .paciente-seleccionado-nombre {
+    color: #64748b;
+}
+
+.paciente-placeholder-card .paciente-seleccionado-dni {
+    color: #94a3b8;
+    font-size: 0.8rem;
+}
+
+.paciente-seleccionado-remove,
+.paciente-card-remove {
+    background: #f8fafc;
+    color: #334155;
+    border: 1px solid #cbd5e0;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    margin-left: 8px;
+}
+
+.paciente-seleccionado-remove:hover,
+.paciente-card-remove:hover {
+    background: #fee2e2;
+    color: #991b1b;
+    transform: scale(1.05);
+}
+
+.paciente-seleccionado-remove:active,
+.paciente-card-remove:active {
+    transform: scale(0.95);
+}
+
+.fc .fc-button:hover {
+    background: #e2e8f0 !important;
+    color: #264574 !important;
+    transform: translateY(-1px);
+}
+
+.fc .fc-button:focus {
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.fc .fc-button-primary:not(:disabled).fc-button-active,
+.fc .fc-button-primary:not(:disabled):active {
+    background: #348ec2 !important;
+    color: white !important;
+}
+
+/* Asegurar que los botones en grupo estén unidos y sin separaciones */
+.fc .fc-button-group {
+    gap: 0 !important;
+}
+
+/* Reglas específicas para el border-radius de los botones de vista */
+.fc .fc-dayGridMonth-button {
+    /* Botón 'Mes' */
+    border-top-left-radius: 15px !important;
+    border-bottom-left-radius: 15px !important;
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
+.fc .fc-timeGridWeek-button {
+    /* Botón 'Semana' */
+    border-radius: 0 !important;
+}
+
+.fc .fc-listWeek-button {
+    /* Botón 'Agenda' */
+    border-top-right-radius: 15px !important;
+    border-bottom-right-radius: 15px !important;
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+}
+
+/* Reglas para los botones de navegación (Anterior/Siguiente) */
+.fc .fc-prev-button {
+    border-top-left-radius: 15px !important;
+    border-bottom-left-radius: 15px !important;
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    border-right: 1px solid rgba(0, 0, 0, 0.05) !important; /* Separación sutil interna */
+}
+
+.fc .fc-next-button {
+    border-top-right-radius: 15px !important;
+    border-bottom-right-radius: 15px !important;
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+}
+
+/* --- ENCABEZADOS DE DÍAS (MAYÚSCULAS Y CONTRASTE) --- */
+.fc .fc-col-header-cell {
+    text-transform: uppercase;
+    border: none !important;
+}
+
+/* Estilos para el Modal de Aviso Zoom */
+.modal-header-warning {
+    background-color: #fffbeb !important;
+    border-bottom: 1px solid #fcd34d !important;
+    padding: 15px 25px !important;
+    border-radius: 16px;
+}
+
+.modal-header-warning h3 {
+    color: #92400e !important;
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.warning-icon-container {
+    font-size: 3.5rem;
+    color: #f59e0b;
+    margin-bottom: 20px;
+}
+
+.cita-tags-container {
+    display: flex;
+    gap: 4px;
+    background: #fff;
+    padding: 3px;
+    border-radius: 10px;
+    align-items: center;
+}
+
+.cita-tags-container.online {
+    background-color: #9a3412 !important;
+}
+
+.cita-tags-container.presencial {
+    background-color: #0369a1 !important;
+}

@@ -1,0 +1,92 @@
+/* =========================================
+   ESTILOS COMUNES DE MODALES
+   ========================================= */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(38, 69, 116, 0.4);
+    backdrop-filter: blur(4px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1200;
+}
+
+.modal-content {
+    background: white;
+    width: 500px; /* Ancho por defecto, sobrescribible */
+    max-width: 95%;
+    max-height: 90vh;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    animation: scaleIn 0.3s ease-out;
+    position: relative;
+    overflow: hidden;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: #264574;
+    font-size: 1.1rem;
+}
+
+.modal-body, .modal-body-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 30px;
+}
+
+.modal-footer {
+    padding: 20px 30px;
+    border-top: 1px solid #f1f5f9;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    background: white;
+}
+
+.btn-close-x {
+    width: 32px;
+    height: 32px;
+    background: #edf2f7;
+    border: none;
+    border-radius: 50%;
+    color: #718096;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-close-x:hover {
+    background: #348ec2;
+    color: white;
+    transform: scale(1.1);
+}
+
+/* ANIMACIONES COMUNES */
+@keyframes scaleIn {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes fadeInUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}

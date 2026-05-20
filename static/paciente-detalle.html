@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" href="assets/img/PsicoLogicLogo.png" type="image/png">
+        <link rel="stylesheet" href="assets/css/general.css">
+        <link rel="stylesheet" href="assets/css/sidebar.css">
+        <link rel="stylesheet" href="assets/css/home.css">
+        <link rel="stylesheet" href="assets/css/common-components.css">
+        <link rel="stylesheet" href="assets/css/modals.css">
+        <link rel="stylesheet" href="assets/css/paciente-detalle.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <title>Detalle del Paciente</title>
+    </head>
+    <body class="home-body">
+        <header class="header-app">
+            <a href="home.html" class="logo-link">
+                <div class="logo-section">
+                    <h1 class="nombre-app-texto small">PsicoLogic</h1>
+                </div>
+            </a>
+            <img src="assets/img/PsicoLogicLogo.png" class="header-logo" alt="Logo">
+            <div class="user-info">
+                <span>Paciente -
+                    <strong class="user-name-dinamico">Cargando...</strong>
+                </span>
+                <div class="user-menu-container">
+                    <img class="avatar avatar-dinamico" alt="Avatar" id="avatar-click">
+                    <div class="dropdown-panel" id="dropdown-panel">
+                        <div class="dropdown-header">
+                            <strong class="user-name-dinamico">Cargando...</strong>
+                            <span>Psicólogo Colegiado</span>
+                        </div>
+                        <hr>
+                        <a href="perfil.html">
+                            <i class="fa-solid fa-user-gear"></i> Mi Cuenta
+                        </a>
+                        <a href="ayuda.html">
+                            <i class="fa-solid fa-circle-question"></i>
+                            Ayuda
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="main-layout">
+            <aside class="sidebar collapsed" id="sidebar">
+                <div class="toggle-btn" id="toggle-sidebar">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+                <nav class="menu-links">
+                    <a href="home.html">
+                        <i class="fa-solid fa-house"></i>
+                        <span>Inicio</span>
+                    </a>
+                    <a href="pacientes.html" class="active">
+                        <i class="fa-solid fa-user-group"></i>
+                        <span>Pacientes</span>
+                    </a>
+                    <a href="citas.html">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <span>Citas</span>
+                    </a>
+                    <a href="estadisticas.html">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>Estadísticas</span>
+                    </a>
+                </nav>
+                <div class="logout-section">
+                    <a href="#" style="color: #ff7675;">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>
+                            Cerrar
+                            Sesión
+                        </span>
+                    </a>
+                </div>
+            </aside>
+            <main class="content">
+                <div id="content-loader" class="inner-loader" style="display: flex;">
+                    <img src="assets/img/PsicoLogicLogo.png" class="loader-logo" alt="Logo">
+                </div>
+                <div id="patient-main-content" style="display: none;">
+                    <section class="card profile-header-card">
+                        <div class="profile-main">
+                            <div id="p-icon-container" class="gender-icon-large">
+                                <i class="fa-solid fa-user-clock"></i>
+                            </div>
+                            <div class="profile-titles">
+                                <h2 id="p-full-name" style="margin-bottom: 10px;">Cargando...</h2>
+                                <div class="badges-container" style="position: relative;">
+                                    <div class="status-selector-wrapper">
+                                        <span id="p-tag-estado" class="tag clickable-tag" title="Cambiar estado">---</span>
+                                        <div id="status-options" class="status-options-dropdown"></div>
+                                    </div>
+                                    <span id="p-tag-edad" class="tag tag-blue">
+                                        --
+                                        años
+                                    </span>
+                                    <span id="p-tag-menor" class="tag tag-warning" style="display:none;">
+                                        <i class="fa-solid fa-child"></i>
+                                        Menor de
+                                        edad
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="profile-quick-actions"></div>
+                    </section>
+                    <div class="details-grid">
+                        <section class="card info-card no-hover">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                                <h3 style="margin:0; text-transform: uppercase;">
+                                    <i class="fa-solid fa-address-card"></i>
+                                    Información Personal
+                                </h3>
+                                <button id="btn-editar-perfil" class="btn-icon-small" title="Editar Perfil">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                            </div>
+                            <!-- Contenedor con Scroll (Solo Datos Personales) -->
+                            <div class="info-scrollable-content" id="info-main-scroller">
+                                <div class="data-row">
+                                    <strong>DNI:</strong>
+                                    <span id="p-dni">-</span>
+                                </div>
+                                <div class="data-row">
+                                    <strong>Nacimiento:</strong>
+                                    <span id="p-nacimiento">-</span>
+                                </div>
+                                <div class="data-row">
+                                    <strong>Género:</strong>
+                                    <span id="p-genero">-</span>
+                                </div>
+                                <div class="data-row">
+                                    <strong>Dirección:</strong>
+                                    <span id="p-direccion">-</span>
+                                </div>
+                                <div class="data-row">
+                                    <strong>C.P:</strong>
+                                    <span id="p-cp">-</span>
+                                </div>
+                                <div class="data-row">
+                                    <strong>Municipio:</strong>
+                                    <span id="p-municipio">-</span>
+                                </div>
+                                <div class="data-row">
+                                    <strong>Provincia:</strong>
+                                    <span id="p-provincia">-</span>
+                                </div>
+                                <div class="data-row">
+                                    <strong>Estado Civil:</strong>
+                                    <span id="p-estado-civil">-</span>
+                                </div>
+                                <div class="data-row">
+                                    <strong>S. Laboral:</strong>
+                                    <span id="p-laboral">-</span>
+                                </div>
+                                <div class="data-row">
+                                    <strong>Estudiando:</strong>
+                                    <span id="p-estudia">-</span>
+                                </div>
+                                <div class="data-row">
+                                    <strong>Nivel Estudios:</strong>
+                                    <span id="p-nivel-estudios">-</span>
+                                </div>
+                                <div class="data-row">
+                                    <strong>Inicio Terapia:</strong>
+                                    <span id="p-inicio-terapia">-</span>
+                                </div>
+                            </div>
+                            <!-- Sección de Contactos Fija -->
+                            <div class="contacts-fixed-section">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; margin-top: 10px;">
+                                    <h3 style="text-transform: uppercase; margin: 0;">Contactos</h3>
+                                    <button id="btn-abrir-contacto" class="btn-icon-small">
+                                        <i class="bi bi-telephone-x-fill"></i>
+                                    </button>
+                                </div>
+                                <div id="p-lista-contactos"></div>
+                            </div>
+                            <!-- Motivo Fijo abajo -->
+                            <div class="motivo-fixed-footer">
+                                <h3 style="text-transform: uppercase; margin-bottom: 10px;">Motivo</h3>
+                                <p id="p-motivo" class="text-muted" style="margin-top:0; line-height: 1.4;"></p>
+                            </div>
+                        </section>
+                        <div class="column-right">
+                            <section class="card next-appointment-card no-hover">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                                    <h3 style="margin:0; text-transform: uppercase;">
+                                        <i class="fa-solid fa-clock"></i>
+                                        Próxima Cita
+                                    </h3>
+                                    <button id="btn-nueva-cita" class="btn-icon-small" title="Nueva Cita">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                </div>
+                                <div id="next-cita-content" class="appointment-content">
+                                    <p class="empty-msg">No hay citas programadas.</p>
+                                </div>
+                            </section>
+                            <section class="card files-card no-hover">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                                    <h3 style="margin:0; text-transform: uppercase;">
+                                        <i class="fa-solid fa-folder-open"></i> Documentos Adjuntos
+                                    </h3>
+                                    <div style="display:flex; gap:10px; align-items:center;">
+                                        <div class="search-mini-container">
+                                            <i class="fa-solid fa-magnifying-glass"></i>
+                                            <input type="text" id="search-files" placeholder="Buscar por nombre...">
+                                        </div>
+                                        <button class="btn-icon-small" onclick="abrirModalSubida()" title="Subir Documento">
+                                            <i class="fa-solid fa-upload"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="scroller-vertical" id="files-container" style="border-radius:15px;">
+                                    <p class="empty-msg">No hay archivos adjuntos.</p>
+                                </div>
+                            </section>
+                        </div>
+                        <div class="card sessions-history-card no-hover">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #f1f5f9; padding-bottom: 12px;">
+                                <h3 style="margin:0; text-transform: uppercase; border-bottom: 0px">
+                                    <i class="fa-solid fa-clock-rotate-left"></i> Historial de Sesiones
+                                </h3>
+                                <a id="btn-ver-todas-sesiones" class="btn-ver-todas">
+                                    <i class="fa-solid fa-layer-group"></i>
+                                    VER TODAS
+                                </a>
+                            </div>
+                            <div id="p-sesiones-list" class="sessions-cards-container" style="padding-bottom: 35px !important;">
+                                <!-- Se rellena dinámicamente desde JS --></div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+        <div id="modal-contacto-overlay" class="modal-overlay">
+            <div class="modal-content" style="width: 500px;">
+                <div class="modal-header">
+                    <h3 id="modal-contacto-titulo">
+                        <i class="fa-solid fa-address-book" style="margin-right: 10px; color: #348ec2;"></i>
+                        Añadir Contacto
+                    </h3>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <button
+                            type="button"
+                            id="btn-star-contacto"
+                            class="btn-star-toggle"
+                            title="Marcar como contacto principal"
+                        >
+                            <i class="fa-regular fa-star"></i>
+                        </button>
+                        <button class="btn-close-x" id="close-contacto-x">&times;</button>
+                    </div>
+                </div>
+                <form id="form-nuevo-contacto">
+                    <div class="modal-body-scroll" style="padding: 10px 20px;">
+                        <div class="form-group" style="margin-bottom: 15px;">
+                            <label>
+                                <i class="fa-solid fa-user"></i>
+                                Nombre
+                                Completo
+                            </label>
+                            <input
+                                type="text"
+                                id="contacto-nombre"
+                                class="form-control"
+                                required
+                                placeholder="Ej: Maria García"
+                            >
+                        </div>
+                        <div class="form-group" style="margin-bottom: 15px;">
+                            <label>
+                                <i class="fa-solid fa-people-arrows"></i>
+                                Correspondencia del Contacto
+                            </label>
+                            <input
+                                type="text"
+                                id="tipo-contacto"
+                                class="form-control"
+                                required
+                                placeholder="Ej: Propio, Madre, Pareja, Tutor legal..."
+                            >
+                        </div>
+                        <div style="background: #f8fafc; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0;">
+                            <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 10px; font-weight: 600;">
+                                DATOS
+                                DE CONTACTO (Rellenar al menos uno)
+                            </p>
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label>
+                                    <i class="fa-solid fa-phone"></i>
+                                    Teléfono
+                                </label>
+                                <input
+                                    type="tel"
+                                    id="contacto-telefono"
+                                    class="form-control"
+                                    placeholder="600 000 000"
+                                >
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    <i class="fa-solid fa-envelope"></i>
+                                    Email
+                                </label>
+                                <input
+                                    type="email"
+                                    id="contacto-email"
+                                    class="form-control"
+                                    placeholder="ejemplo@correo.com"
+                                >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn-danger"
+                            id="btn-eliminar-contacto-modal"
+                            style="display:none;"
+                        >
+                            <i class="fa-solid fa-trash"></i>
+                            Eliminar
+                        </button>
+                        <button type="submit" class="btn-primary">
+                            <i class="fa-solid fa-floppy-disk" style="margin-right: 8px;"></i>
+                            Guardar Contacto
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- MODAL SUBIR DOCUMENTO -->
+        <div id="modal-upload-document" class="modal-overlay">
+            <div class="modal-content" style="width: 500px;">
+                <div class="modal-header">
+                    <h3>
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Subir Documento
+                    </h3>
+                    <button class="btn-close-x">&times;</button>
+                </div>
+                <div class="modal-body-scroll" style="padding: 20px;">
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label>Nombre del Documento</label>
+                        <input
+                            type="text"
+                            id="upload-doc-name"
+                            class="form-control"
+                            placeholder="Ej: Informe de Evaluación Inicial"
+                        >
+                    </div>
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label>Tipo de Documento</label>
+                        <select id="upload-doc-tipo" class="form-control">
+                            <!-- Se rellena dinámicamente desde JS --></select>
+                    </div>
+                    <div id="drop-zone" class="upload-drop-zone">
+                        <i class="fa-solid fa-file-circle-plus"></i>
+                        <p>Arrastra el archivo aquí o
+                            <span>haz clic para buscar</span>
+                        </p>
+                        <input type="file" id="file-input-hidden" style="display:none;">
+                        <div id="file-selected-info" style="display:none; margin-top:10px; font-weight:600; color:#348ec2;"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button
+                        type="button"
+                        id="btn-ejecutar-subida"
+                        class="btn-primary"
+                        disabled
+                    >
+                    </i>
+                    Subir Archivo
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- MODAL EDITAR PACIENTE -->
+    <div id="modal-editar-paciente-overlay" class="modal-overlay">
+        <div class="modal-content" style="width: 800px;">
+            <div class="modal-header">
+                <h3>
+                    <i class="fa-solid fa-user-pen"></i>
+                    Editar Información
+                        del Paciente
+                </h3>
+                <button class="btn-close-x">&times;</button>
+            </div>
+            <div class="modal-body-scroll">
+                <form id="form-editar-paciente">
+                    <h4 class="form-section-title" style="padding-bottom: 10px">Datos Personales</h4>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Nombre</label>
+                            <input
+                                type="text"
+                                id="edit-nombre"
+                                required
+                                class="form-control"
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label>Apellidos</label>
+                            <input
+                                type="text"
+                                id="edit-apellidos"
+                                required
+                                class="form-control"
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label>DNI / NIE</label>
+                            <input
+                                type="text"
+                                id="edit-dni"
+                                required
+                                class="form-control"
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label>Fecha de Nacimiento</label>
+                            <input
+                                type="date"
+                                id="edit-fecha"
+                                required
+                                class="form-control"
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label>Género</label>
+                            <select id="edit-genero" class="form-control">
+                                <option value="Mujer">Mujer</option>
+                                <option value="Hombre">Hombre</option>
+                                <option value="No_especificado">No especificado</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Estado Civil</label>
+                            <select id="edit-estado-civil" class="form-control">
+                                <option value="Soltero">Soltero</option>
+                                <option value="Casado">Casado</option>
+                                <option value="Divorciado">Divorciado</option>
+                                <option value="Viudo">Viudo</option>
+                                <option value="Pareja_Hecho">Pareja de Hecho</option>
+                            </select>
+                        </div>
+                    </div>
+                    <h4 class="form-section-title" style="padding: 10px 0; border-top: 1px solid #cbe3fc;">Contacto y Ubicación</h4>
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label>Dirección</label>
+                            <textarea id="edit-direccion" rows="2" class="form-control"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Municipio</label>
+                            <input type="text" id="edit-municipio" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Código Postal</label>
+                            <input type="text" id="edit-cp" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Provincia</label>
+                            <input
+                                type="text"
+                                id="edit-provincia-search"
+                                class="form-control"
+                                list="provincias-list"
+                                placeholder="Escriba para buscar..."
+                            >
+                            <datalist id="provincias-list"></datalist>
+                            <input type="hidden" id="edit-provincia-id">
+                        </div>
+                        <div class="form-group">
+                            <label>Inicio Terapia</label>
+                            <input type="date" id="edit-fecha-inicio" class="form-control">
+                        </div>
+                    </div>
+                    <h4 class="form-section-title" style="padding: 10px 0; border-top: 1px solid #cbe3fc;">Situación Socio-Laboral</h4>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Situación Laboral</label>
+                            <select id="edit-situacion-laboral" class="form-control">
+                                <option value="Empleado">Empleado</option>
+                                <option value="Desempleado">Desempleado</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Estudia</label>
+                            <select id="edit-estudiando" class="form-control">
+                                <option value="false">No</option>
+                                <option value="true">Sí</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-width" style="margin-bottom: 0;">
+                            <label>Nivel de Estudios</label>
+                            <input type="text" id="edit-nivel-estudios" class="form-control">
+                        </div>
+                    </div>
+                    <h4 class="form-section-title" style="padding: 10px 0; border-top: 1px solid #cbe3fc;">Información Clínica</h4>
+                    <div class="form-grid">
+                        <div class="form-group full-width" style="margin-bottom: 0;">
+                            <label>Motivo de Consulta</label>
+                            <textarea
+                                id="edit-motivo-consulta"
+                                required
+                                class="form-control"
+                                rows="3"
+                            ></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" form="form-editar-paciente" class="btn-primary">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Guardar Cambios
+                </button>
+            </div>
+        </div>
+    </div>
+    <script src="assets/js/auth-guard.js"></script>
+    <script src="assets/js/layout.js"></script>
+    <script src="assets/js/modal-tools.js"></script>
+    <script src="assets/js/paciente-detalle.js"></script>
+</body>
+</html>

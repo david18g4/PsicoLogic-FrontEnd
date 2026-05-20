@@ -1,0 +1,287 @@
+.header-card-sesiones {
+    background: white;
+    padding: 25px 40px;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.header-card-sesiones h2 {
+    margin: 0;
+    color: #264574;
+    font-size: 1.8rem;
+}
+
+.header-filters {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.sessions-counter {
+    background: #348ec2;
+    color: white;
+    padding: 6px 15px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.85rem;
+}
+
+.sessions-list-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-bottom: 40px;
+}
+
+.session-full-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+    display: flex;
+    overflow: visible; /* Cambiado a visible para que los dropdowns no se corten */
+    position: relative;
+    border: 1px solid #f1f5f9;
+    transition: transform 0.2s;
+}
+
+.session-full-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+}
+
+.session-info-left {
+    width: 220px;
+    background: #f8fafc;
+    padding: 25px;
+    border-right: 1px solid #f1f5f9;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px 0 0 20px;
+}
+
+.info-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.info-divider {
+    width: 40px;
+    height: 2px;
+    background: #e2e8f0;
+    margin: 10px 0;
+    border-radius: 2px;
+}
+
+.payment-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.euro-crossed-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.euro-crossed-wrapper::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -2px;
+    width: calc(100% + 4px);
+    height: 2px;
+    background: #ef4444;
+    transform: rotate(-35deg);
+    border-radius: 2px;
+}
+
+.session-date-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.session-date-box .day { font-size: 1.8rem; font-weight: 800; color: #264574; line-height: 1; }
+.session-date-box .month-year { font-size: 0.8rem; font-weight: 600; color: #64748b; text-transform: uppercase; }
+
+.session-time-text {
+    font-weight: 700; 
+    color: #64748b;
+}
+
+.session-content-right {
+    flex: 1;
+    padding: 30px;
+    padding-top: 25px;
+    display: flex;
+    flex-direction: column;
+}
+
+.session-header-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    width: 100%;
+}
+
+.btn-mostrar-sesion {
+    margin-left: auto; /* Empuja el botón a la derecha */
+    background: #f0f7ff;
+    color: #348ec2;
+    border: 1px solid #348ec2;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.session-involved-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 0; /* Quitamos el margen porque lo gestiona el contenedor padre */
+    font-size: 0.95rem;
+    color: #264574;
+    background: #f0f7ff;
+    padding: 10px 15px;
+    border-radius: 12px;
+    width: fit-content;
+    border: 1px solid #bae6fd;
+}
+
+.involved-patient-link {
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.involved-patient-link:hover {
+    color: #348ec2;
+    text-decoration: underline;
+}
+
+.session-involved-info i {
+    color: #348ec2;
+}
+
+.btn-mostrar-sesion:hover {
+    background: #348ec2;
+    color: white;
+}
+
+.content-block {
+    margin-bottom: 20px;
+}
+
+.content-block:last-child { margin-bottom: 0; }
+
+.block-title { display: block; font-weight: 800; font-size: 0.8rem; color: #348ec2; text-transform: uppercase; margin-bottom: 5px; padding-left: 0px;}
+.block-text { font-size: 0.95rem; color: #475569; line-height: 1.6; margin: 0; white-space: pre-wrap; }
+
+.loading-state { text-align: center; padding: 50px; color: #94a3b8; font-size: 1.2rem; }
+
+.empty-sessions-card {
+    justify-content: center;
+    align-items: center;
+    padding: 60px 40px;
+    min-height: 180px;
+}
+
+.no-sessions-content {
+    color: #94a3b8;
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-align: center;
+}
+
+.centered-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 150px;
+    flex: 1;
+}
+
+.no-data-msg {
+    color: #94a3b8;
+    font-style: italic;
+    font-size: 0.95rem;
+}
+
+/* Estilos para los selectores de estado/modalidad (copiados de citas.css/home.css) */
+.status-selector-wrapper {
+    position: relative;
+    display: inline-block;
+    z-index: 5; /* Asegura que el dropdown esté por encima de otros elementos */
+}
+
+.status-options-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0; /* Alineado a la izquierda del tag */
+    margin-top: 5px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    z-index: 99999; /* Valor muy alto para asegurar que esté encima de todo */
+    min-width: 140px;
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+}
+
+.status-options-dropdown.show { display: block; }
+
+.status-options-dropdown div {
+    padding: 8px 15px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    color: #475569;
+    transition: background 0.2s;
+}
+.status-options-dropdown div:hover { background: #f1f5f9; color: #264574; }
+
+/* Eleva la card completa cuando el menú está abierto para que no la tape la de abajo */
+.session-full-card:has(.status-options-dropdown.show) {
+    z-index: 1000 !important; /* Eleva la tarjeta completa sobre las demás */
+    position: relative;
+}
+
+/* Eleva el contenedor específico del selector para que el desplegable no sea tapado por el contenido derecho */
+.status-selector-wrapper:has(.status-options-dropdown.show) {
+    z-index: 1001;
+    position: relative;
+}
+
+/* Estado No Presentado: Fondo rojo claro para la card completa */
+.session-full-card.is-no-presentado {
+    background-color: #fffafa !important; /* Rojo muy sutil para la card completa */
+}
+
+/* Ajuste del panel izquierdo y bordes para el estado No Presentado */
+.session-full-card.is-no-presentado .session-info-left {
+    background: #fff0f0; /* Rojo claro, ligeramente más oscuro que el fondo de la card */
+    border-right-color: #fee2e2; /* Borde para contraste */
+}
+
+.session-full-card.is-no-presentado:hover {
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.1);
+}

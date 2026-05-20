@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" href="assets/img/PsicoLogicLogo.png" type="image/png">
+        <link rel="stylesheet" href="assets/css/general.css">
+        <link rel="stylesheet" href="assets/css/sidebar.css">
+        <link rel="stylesheet" href="assets/css/common-components.css">
+        <link rel="stylesheet" href="assets/css/paciente-detalle.css">
+        <link rel="stylesheet" href="assets/css/perfil.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+        <title>Mi Perfil</title>
+    </head>
+    <body class="home-body">
+        <header class="header-app">
+            <a href="home.html" class="logo-link">
+                <div class="logo-section">
+                    <h1 class="nombre-app-texto small">PsicoLogic</h1>
+                </div>
+            </a>
+            <img src="assets/img/PsicoLogicLogo.png" class="header-logo" alt="Logo">
+            <div class="user-info">
+                <span>Psicólogo -
+                    <strong class="user-name-dinamico">Cargando...</strong>
+                </span>
+                <div class="user-menu-container">
+                    <img class="avatar avatar-dinamico" alt="Avatar" id="avatar-click">
+                    <div class="dropdown-panel" id="dropdown-panel">
+                        <div class="dropdown-header">
+                            <strong class="user-name-dinamico">Cargando...</strong>
+                            <span>Psicólogo Colegiado</span>
+                        </div>
+                        <hr>
+                        <a href="perfil.html">
+                            <i class="fa-solid fa-user-gear"></i> Mi Cuenta
+                        </a>
+                        <a href="ayuda.html">
+                            <i class="fa-solid fa-circle-question"></i>
+                            Ayuda
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="main-layout">
+            <aside class="sidebar collapsed" id="sidebar">
+                <div class="toggle-btn" id="toggle-sidebar">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+                <nav class="menu-links">
+                    <a href="home.html">
+                        <i class="fa-solid fa-house"></i>
+                        <span>Inicio</span>
+                    </a>
+                    <a href="pacientes.html">
+                        <i class="fa-solid fa-user-group"></i>
+                        <span>Pacientes</span>
+                    </a>
+                    <a href="citas.html">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <span>Citas</span>
+                    </a>
+                    <a href="estadisticas.html">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>Estadísticas</span>
+                    </a>
+                </nav>
+                <div class="logout-section">
+                    <a href="index.html" style="color: #ff7675;">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>Cerrar Sesión</span>
+                    </a>
+                </nav>
+            </aside>
+            <main class="content">
+                <div id="content-loader" class="inner-loader">
+                    <img src="assets/img/PsicoLogicLogo.png" class="loader-logo" alt="Logo">
+                </div>
+                <section class="card profile-header-card">
+                    <div class="profile-main">
+                        <img src="https://cdn-icons-png.flaticon.com/512/3774/3774299.png" alt="Doctor" style="width: 100px;">
+                        <div class="profile-titles">
+                            <h2 id="prof-nombre-completo" style="padding-bottom: 10px;">Cargando...</h2>
+                            <div class="badges-container">
+                                <span id="prof-tag-num" class="tag tag-blue">--</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <div class="details-grid">
+                    <section class="card info-card no-hover" style="min-height: 240px !important;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <h3 style="margin:0; text-transform: uppercase;">
+                                <i class="fa-solid fa-address-card"></i>
+                                Datos Personales
+                            </h3>
+                        </div>
+                        <div class="data-row">
+                            <strong>Nombre:</strong>
+                            <span id="prof-nombre">-</span>
+                        </div>
+                        <div class="data-row">
+                            <strong>Apellidos:</strong>
+                            <span id="prof-apellidos">-</span>
+                        </div>
+                        <div class="data-row">
+                            <strong>DNI:</strong>
+                            <span id="prof-dni">-</span>
+                        </div>
+                        <div class="data-row">
+                            <strong>Email:</strong>
+                            <span id="prof-email">-</span>
+                        </div>
+                    </section>
+                    <!-- Información Profesional y Legal -->
+                    <section class="card info-card no-hover" style="min-height: 240px !important;">
+                        <h3 style="text-transform: uppercase; margin-bottom: 15px;">
+                            <i class="fa-solid fa-scale-balanced"></i>
+                            Información Legal
+                        </h3>
+                        <div class="data-row">
+                            <strong>Nº Colegiado:</strong>
+                            <span id="prof-num-col">-</span>
+                        </div>
+                        <div class="data-row">
+                            <strong>Dir. Fiscal:</strong>
+                            <span id="prof-direccion">-</span>
+                        </div>
+                        <div class="data-row">
+                            <strong>Actividad:</strong>
+                            <span id="prof-actividad">-</span>
+                        </div>
+                    </section>
+                    <!-- RGPD / Privacidad (Ancho completo) -->
+                    <section class="card full-width-card no-hover">
+                        <h3 style="text-transform: uppercase; margin-bottom: 15px;">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            RGPD / Privacidad
+                        </h3>
+                        <div id="prof-rgpd" class="text-muted" style="font-size: 0.9rem; line-height: 1.5;">
+                            Conforme al Reglamento General de Protección de Datos (RGPD), sus datos personales y profesionales 
+                        se procesan con la única finalidad de gestionar su actividad clínica y facturación.
+                        </div>
+                    </section>
+                    <!-- Cuentas Bancarias (Ancho completo) -->
+                    <section class="card full-width-card no-hover">
+                        <h3 style="text-transform: uppercase; margin-bottom: 15px !important;">
+                            <i class="fa-solid fa-university"></i> Mis Cuentas de Cobro
+                        </h3>
+                        <div class="table-container-scroll">
+                            <table class="session-table">
+                                <thead>
+                                    <tr>
+                                        <th>Tipo de Cuenta</th>
+                                        <th>Descripción</th>
+                                        <th>Número de Cuenta / Teléfono</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="prof-cuentas-body"></tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+            </main>
+        </div>
+        <script src="assets/js/auth-guard.js"></script>
+        <script src="assets/js/layout.js"></script>
+        <script src="assets/js/perfil.js"></script>
+    </body>
+</html>

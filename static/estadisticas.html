@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="icon" href="assets/img/PsicoLogicLogo.png" type="image/png">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="assets/css/general.css">
+        <link rel="stylesheet" href="assets/css/sidebar.css">
+        <link rel="stylesheet" href="assets/css/common-components.css">
+        <link rel="stylesheet" href="assets/css/estadisticas.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+        <title>Estadísticas</title>
+        <script src="assets/js/auth-guard.js"></script>
+    </head>
+    <body class="app-view">
+        <header class="header-app">
+            <a href="home.html" class="logo-link">
+                <div class="logo-section">
+                    <h1 class="nombre-app-texto small">PsicoLogic</h1>
+                </div>
+            </a>
+            <img src="assets/img/PsicoLogicLogo.png" class="header-logo" alt="Logo">
+            <div class="user-info">
+                <span>Estadísticas -
+                    <strong class="user-name-dinamico">Cargando...</strong>
+                </span>
+                <div class="user-menu-container">
+                    <img
+                        src
+                        class="avatar avatar-dinamico"
+                        alt="Avatar"
+                        id="avatar-click"
+                    >
+                    <div class="dropdown-panel" id="dropdown-panel">
+                        <div class="dropdown-header">
+                            <strong class="user-name-dinamico">Cargando...</strong>
+                            <span>Psicólogo Colegiado</span>
+                        </div>
+                        <hr>
+                        <a href="perfil.html">
+                            <i class="fa-solid fa-user-gear"></i> Mi Cuenta
+                        </a>
+                        <a href="ayuda.html">
+                            <i class="fa-solid fa-circle-question"></i>
+                            Ayuda
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="main-layout">
+            <aside class="sidebar collapsed" id="sidebar">
+                <div class="toggle-btn" id="toggle-sidebar">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+                <nav class="menu-links">
+                    <a href="home.html">
+                        <i class="fa-solid fa-house"></i>
+                        <span>Inicio</span>
+                    </a>
+                    <a href="pacientes.html">
+                        <i class="fa-solid fa-user-group"></i>
+                        <span>Pacientes</span>
+                    </a>
+                    <a href="citas.html">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <span>Citas</span>
+                    </a>
+                    <a href="estadisticas.html" class="active">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>Estadísticas</span>
+                    </a>
+                </nav>
+                <div class="logout-section">
+                    <a href="index.html" style="color: #ff7675;">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>Cerrar Sesión</span>
+                    </a>
+                </div>
+            </aside>
+            <main class="content">
+                <div id="content-loader" class="inner-loader">
+                    <img src="assets/img/PsicoLogicLogo.png" class="loader-logo" alt="Logo">
+                </div>
+                <div class="dashboard-container">
+                    <div class="stats-grid">
+                        <div class="stat-card" id="card-total-pacientes">
+                            <i class="fa-solid fa-users"></i>
+                            <div>
+                                <h3 id="total-pacientes">-</h3>
+                                <p>Pacientes Totales</p>
+                            </div>
+                        </div>
+                        <div class="stat-card" id="card-citas-mes">
+                            <i class="fa-solid fa-calendar-check"></i>
+                            <div>
+                                <h3 id="citas-mes">-</h3>
+                                <p>Citas este mes</p>
+                            </div>
+                        </div>
+                        <div class="stat-card no-click">
+                            <i class="fa-solid fa-euro-sign"></i>
+                            <div>
+                                <h3 id="ingresos-mes">-</h3>
+                                <p>Facturación (Marzo)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="charts-grid">
+                        <div class="chart-box">
+                            <h4>Distribución de Género</h4>
+                            <canvas id="chartGenero"></canvas>
+                        </div>
+                        <div class="chart-box">
+                            <h4>Estado de Pacientes</h4>
+                            <canvas id="chartEstado"></canvas>
+                        </div>
+                    </div>
+                    <div class="charts-grid">
+                        <div class="chart-box">
+                            <h4>Pacientes Registrados por Mes</h4>
+                            <canvas id="chartPacientesMes"></canvas>
+                        </div>
+                        <div class="chart-box">
+                            <h4 id="titulo-facturacion-anual" style="margin-bottom: 10px;">
+                                Facturación Anual
+                                (0€)
+                            </h4>
+                            <canvas id="chartFacturacionMes"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-box table-box">
+                        <h4>
+                            <i class="fa-solid fa-triangle-exclamation" style="color: #e67e22;"></i>
+                            Sesiones Pendientes de Facturar
+                        </h4>
+                        <div class="table-container">
+                            <table class="tabla-general">
+                                <thead>
+                                    <tr>
+                                        <th>Paciente</th>
+                                        <th style="text-align:center;">Fecha</th>
+                                        <th style="text-align:center;">Importe</th>
+                                        <th style="text-align:center;">Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="pendientes-facturar-body">
+                                    <tr>
+                                        <td colspan="4" style="text-align:center;">
+                                            Cargando
+                                            sesiones...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+        <script src="assets/js/layout.js"></script>
+        <script src="assets/js/estadisticas.js"></script>
+    </body>
+</html>

@@ -1,0 +1,355 @@
+.modal-body-scroll {
+    margin-top: 10px;
+}
+
+.table-container {
+    padding-bottom: 65px;
+}
+
+.modal-content {
+    width: 800px;
+    /* Sobrescribimos ancho por defecto */
+    margin-top: 20px;
+}
+
+.form-section-title {
+    grid-column: span 2;
+    font-size: 0.95rem;
+    color: #348ec2;
+    border-bottom: 2px solid #f0f7ff;
+    padding-bottom: 5px;
+    margin: 20px 0 10px 0;
+    font-weight: 800;
+}
+
+.full-width {
+    grid-column: span 2;
+}
+
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    font-family: 'Montserrat', sans-serif;
+    resize: vertical;
+    outline: none;
+    transition: all 0.3s;
+}
+
+.form-group textarea:focus {
+    border-color: #5fb3e3;
+    background: white;
+}
+
+/* Resto de estilos del archivo original se mantienen igual */
+.main-layout {
+    background-color: aliceblue;
+}
+
+.welcome-banner {
+    background: white;
+    padding: 30px 40px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+}
+
+.welcome-banner h2 {
+    font-size: 1.8rem;
+    margin-bottom: 5px;
+}
+
+.toolbar-pacientes {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.search-box {
+    position: relative;
+    flex-grow: 1;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 12px 15px 12px 45px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    outline: none;
+    transition: all 0.3s;
+}
+
+.search-box input:focus {
+    border-color: #5fb3e3;
+    background: #fff;
+}
+
+.search-box i {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+}
+
+.filters {
+    display: flex;
+    gap: 12px;
+}
+
+.filters select {
+    padding: 10px 35px 10px 15px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    background-color: #f8fafc;
+    color: #264574;
+    font-weight: 600;
+    cursor: pointer;
+    outline: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23264574'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 14px;
+}
+
+.session-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.session-table th {
+    text-align: left;
+    padding: 15px;
+    color: #64748b;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.session-table td {
+    padding: 15px;
+    background: white;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 0.9rem;
+}
+
+.more-contacts {
+    color: #64748b;
+    margin-top: 5px;
+    font-style: italic;
+    font-weight: 600;
+}
+
+.session-table tbody tr:hover td {
+    background-color: #f0f7ff !important;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.form-group input,
+.form-group select {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    outline: none;
+}
+
+.btn-icon:hover {
+    transform: scale(1.2);
+}
+
+/* Hacer que la fila cambie de color al pasar el ratón */
+#lista-pacientes-body tr {
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+}
+
+#lista-pacientes-body tr:hover {
+    background-color: #f0f7ff;
+    /* Un azul muy claro */
+}
+
+/* --- RESPONSIVIDAD DE LA TABLA --- */
+
+@media screen and (max-width: 768px) {
+
+    /* Ocultar el encabezado original de la tabla */
+    .session-table thead {
+        display: none;
+    }
+
+    .session-table,
+    .session-table tbody,
+    .session-table tr,
+    .session-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .session-table tr {
+        margin-bottom: 15px;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        background: #fff;
+        padding: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+    }
+
+    .session-table td {
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+        border-bottom: 1px solid #f1f5f9;
+        min-height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    .session-table td:last-child {
+        border-bottom: none;
+        justify-content: center;
+        /* Centrar botones de acción */
+        padding-left: 0;
+    }
+
+    /* Insertar los nombres de las columnas antes del dato */
+    .session-table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align: left;
+        font-weight: 700;
+        color: #64748b;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .welcome-banner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .toolbar-pacientes {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .search-box {
+        width: 100%;
+    }
+
+    .filters {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+}
+
+/* ========== ESTILOS DEL DROPDOWN DE ESTADO ========== */
+.status-selector-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.clickable-tag {
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.clickable-tag:hover {
+    filter: brightness(0.95);
+    transform: translateY(-1px);
+}
+
+.status-options-dropdown {
+    display: none;
+    position: absolute;
+    top: 110%;
+    left: 0;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    z-index: 1001;
+    min-width: 150px;
+    border: 1px solid #e2e8f0;
+}
+
+.status-options-dropdown.show {
+    display: block;
+}
+
+.status-options-dropdown div {
+    padding: 8px 15px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    color: #475569;
+    transition: background 0.2s;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.status-options-dropdown div:last-child {
+    border-bottom: none;
+}
+
+.status-options-dropdown div:hover {
+    background: #f1f5f9;
+    color: #264574;
+}
+
+@media screen and (max-width: 1100px) and (min-width: 769px) {
+    /* En pantallas medianas, ocultamos columnas menos importantes para ganar espacio */
+    .session-table th:nth-child(2), /* DNI */
+    .session-table td:nth-child(2),
+    .session-table th:nth-child(4), /* Género */
+    .session-table td:nth-child(4) {
+        display: none;
+    }
+}
+
+.session-table td[data-label="Contacto"] div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.email-link {
+    color: #348ec2;
+    text-decoration: none;
+    transition: color 0.2s;
+    display: inline-block;
+    max-width: 160px; /* Límite para activar los puntos suspensivos */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.email-link:hover {
+    color: #264574;
+    text-decoration: underline;
+}
+
+.phone-link {
+    cursor: text;
+    user-select: text;
+}

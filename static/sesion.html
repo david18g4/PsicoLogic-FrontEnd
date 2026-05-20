@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="icon" href="assets/img/PsicoLogicLogo.png" type="image/png">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="assets/css/general.css">
+        <link rel="stylesheet" href="assets/css/sidebar.css">
+        <link rel="stylesheet" href="assets/css/common-components.css">
+        <link rel="stylesheet" href="assets/css/sesion.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+        <title>Sesión</title>
+        <script src="assets/js/auth-guard.js"></script>
+    </head>
+    <body class="home-body">
+        <header class="header-app">
+            <a href="home.html" class="logo-link">
+                <div class="logo-section">
+                    <h1 class="nombre-app-texto small">PsicoLogic</h1>
+                </div>
+            </a>
+            <img src="assets/img/PsicoLogicLogo.png" class="header-logo" alt="Logo">
+            <div class="user-info">
+                <div class="status-selector-wrapper" style="margin-left: 15px;">
+                    <span
+                        id="cita-status-tag"
+                        style="width: 100%; height: 100%;"
+                        class="tag clickable-tag"
+                        title="Cambiar estado"
+                        data-estado=""
+                    >Cargando...</span>
+                    <div id="status-options" class="status-options-dropdown" style="text-align: center;"></div>
+                </div>
+                <div class="user-menu-container">
+                    <img class="avatar avatar-dinamico" alt="Avatar" id="avatar-click">
+                    <div class="dropdown-panel" id="dropdown-panel">
+                        <div class="dropdown-header">
+                            <strong class="user-name-dinamico">Cargando...</strong>
+                            <span>Psicólogo Colegiado</span>
+                        </div>
+                        <hr>
+                        <a href="perfil.html">
+                            <i class="fa-solid fa-user-gear"></i>
+                            Mi Cuenta
+                        </a>
+                        <a href="ayuda.html">
+                            <i class="fa-solid fa-circle-question"></i>
+                            Ayuda
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="main-layout">
+            <aside class="sidebar collapsed" id="sidebar">
+                <div class="toggle-btn" id="toggle-sidebar">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+                <nav class="menu-links">
+                    <a href="home.html" class="active">
+                        <i class="fa-solid fa-house"></i>
+                        <span>Inicio</span>
+                    </a>
+                    <a href="pacientes.html">
+                        <i class="fa-solid fa-user-group"></i>
+                        <span>Pacientes</span>
+                    </a>
+                    <a href="citas.html">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <span>Citas</span>
+                    </a>
+                    <a href="estadisticas.html">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>Estadísticas</span>
+                    </a>
+                </nav>
+                <div class="logout-section" style="padding: 15px; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <a href="#" id="logout-link" style="color: #ff7675;">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>Cerrar Sesión</span>
+                    </a>
+                </div>
+            </aside>
+            <main class="content">
+                <div id="content-loader" class="inner-loader" style="display: flex;">
+                    <img src="assets/img/PsicoLogicLogo.png" class="loader-logo" alt="Logo">
+                </div>
+                <div class="session-grid" id="session-main-content" style="display: none;">
+                    <aside class="session-sidebar">
+                        <div class="card patient-mini-card">
+                            <div class="patient-avatar-container" style="height: 100px;">
+                                <i id="p-genero-icon" class="fa-solid fa-user gender-icon"></i>
+                            </div>
+                            <div class="patient-info-content">
+                                <h3 id="p-nombre-lateral">Cargando...</h3>
+                            </div>
+                            <div class="appointment-content">
+                                <div class="next-cita-box">
+                                    <div class="progress-ring-wrapper" id="sesion-progress-wrapper">
+                                        <div class="date-badge">
+                                            <span class="day" id="p-sesion-dia">--</span>
+                                            <span class="month" id="p-sesion-mes">---</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="next-cita-time" id="p-sesion-hora" style="font-weight: 800;">--:--h</div>
+                                        <div class="next-cita-modality" id="p-sesion-modalidad">Presencial</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card session-details-form">
+                            <h4>Datos de sesión</h4>
+                            <div class="input-group">
+                                <label>Procedencia</label>
+                                <input type="text" id="procedenciaSesion" placeholder="Ej: Propia, Seguro...">
+                            </div>
+                            <hr class="separador-sesion">
+                            <div id="container-videollamada" class="input-group" style="margin-top: 10px;">
+                                <label>Videollamada</label>
+                                <a
+                                    id="btn-link-video"
+                                    href="#"
+                                    target="_blank"
+                                    class="btn-video-link"
+                                >
+                                    <i class="fa-solid fa-video"></i>
+                                    Unirse a la sesión
+                                </a>
+                            </div>
+                            <hr class="separador-sesion">
+                            <div class="input-group" style="margin-top: 10px;">
+                                <label>Tipo de Sesión</label>
+                                <div class="status-selector-wrapper tipo-sesion-selector" style="width: 100%;">
+                                    <span
+                                        id="tipo-sesion-tag"
+                                        class="tag clickable-tag"
+                                        style="width: 100%;"
+                                        data-tipo="Individual"
+                                    >Individual</span>
+                                    <div id="tipo-sesion-options" style="width: 100%; text-align: center;" class="status-options-dropdown"></div>
+                                </div>
+                                <input type="hidden" id="tipoSesion" value="Individual">
+                            </div>
+                            <div class="input-group">
+                                <label>Duración (min)</label>
+                                <select id="duracionMinutos">
+                                    <option value="30">30</option>
+                                    <option value="60">60</option>
+                                    <option value="75">75</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label>Precio (€)</label>
+                                <input
+                                    type="number"
+                                    id="precio"
+                                    value="60.00"
+                                    step="5"
+                                >
+                            </div>
+                            <div class="checkbox-group" style="justify-content: center; align-items: center; display: flex;">
+                                <input type="checkbox" id="facturada">
+                                <label for="facturada" style="padding-left: 10px;">Facturada</label>
+                            </div>
+                        </div>
+                    </aside>
+                    <section class="main-notes card">
+                        <div class="tabs-header">
+                            <button class="tab-btn active" data-tab="tab-motivo">Motivo</button>
+                            <button class="tab-btn" data-tab="contenidos">Contenidos</button>
+                            <button class="tab-btn" data-tab="intervenciones">Intervenciones</button>
+                            <button class="tab-btn" data-tab="observaciones">Observaciones</button>
+                            <button class="tab-btn" data-tab="hipotesis">Hipótesis</button>
+                        </div>
+                        <div class="tabs-content">
+                            <div class="tab-pane active" id="tab-motivo">
+                                <textarea id="motivoSesion" placeholder="Escribe el motivo de la sesión..."></textarea>
+                            </div>
+                            <div class="tab-pane" id="contenidos">
+                                <textarea id="contenidosTratados" placeholder="¿Qué temas se han tratado hoy?"></textarea>
+                            </div>
+                            <div class="tab-pane" id="intervenciones">
+                                <textarea id="intervencionesSesion" placeholder="Describe las intervenciones realizadas..."></textarea>
+                            </div>
+                            <div class="tab-pane" id="observaciones">
+                                <textarea id="observacionesClinicas" placeholder="Anotaciones sobre lenguaje no verbal, actitud..."></textarea>
+                            </div>
+                            <div class="tab-pane" id="hipotesis">
+                                <textarea id="hipotesisSesion" placeholder="Hipótesis de trabajo o diagnósticas..."></textarea>
+                            </div>
+                        </div>
+                    </section>
+                    <div class="footer-actions">
+                        <span id="last-saved">Último cambio: Justo ahora</span>
+                        <button id="btn-finalizar" class="btn-primary">
+                            Finalizar
+                            y Guardar
+                        </button>
+                    </div>
+                </div>
+            </main>
+        </div>
+        <script src="assets/js/layout.js"></script>
+        <script src="assets/js/sesion-script.js"></script>
+    </body>
+</html>

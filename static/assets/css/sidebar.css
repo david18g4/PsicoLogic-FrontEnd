@@ -1,0 +1,83 @@
+.sidebar {
+    width: 260px;
+    background: #264574;
+    color: white;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    overflow-x: hidden;
+    text-align: center;
+}
+
+.sidebar.collapsed {
+    width: 80px;
+}
+
+.sidebar .toggle-btn {
+    cursor: pointer;
+    font-size: 1.4rem;
+    padding: 25px;
+    color: #5fb3e3;
+    display: flex;
+    line-height: 1;
+    justify-content: center;
+}
+
+.menu-links {
+    flex-grow: 1;
+    padding: 0 10px;
+    text-align: center;
+}
+
+.sidebar a {
+    color: #cbd5e0;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding: 15px 16px;
+    margin-bottom: 5px;
+    border-radius: 12px;
+    transition: background 0.3s ease, color 0.3s ease, padding-left 0.3s ease;
+    white-space: nowrap;
+    line-height: 1; /* Evita que el line-height de Bootstrap (1.5) aumente el alto del botón */
+}
+
+.sidebar a:hover {
+    padding-left: 18px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #5fb3e3;
+}
+
+.sidebar a.active {
+    background: rgba(255, 255, 255, 0.1);
+    color: #5fb3e3;
+}
+
+.sidebar a i {
+    min-width: 30px;
+    font-size: 1.2rem;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar.collapsed a span {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.logout-section {
+    padding: 20px 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logout-section a {
+    color: #ff7675;
+}
+
+.sidebar a span {
+    padding-left: 5px;
+    line-height: 1; /* Alinea el texto perfectamente con el icono */
+}

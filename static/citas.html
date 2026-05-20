@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" href="assets/img/PsicoLogicLogo.png" type="image/png">
+        <link rel="stylesheet" href="assets/css/general.css">
+        <link rel="stylesheet" href="assets/css/sidebar.css">
+        <link rel="stylesheet" href="assets/css/common-components.css">
+        <link rel="stylesheet" href="assets/css/modals.css">
+        <link rel="stylesheet" href="assets/css/citas.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+        <title>Citas</title>
+        <script src="assets/js/auth-guard.js"></script>
+    </head>
+    <body class="home-body">
+        <header class="header-app">
+            <a href="home.html" class="logo-link">
+                <div class="logo-section">
+                    <h1 class="nombre-app-texto small">PsicoLogic</h1>
+                </div>
+            </a>
+            <img src="assets/img/PsicoLogicLogo.png" class="header-logo" alt="Logo">
+            <div class="user-info">
+                <span>Citas -
+                    <strong class="user-name-dinamico">Cargando...</strong>
+                </span>
+                <div class="user-menu-container">
+                    <img
+                        src
+                        class="avatar avatar-dinamico"
+                        alt="Avatar"
+                        id="avatar-click"
+                    >
+                    <div class="dropdown-panel" id="dropdown-panel">
+                        <div class="dropdown-header">
+                            <strong class="user-name-dinamico">Cargando...</strong>
+                            <span>Psicólogo Colegiado</span>
+                        </div>
+                        <hr>
+                        <a href="perfil.html">
+                            <i class="fa-solid fa-user-gear"></i> Mi Cuenta
+                        </a>
+                        <a href="ayuda.html">
+                            <i class="fa-solid fa-circle-question"></i>
+                            Ayuda
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="main-layout">
+            <aside class="sidebar collapsed" id="sidebar">
+                <div class="toggle-btn" id="toggle-sidebar">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+                <nav class="menu-links">
+                    <a href="home.html">
+                        <i class="fa-solid fa-house"></i>
+                        <span>Inicio</span>
+                    </a>
+                    <a href="pacientes.html">
+                        <i class="fa-solid fa-user-group"></i>
+                        <span>Pacientes</span>
+                    </a>
+                    <a href="citas.html" class="active">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <span>Citas</span>
+                    </a>
+                    <a href="estadisticas.html">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>Estadísticas</span>
+                    </a>
+                </nav>
+                <div class="logout-section">
+                    <a href="#" style="color: #ff7675;" id="logout-link">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>Cerrar Sesión</span>
+                    </a>
+                </div>
+            </aside>
+            <main class="content">
+                <div id="content-loader" class="inner-loader">
+                    <img src="assets/img/PsicoLogicLogo.png" class="loader-logo" alt="Logo">
+                </div>
+                <header class="content-header">
+                    <div class="header-top">
+                        <div class="header-text">
+                            <h2>Agenda de Citas</h2>
+                            <p>Gestiona tus sesiones y horarios</p>
+                        </div>
+                        <button class="btn-primario" onclick="abrirModalNuevaCita()">
+                            <i class="fa-solid fa-calendar-plus"></i>
+                            <span>Nueva Cita</span>
+                        </button>
+                    </div>
+                    <div class="header-separator"></div>
+                    <div class="leyenda-calendario">
+                        <div class="leyenda-grupo">
+                            <small>Modalidad:</small>
+                            <div class="leyenda-item evento-individual">Presencial</div>
+                            <div class="leyenda-item evento-online">Online</div>
+                        </div>
+                        <div class="header-separator-v"></div>
+                        <div class="leyenda-grupo">
+                            <small>Tipo:</small>
+                            <div class="leyenda-item dot-red">Sexología</div>
+                            <div class="leyenda-item dot-purple">Pareja</div>
+                            <div class="leyenda-item dot-blue">Individual</div>
+                        </div>
+                    </div>
+                </header>
+                <section class="calendar-container card">
+                    <div id="calendar"></div>
+                </section>
+            </main>
+        </div>
+        <div id="modalCitas" class="modal-overlay" onclick="if(event.target == this) cerrarModal()">
+            <div class="modal-content card">
+                <div class="modal-header">
+                    <h3 id="fechaSeleccionada">Citas del día</h3>
+                    <button class="btn-close-x" onclick="cerrarModal()">&times;</button>
+                </div>
+                <div id="listaCitasDia" class="lista-citas-modal"></div>
+                <div class="modal-footer">
+                    <button class="btn-primario full-width" onclick="abrirModalNuevaCita()">Añadir Cita</button>
+                </div>
+            </div>
+        </div>
+        <div id="modalNuevaCita" class="modal-overlay" onclick="if(event.target == this) cerrarModalNuevaCita()">
+            <form id="formNuevaCita" class="modal-content card modal-formulario">
+                <div class="modal-header">
+                    <h3 id="tituloModalCita">Nueva Cita</h3>
+                    <button type="button" class="btn-close-x" onclick="cerrarModalNuevaCita()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="idCitaEditando">
+                    <div class="form-group">
+                        <label>Pacientes</label>
+                        <div class="search-container" style="position: relative;">
+                            <input
+                                type="text"
+                                id="busquedaPacienteInput"
+                                placeholder="Buscar y seleccionar pacientes..."
+                                autocomplete="off"
+                            >
+                            <div id="resultadosBusquedaPacientes" class="resultados-busqueda"></div>
+                        </div>
+                        <div id="pacientesSeleccionadosContainer" class="pacientes-seleccionados-container">
+                            <div id="pacientesSeleccionadosList" class="pacientes-seleccionados-list"></div>
+                        </div>
+                        <input type="hidden" id="idPacientesSeleccionados" value="[]">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Fecha</label>
+                            <input type="date" id="fechaCita" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Hora</label>
+                            <input type="time" id="horaCita" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Duración</label>
+                            <select id="duracionCita">
+                                <option value="30">30 min</option>
+                                <option value="60" selected>60 mins</option>
+                                <option value="75">75 mins</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Modalidad</label>
+                            <select id="modalidadCita">
+                                <option value="Presencial">Presencial</option>
+                                <option value="Online">Online</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Tipo de Cita</label>
+                            <select id="tipoCita">
+                                <option value="Individual">Individual</option>
+                                <option value="Pareja">Pareja</option>
+                                <option value="Sexología">Sexología</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row" id="rowEstadoCita" style="display: none;">
+                        <div class="form-group">
+                            <label>Estado de la Cita</label>
+                            <select id="estadoCitaForm">
+                                <option value="Programada">Programada</option>
+                                <option value="Realizada">Realizada</option>
+                                <option value="No Presentado">No Presentado</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" id="containerSeleccionPsicologo" style="display: none;">
+                        <label>Asignar a Psicólogo</label>
+                        <select id="selectPsicologoCita"></select>
+                    </div>
+                </div>
+                <div class="modal-footer" style="display: flex; gap: 10px;">
+                    <button
+                        type="button"
+                        id="btnCancelarCita"
+                        class="btn-secondary"
+                        style="background: #fee2e2; color: #991b1b; display: none; padding: 10px 15px; border-radius: 10px; font-weight: 600;"
+                        onclick="marcarComoCancelada()"
+                    >Cancelar Cita</button>
+                    <button type="submit" class="btn-primario boton-guardar" style="flex: 1;">Guardar Cita</button>
+                </div>
+            </form>
+        </div>
+        <div id="modalSeleccionPaciente" class="modal-overlay" onclick="if(event.target == this) cerrarModalSeleccion()">
+            <div class="modal-content card modal-large">
+                <div class="modal-header">
+                    <h3>Seleccionar Paciente</h3>
+                    <button class="btn-close-x" onclick="cerrarModalSeleccion()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="search-bar-container">
+                        <input
+                            type="text"
+                            id="inputFiltroTabla"
+                            placeholder="Filtrar por nombre o DNI..."
+                            oninput="filtrarTablaPacientes(this.value)"
+                        >
+                    </div>
+                    <div class="table-container">
+                        <table class="tabla-pacientes">
+                            <thead>
+                                <tr>
+                                    <th>DNI</th>
+                                    <th>Nombre Completo</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cuerpoTablaPacientes"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="modalAvisoZoom" class="modal-overlay" onclick="if(event.target == this) cerrarModalAvisoZoom()">
+            <div class="modal-content card" style="max-width: 450px;">
+                <div class="modal-header modal-header-warning">
+                    <h3>
+                        <i class="fa-solid fa-video-slash"></i> Problema con el Enlace
+                    </h3>
+                    <button type="button" class="btn-close-x" onclick="cerrarModalAvisoZoom()">&times;</button>
+                </div>
+                <div class="modal-body" style="text-align: center; padding: 30px;">
+                    <div class="warning-icon-container">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                    </div>
+                    <p style="font-weight: 600; color: #264574; font-size: 1.1rem; margin-bottom: 10px;">Cita guardada con éxito</p>
+                    <p style="color: #64748b; line-height: 1.5;">Sin embargo,
+                        <strong>no se ha podido generar el enlace de Zoom</strong> para esta sesión online.
+                    </p>
+                    <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 15px;">Esto puede deberse a un problema temporal con la API de Zoom. Podrás intentar generarlo de nuevo editando la sesión más tarde.</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-primario full-width" onclick="cerrarModalAvisoZoom()">Entendido</button>
+                </div>
+            </div>
+        </div>
+        <script src="assets/js/layout.js"></script>
+        <script src="assets/js/citas.js"></script>
+    </body>
+</html>
