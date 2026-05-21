@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', async function () {
      * Inicialización y configuración de FullCalendar.
      */
     const calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'timeGridWeek',
+        initialView: 'dayGridMonth',
         locale: 'es',
         firstDay: 1,
         slotMinTime: '08:00:00',
@@ -157,11 +157,21 @@ document.addEventListener('DOMContentLoaded', async function () {
         noEventsContent: 'Ninguna cita por el momento',
 
         datesSet: function () {
-            const harness = calendarEl.querySelector('.fc-view-harness');
-            if (harness) {
-                harness.classList.remove('fc-animate');
-                void harness.offsetWidth;
-                harness.classList.add('fc-animate');
+            const eventosActivos = calendarEl.querySelectorAll('.fc-daygrid-event, .fc-timegrid-event');
+            eventosActivos.forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'scale(0.95)';
+                el.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+            });
+        },
+
+        loading: function (isLoading) {
+            if (isLoading) {
+                calendarEl.classList.add('fc-state-loading');
+            } else {
+                setTimeout(() => {
+                    calendarEl.classList.remove('fc-state-loading');
+                }, 100);
             }
         },
 
@@ -202,6 +212,22 @@ document.addEventListener('DOMContentLoaded', async function () {
                     });
                 };
 
+                const ejecutarVaciadoSincronizado = (datosAPintar) => {
+                    const scrollActual = window.scrollY;
+                    const alturaActual = calendarEl.offsetHeight;
+                    calendarEl.style.minHeight = `${alturaActual}px`;
+
+                    successCallback([]);
+
+                    setTimeout(() => {
+                        successCallback(datosAPintar);
+                        window.scrollTo(window.scrollX, scrollActual);
+                        setTimeout(() => {
+                            calendarEl.style.minHeight = '';
+                        }, 50);
+                    }, 10);
+                };
+
                 if (rangeInicioCargado && rangeFinCargado && startReq >= rangeInicioCargado && endReq <= rangeFinCargado) {
                     successCallback(mapCitasToEvents(todasLasCitas));
                     return;
@@ -236,6 +262,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 rangeFinCargado = fetchEnd;
 
                 successCallback(mapCitasToEvents(todasLasCitas));
+                ejecutarVaciadoSincronizado(mapCitasToEvents(todasLasCitas));
             } catch (error) {
                 failureCallback(error);
             }

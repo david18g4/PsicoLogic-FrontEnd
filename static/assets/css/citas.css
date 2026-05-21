@@ -1181,3 +1181,53 @@
 .cita-tags-container.presencial {
     background-color: #0369a1 !important;
 }
+
+.fc-view-harness.fc-view-harness-passive{
+    min-height: 602px;
+}
+
+@keyframes fadeInUpEvent {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fc-daygrid-event,
+.fc-timegrid-event,
+.fc-list-event {
+    animation: fadeInUpEvent 0.35s ease-out forwards;
+
+    will-change: opacity, transform;
+}
+
+.fc-state-loading .fc-daygrid-event,
+.fc-state-loading .fc-timegrid-event {
+    opacity: 0.2;
+    transform: scale(0.98);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+}
+
+.fc-daygrid-event,
+.fc-timegrid-event {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.fc .fc-loading {
+    top: 15px;
+    right: 130px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #e2e8f0;
+    color: #3182ce;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    font-size: 0.85rem;
+}
