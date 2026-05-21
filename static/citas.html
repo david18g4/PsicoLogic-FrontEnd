@@ -117,14 +117,14 @@
             </main>
         </div>
         <div id="modalCitas" class="modal-overlay" onclick="if(event.target == this) cerrarModal()">
-            <div class="modal-content card">
+            <div class="modal-content card" style="margin-bottom: 0 !important;">
                 <div class="modal-header">
                     <h3 id="fechaSeleccionada">Citas del día</h3>
                     <button class="btn-close-x" onclick="cerrarModal()">&times;</button>
                 </div>
                 <div id="listaCitasDia" class="lista-citas-modal"></div>
                 <div class="modal-footer">
-                    <button class="btn-primario full-width" onclick="abrirModalNuevaCita()">Añadir Cita</button>
+                    <button class="btn-primario full-width" style="padding-bottom: 0px !important;" onclick="abrirModalNuevaCita()">Añadir Cita</button>
                 </div>
             </div>
         </div>

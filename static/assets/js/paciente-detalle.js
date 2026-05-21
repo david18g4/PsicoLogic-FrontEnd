@@ -567,7 +567,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <i class="fa-solid fa-trash"></i>
                         </button>
                         <i class="fa-solid ${icon} file-main-icon" style="color: ${isMissingKey ? '#94a3b8' : iconColor}"></i>
-                        <span class="file-name">${doc.nombre || 'Sin nombre'}</span>
+                        <span class="file-name">${(doc.nombre || 'Sin nombre').toUpperCase()}</span>
                         <span style="font-size: 0.65rem; color: #64748b; font-weight: 600; text-transform: uppercase;">${tipoLabel}</span>
                         <span style="font-size: 0.8rem; color: #94a3b8;">${fechaStr}</span>
                         ${isMissingKey ? '<small style="color:red; font-size:0.6rem;">Error S3</small>' : ''}
