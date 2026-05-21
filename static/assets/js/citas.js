@@ -207,11 +207,11 @@ document.addEventListener('DOMContentLoaded', async function () {
                     return;
                 }
 
-                const fetchStart = new Date(startReq.getFullYear(), startReq.getMonth(), 1);
-                const fetchEnd = new Date(endReq.getFullYear(), endReq.getMonth() + 1, 0, 23, 59, 59);
+                const fetchStart = new Date(info.start);
+                const fetchEnd = new Date(info.end);
 
-                const startStr = fetchStart.toISOString().split('T')[0];
-                const endStr = fetchEnd.toISOString().split('T')[0];
+                const startStr = fetchStart.toISOString().split('T')[0] + "T00:00:00";
+                const endStr = fetchEnd.toISOString().split('T')[0] + "T23:59:59";
 
                 const response = await fetch(`${API_BASE}/citas/fechas?inicio=${startStr}&fin=${endStr}`, {
                     headers: { 'Authorization': `Bearer ${token}` }
@@ -487,9 +487,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         const numPacientes = pacientesSeleccionados.length;
         let alturaNecesaria;
         if (numPacientes === 1) {
-            alturaNecesaria = 65.33 + 24; 
+            alturaNecesaria = 65.33 + 24;
         } else if (numPacientes >= 2) {
-            alturaNecesaria = 168; 
+            alturaNecesaria = 168;
         } else {
             alturaNecesaria = 65.33 + 24;
         }
@@ -556,7 +556,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             listaContenedor.classList.remove('empty-state');
             citasDia.forEach(cita => {
                 const fechaInicio = new Date(cita.fechaHora);
-                const duracion = cita.duracion || 60; 
+                const duracion = cita.duracion || 60;
                 const fechaFin = new Date(fechaInicio.getTime() + (duracion * 60000));
                 const esPasada = fechaFin < new Date();
 
@@ -567,7 +567,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
                 const modTagClass = modLower.includes('online') ? 'tag-online' : 'tag-presencial';
                 const tipoTagClass = `tag-${String(cita.tipoCita || 'Individual').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")}`;
-                const claseColor = modLower.includes('online') ? 'evento-online' : 'evento-individual'; 
+                const claseColor = modLower.includes('online') ? 'evento-online' : 'evento-individual';
 
                 let catCSS = String(cita.tipoCita || 'Individual').toLowerCase()
                     .replace('á', 'a').replace('é', 'e').replace('í', 'i').replace('ó', 'o').replace('ú', 'u');
